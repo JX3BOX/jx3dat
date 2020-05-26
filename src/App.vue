@@ -46,11 +46,19 @@ export default {
         },
     },
     methods: {},
+    watch : {
+        $route: {
+            handler : function (newdata){
+                this.$store.state.subtype = newdata.params.subtype;
+            },
+            deep: true,
+        }
+    },
     mounted: function() {
         let params = new URLSearchParams(location.search);
-        this.$store.state.subtype = params.get("subtype") || "1";
         this.$store.state.pid = params.get("pid") || getRewrite("pid");
         this.$store.state.mode = this.$store.state.pid ? "single" : "list";
+        this.$store.state.subtype = this.$route.params.subtype;
     },
     components: {
         Info,
@@ -61,3 +69,7 @@ export default {
     },
 };
 </script>
+
+<style lang="less">
+    @import './assets/css/layout.less';
+</style>

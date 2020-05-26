@@ -1,6 +1,6 @@
 <template>
-    <div class="m-fb-story" >
-    </div>
+    <el-alert title="即将推出，敬请期待" type="warning" center show-icon>
+    </el-alert>
 </template>
 
 <script>

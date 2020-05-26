@@ -1,16 +1,16 @@
 <template>
-    <div class="m-jx3dat-jx3dat">
-        <el-input class="m-jx3dat-search" placeholder="请输入关键词" v-model="search" @change="searchDBM">
+    <div class="m-jx3dat-jx3dat" v-loading="loading">
+        <el-input class="m-jx3dat-search" placeholder="请输入关键词" v-model="search" @change="searchDBM" disabled>
             <template slot="prepend">
                 DBM
             </template>
             <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
         <div class="m-jx3dat-label">
-            <span class="u-name">订阅名格式 : <b>作者昵称@jx3box</b></span>
+            <span class="u-name">订阅名</span>
             <span class="u-order">排序 : 最后更新</span>
         </div>
-        <ul class="m-jx3data-list" v-if="data.length">
+        <ul class="m-jx3data-list" v-if="data.length" >
             <li v-for="(item,i) in data" :key="item + i">
                 <a class="u-author" :href="item.author.uid | authorLink"
                     ><img
@@ -22,7 +22,7 @@
                     item.post.post_modified | dateFormat
                 }}</time>
                 <b class="u-feed">
-                    <Mark :value="item.author.name" :BGR="item | highlight" />
+                    <Mark :label="item.author.name" value="@jx3box" :BGR="item | highlight" BGL="#24292e"/>
                 </b>
                 <a class="u-title" :href="item.post.ID | postLink">
                     {{ item.post.post_title }}
@@ -71,7 +71,7 @@
 <script>
 import { getPosts } from "../service/post";
 import { authorLink, showAvatar } from "@jx3box/jx3box-common/js/utils";
-import moment, { fn } from "moment";
+import dateFormat from "../utils/moment";
 export default {
     name: "Index",
     props: [],
@@ -82,7 +82,7 @@ export default {
             total: 1,
             pages: 1,
             loading: false,
-            subtype: "", //TODO:修改为1
+            subtype: 1,
             search : '',
         };
     },
@@ -150,11 +150,12 @@ export default {
             if (item.post.sticky) {
                 return "#f39";
             } else {
-                return "#0366d6";
+                // return "#0366d6";
+                return "#035cc1";
             }
         },
         dateFormat: function(val) {
-            return moment(val).fromNow();
+            return dateFormat(val)
         },
     },
     mounted: function() {
@@ -164,5 +165,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "../assets/css/jx3dat.less";
+@import "../assets/css/index.less";
 </style>
