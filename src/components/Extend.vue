@@ -1,26 +1,30 @@
 <template>
     <div class="m-extend">
-        <!-- <ins
-            class="adsbygoogle"
-            style="display:block;width:100%;overflow:hidden;"
-            data-ad-client="ca-pub-4388499329141185"
-            data-ad-slot="9773281887"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-        ></ins> -->
+        <list_side v-if="mode == 'list'"/>
+        <single_side v-if="mode == 'single'"/>
     </div>
 </template>
 
 <script>
+import list_side from "@/components/list_side.vue";
+import single_side from "@/components/single_side.vue";
 export default {
     name: "Extend",
     props: [],
     data: function() {
         return {};
     },
-    computed: {},
+    computed: {
+        mode: function() {
+            return this.$store.state.mode
+        },
+    },
     methods: {},
     mounted: function() {},
+    components: {
+        list_side,
+        single_side,
+    },
 };
 </script>
 

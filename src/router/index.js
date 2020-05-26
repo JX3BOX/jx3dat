@@ -2,21 +2,23 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import Index from "../views/Index.vue";
-import List from "../views/List.vue";
-import View from "../views/View.vue";
-import Post from "../views/Post.vue";
+import Plugins from "../views/Plugins.vue";
+import DBM from "../views/DBM.vue";
+import Docs from "../views/Docs.vue";
+import Feedback from "../views/Feedback.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/', component: Index },
-    { path: '/list', component: List },
-    { path: '/view', component: View },
-    { path: '/post', component: Post },
-]
+    { name: "index", path: "/", component: Index },
+    { name: "plugins", path: "/plugins", component: Plugins },
+    { name: "dbm", path: "/dbm", component: DBM },
+    { name: "feedback", path: "/feedback", component: Feedback },
+    { name: "docs", path: "/docs", component: Docs },
+];
 
 const router = new VueRouter({
-    routes
+    routes,
 });
 
 export default router;

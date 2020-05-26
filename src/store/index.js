@@ -5,6 +5,15 @@ Vue.use(Vuex);
 
 let store = {
     state: {
+        mode : 'list',
+        subtype : '1',
+
+        pid : 0,
+        post : {},
+        meta : {},
+        setting : {},
+        author : {},
+        status : false
     },
     mutations: {
     },
