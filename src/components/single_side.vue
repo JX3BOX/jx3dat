@@ -41,5 +41,5 @@ export default {
 </script>
 
 <style lang="less">
-    // @import '../assets/css/author.less';
+    @import '../assets/css/single_side.less';
 </style>

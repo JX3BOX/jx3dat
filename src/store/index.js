@@ -5,8 +5,8 @@ Vue.use(Vuex);
 
 let store = {
     state: {
-        mode : 'list',
-        subtype : '1',
+        mode : '',
+        subtype : '',
 
         pid : 0,
         post : {},

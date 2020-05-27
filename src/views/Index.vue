@@ -1,17 +1,63 @@
 <template>
     <div class="m-jx3dat-jx3dat" v-loading="loading">
-        <el-input class="m-jx3dat-search" placeholder="请输入关键词" v-model="search" @change="searchDBM" disabled>
+        <el-input
+            class="m-jx3dat-search"
+            placeholder="请输入关键词"
+            v-model="search"
+            @change="searchDBM"
+            disabled
+        >
             <template slot="prepend">
                 DBM
             </template>
             <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
-        <div class="m-jx3dat-label">
-            <span class="u-name">订阅名</span>
-            <span class="u-order">排序 : 最后更新</span>
-        </div>
-        <ul class="m-jx3data-list" v-if="data.length" >
-            <li v-for="(item,i) in data" :key="item + i">
+        <el-tabs class="m-jx3dat-tabs" v-model="view" @tab-click="changeView">
+            <el-tab-pane label="最后更新" name="index">
+                <span slot="label">
+                    <i class="el-icon-s-promotion"></i>
+                    <b>最后更新</b>
+                </span>
+            </el-tab-pane>
+
+            <!-- <el-tab-pane label="趋势榜" name="trending">
+                <span slot="label">
+                    <i class="el-icon-data-line"></i>
+                    <b>趋势榜</b>
+                </span>
+            </el-tab-pane>
+
+            <el-tab-pane label="7日下载排行" name="7days">
+                <span slot="label">
+                    <i class="el-icon-s-data"></i>
+                    <b>7日下载排行</b>
+                </span>
+            </el-tab-pane>
+
+            <el-tab-pane label="30日下载排行" name="30days">
+                <span slot="label">
+                    <i class="el-icon-trophy"></i>
+                    <b>30日下载排行</b>
+                </span>
+            </el-tab-pane>
+
+            <el-tab-pane label="收藏榜" name="star">
+                <span slot="label">
+                    <i class="el-icon-star-on"></i>
+                    <b>收藏口碑榜</b>
+                </span>
+            </el-tab-pane>
+
+            <el-tab-pane label="推荐榜" name="rec">
+                <span slot="label">
+                    <i class="el-icon-medal-1"></i>
+                    <b>编辑推荐榜</b>
+                </span>
+            </el-tab-pane> -->
+            
+        </el-tabs>
+        <ul class="m-jx3data-list" v-if="data.length">
+            <li v-for="(item, i) in data" :key="item + i">
                 <a class="u-author" :href="item.author.uid | authorLink"
                     ><img
                         :src="item.author.avatar | showAvatar"
@@ -21,9 +67,48 @@
                 <time class="u-update">{{
                     item.post.post_modified | dateFormat
                 }}</time>
-                <b class="u-feed">
-                    <Mark :label="item.author.name" value="@jx3box" :BGR="item | highlight" BGL="#24292e"/>
-                </b>
+                <div class="u-feeds" v-if="item.post.post_meta.data.length">
+                    <div
+                        class="u-feed"
+                        v-for="(feed, i) in item.post.post_meta.data"
+                        :key="feed + i"
+                    >
+                        <Mark
+                            v-if="i == 0"
+                            :label="item.author.name"
+                            value="@jx3box"
+                            BGR="#035cc1"
+                            v-clipboard:copy="item.author.name + '@jx3box'"
+                            v-clipboard:success="onCopy"
+                            v-clipboard:error="onError"
+                        />
+                        <Mark
+                            v-if="i != 0 && feed.status"
+                            :label="item.author.name"
+                            :value="'@jx3box@' + feed.name"
+                            :BGR="item | highlight"
+                            BGL="#24292e"
+                            v-clipboard:copy="
+                                item.author.name + '@jx3box@' + feed.name
+                            "
+                            v-clipboard:success="onCopy"
+                            v-clipboard:error="onError"
+                        />
+                    </div>
+                </div>
+                <div class="u-feeds" v-else>
+                    <div class="u-feed">
+                        <Mark
+                            :label="item.author.name"
+                            value="@jx3box"
+                            :BGR="item | highlight"
+                            BGL="#24292e"
+                            v-clipboard:copy="item.author.name + '@jx3box'"
+                            v-clipboard:success="onCopy"
+                            v-clipboard:error="onError"
+                        />
+                    </div>
+                </div>
                 <a class="u-title" :href="item.post.ID | postLink">
                     {{ item.post.post_title }}
                     <span class="u-tags" v-if="item.post.post_meta">
@@ -35,6 +120,11 @@
                         >
                     </span>
                 </a>
+                <a
+                    :href="item.post.ID | postLink"
+                    class="u-view el-button el-button--default el-button--small is-plain"
+                    >查看详情</a
+                >
             </li>
         </ul>
         <el-alert
@@ -72,6 +162,7 @@
 import { getPosts } from "../service/post";
 import { authorLink, showAvatar } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
+import { fn } from "moment";
 export default {
     name: "Index",
     props: [],
@@ -83,7 +174,8 @@ export default {
             pages: 1,
             loading: false,
             subtype: 1,
-            search : '',
+            search: "",
+            view : 'index'
         };
     },
     computed: {
@@ -92,9 +184,7 @@ export default {
         },
     },
     methods: {
-        searchDBM : function (){
-            
-        },
+        searchDBM: function() {},
         appendPage: function(i) {
             this.loading = true;
             getPosts(
@@ -125,7 +215,7 @@ export default {
                 this
             )
                 .then((res) => {
-                    console.log(res.data.data)
+                    console.log(res.data.data);
                     window.scrollTo(0, 0);
                     this.data = res.data.data.list;
                     this.total = res.data.data.total;
@@ -135,6 +225,22 @@ export default {
                     this.loading = false;
                 });
         },
+        onCopy: function(val) {
+            this.$notify({
+                title: "订阅号复制成功",
+                message: "复制内容 : " + val.text,
+                type: "success",
+            });
+        },
+        onError: function() {
+            this.$notify.error({
+                title: "复制失败",
+                message: "请手动复制",
+            });
+        },
+        changeView : function (){
+            
+        }
     },
     filters: {
         authorLink: function(val) {
@@ -147,23 +253,28 @@ export default {
             return "./?pid=" + val;
         },
         highlight: function(item) {
-            if (item.post.sticky) {
-                return "#f39";
-            } else {
-                // return "#0366d6";
-                return "#035cc1";
+            const colormap = {
+                newbie: "#49c10f",
+                advanced: "#fba524",
+                recommended: "#cb91ff",
+                geek: "#fc3c3c",
+            };
+            if (item.post.mark) {
+                return colormap[item.post.mark[0]];
             }
+            return "#035cc1";
         },
         dateFormat: function(val) {
-            return dateFormat(val)
+            return dateFormat(val);
         },
     },
     mounted: function() {
-        this.changePage(1)
+        this.changePage(1);
     },
 };
 </script>
 
 <style lang="less">
 @import "../assets/css/index.less";
+@import "../assets/css/tabs.less";
 </style>

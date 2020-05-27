@@ -17,7 +17,7 @@
         </LeftSidebar>
         <Main :withoutRight="false">
             <list v-if="mode == 'list'" />
-            <!-- <single v-if="mode == 'single'" /> -->
+            <single v-if="mode == 'single'" />
             <RightSidebar>
                 <Extend />
             </RightSidebar>
@@ -31,7 +31,7 @@ import Info from "@/components/Info.vue";
 import Nav from "@/components/Nav.vue";
 import Extend from "@/components/Extend.vue";
 import list from "@/components/list.vue";
-// import single from "@/components/single.vue";
+import single from "@/components/single.vue";
 const { getRewrite } = require("@jx3box/jx3box-common/js/utils");
 
 export default {
@@ -65,7 +65,7 @@ export default {
         Nav,
         Extend,
         list,
-        // single,
+        single,
     },
 };
 </script>

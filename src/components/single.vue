@@ -17,17 +17,11 @@
                     <a class="u-name" :href="authorLink">{{ author.name }}</a>
                 </div>
 
-                <div class="u-meta u-sub-block">
-                    <em class="u-label">首领</em>
-                    <span class="u-value u-boss-list">
-                        {{ format(meta,'fb_boss')}}
-                    </span>
-                </div>
-
-                <div class="u-meta u-sub-block">
-                    <em class="u-label">模式</em>
-                    <span class="u-value u-mode-list c-jx3fb-mode">
-                        {{ format(meta,'fb_level') }}
+                <!-- tags -->
+                <div class="u-meta u-sub-block" v-if="post.post_subtype == '1'">
+                    <em class="u-label">标签</em>
+                    <span class="u-value">
+                        {{ format(post.post_meta, "tag") }}
                     </span>
                 </div>
 
@@ -52,38 +46,154 @@
                     <i class="u-icon-edit el-icon-edit-outline"></i>
                     <span>编辑</span>
                 </a>
-
             </div>
 
             <div class="m-single-panel">
                 <!-- 收藏 -->
                 <Fav />
-                <el-button size="mini" type="primary" disabled title="即将推出.."><i class="el-icon-bell"></i><span>订阅</span></el-button>
+                <el-button
+                    size="mini"
+                    type="primary"
+                    disabled
+                    title="即将推出.."
+                    ><i class="el-icon-bell"></i><span>订阅</span></el-button
+                >
             </div>
         </header>
+
+        <div class="m-single-meta">
+            <div class="u-subtype-1" v-if="data.length">
+                <div class="u-data" v-for="(feed, i) in data" :key="feed + i">
+                    <template v-if="i == 0">
+                        <div class="u-feed">
+                            <Mark
+                                :label="author.name"
+                                value="@jx3box"
+                                BGR="#035cc1"
+                                v-clipboard:copy="author.name + '@jx3box'"
+                                v-clipboard:success="onCopy"
+                                v-clipboard:error="onError"
+                            />
+                        </div>
+                        <span class="u-desc">{{ feed.desc }}</span>
+                        <a
+                            class="u-down el-button el-button--default el-button--small is-plain"
+                            :href="feed.file"
+                            target="_blank"
+                            ><i class="el-icon-download"></i
+                            ><span>本地下载</span></a
+                        >
+                    </template>
+                    <template v-if="i != 0 && feed.status">
+                        <div class="u-feed">
+                            <Mark
+                                :label="author.name"
+                                :value="'@jx3box@' + feed.name"
+                                :BGR="post | highlight"
+                                BGL="#24292e"
+                                v-clipboard:copy="
+                                    author.name + '@jx3box@' + feed.name
+                                "
+                                v-clipboard:success="onCopy"
+                                v-clipboard:error="onError"
+                            />
+                        </div>
+                        <span class="u-desc">{{ feed.desc }}</span>
+                        <a
+                            class="u-down el-button el-button--default el-button--small is-plain"
+                            :href="feed.file"
+                            target="_blank"
+                            ><i class="el-icon-download"></i
+                            ><span>本地下载</span></a
+                        >
+                    </template>
+                </div>
+                <div class="u-data u-data-add">
+                    <div class="u-feed">
+                        <Mark
+                            v-if="meta.github"
+                            :label="meta.github"
+                            value="@github"
+                            BGR="#3d454d"
+                            BGL="#24292e"
+                            v-clipboard:copy="meta.github + '@github'"
+                            v-clipboard:success="onCopy"
+                            v-clipboard:error="onError"
+                            ><img
+                                class=""
+                                svg-inline
+                                src="../assets/img/github.svg"
+                        /></Mark>
+                    </div>
+                    <div class="u-feed">
+                        <Mark
+                            v-if="meta.gitee"
+                            :label="meta.gitee"
+                            value="@gitee"
+                            BGR="#c71d23"
+                            BGL="#24292e"
+                            v-clipboard:copy="meta.gitee + '@gitee'"
+                            v-clipboard:success="onCopy"
+                            v-clipboard:error="onError"
+                            ><img
+                                class="u-gitee"
+                                svg-inline
+                                src="../assets/img/gitee.svg"
+                        /></Mark>
+                    </div>
+                    <div class="u-feed">
+                        <Mark
+                            v-if="meta.aliyun"
+                            :label="meta.aliyun"
+                            value="@aliyun"
+                            BGR="#ff6a00"
+                            BGL="#24292e"
+                            v-clipboard:copy="meta.aliyun + '@aliyun'"
+                            v-clipboard:success="onCopy"
+                            v-clipboard:error="onError"
+                            ><img
+                                class=""
+                                svg-inline
+                                src="../assets/img/aliyun.svg"
+                        /></Mark>
+                    </div>
+                </div>
+            </div>
+            <div class="u-subtype-other">
+                <span class="u-typename">数据类型：{{ typename }}</span>
+                <a
+                    class="u-download el-button el-button--primary el-button--small"
+                    :href="meta.down | showDown"
+                    target="_blank"
+                    v-if="meta.down"
+                >
+                    <i class="el-icon-download"></i><span>默认数据下载</span>
+                </a>
+            </div>
+        </div>
 
         <div class="m-single-prepend">
             <div class="m-single-excerpt" v-if="post.post_excerpt">
                 <el-divider content-position="left">Excerpt</el-divider>
                 {{ post.post_excerpt }}
-                <!-- <Mark class="u-mark" value="作者摘要"/>                 -->
             </div>
         </div>
 
         <div class="m-single-post">
             <el-divider content-position="left">JX3BOX</el-divider>
             <div class="m-single-content">
-                <Article :content="post.post_content" directorybox="#directory"/>
+                <Article
+                    :content="post.post_content"
+                    directorybox="#directory"
+                />
             </div>
         </div>
 
-        <div class="m-single-append">
-            
-        </div>
+        <div class="m-single-append"></div>
 
         <div class="m-single-comment">
             <el-divider content-position="left">评论</el-divider>
-            <Comment :post-id="id"/>
+            <Comment :post-id="id" />
         </div>
 
         <footer class="m-single-footer">
@@ -100,12 +210,18 @@
 </template>
 
 <script>
-import lodash from 'lodash'
-import { getPost } from "../service/getPost";
+import lodash from "lodash";
+import { getPost } from "../service/post";
 import dateFormat from "../utils/dateFormat";
-import {__Links} from '@jx3box/jx3box-common/js/jx3box.json'
-import {authorLink,editLink} from '@jx3box/jx3box-common/js/utils.js'
-import User from '@jx3box/jx3box-common/js/user.js'
+import { __Links } from "@jx3box/jx3box-common/js/jx3box.json";
+import {
+    authorLink,
+    editLink,
+    resolveImagePath,
+} from "@jx3box/jx3box-common/js/utils.js";
+import User from "@jx3box/jx3box-common/js/user.js";
+import { fn } from "moment";
+import { jx3dat_types } from "@jx3box/jx3box-common/js/types.json";
 export default {
     name: "single",
     props: [],
@@ -117,35 +233,71 @@ export default {
             author: {},
             loading: true,
             url: location.href,
+            data: [],
+            typemap: jx3dat_types,
         };
     },
     computed: {
-        authorLink: function (){
-            return authorLink(this.author.uid)
+        authorLink: function() {
+            return authorLink(this.author.uid);
         },
-        editLink : function (){
-            return editLink(this.post.post_type,this.post.ID)
+        editLink: function() {
+            return editLink(this.post.post_type, this.post.ID);
         },
         id: function() {
             return this.$store.state.pid;
         },
-        showEdit : function (){
-            return this.post.post_author == User.getInfo().uid || User.getInfo().group > 60
-        }
+        showEdit: function() {
+            return (
+                this.post.post_author == User.getInfo().uid ||
+                User.getInfo().group > 60
+            );
+        },
+        typename: function() {
+            return this.typemap[this.post.post_subtype];
+        },
     },
     methods: {
-        format : function (parent,key){
-            let val = lodash.get(parent,key)
-            if(Array.isArray(val)){
-                return val.toString()
-            }else{
-                return val
+        format: function(parent, key) {
+            let val = lodash.get(parent, key);
+            if (Array.isArray(val)) {
+                return val.toString();
+            } else {
+                return val;
             }
-        }
+        },
+        onCopy: function(val) {
+            this.$notify({
+                title: "订阅号复制成功",
+                message: "复制内容 : " + val.text,
+                type: "success",
+            });
+        },
+        onError: function() {
+            this.$notify.error({
+                title: "复制失败",
+                message: "请手动复制",
+            });
+        },
     },
     filters: {
         dateFormat: function(val) {
             return dateFormat(new Date(val));
+        },
+        highlight: function(item) {
+            const colormap = {
+                newbie: "#49c10f",
+                advanced: "#fba524",
+                recommended: "#cb91ff",
+                geek: "#fc3c3c",
+            };
+            if (item.mark) {
+                return colormap[item.mark[0]];
+            }
+            return "#035cc1";
+        },
+        showDown: function(val) {
+            return resolveImagePath(val);
         },
     },
     mounted: function() {
@@ -153,16 +305,20 @@ export default {
             getPost(this.$store.state.pid)
                 .then((res) => {
                     this.post = this.$store.state.post = res.data.data.post;
-                    this.meta = this.$store.state.meta = res.data.data.post.post_meta;
-                    this.setting = this.$store.state.setting = res.data.data.post;
-                    this.author = this.$store.state.author = res.data.data.author;
-                    this.$store.state.status = true
+                    this.meta = this.$store.state.meta =
+                        res.data.data.post.post_meta;
+                    this.setting = this.$store.state.setting =
+                        res.data.data.post;
+                    this.author = this.$store.state.author =
+                        res.data.data.author;
+                    this.data = res.data.data.post.post_meta.data;
+                    this.$store.state.status = true;
 
                     this.loading = false;
                 })
                 .catch((err) => {
-                    location.href = __Links.search
-                })
+                    location.href = __Links.search;
+                });
         }
     },
 };
@@ -170,4 +326,5 @@ export default {
 
 <style lang="less">
 @import "../assets/css/single.less";
+@import "../assets/css/meta.less";
 </style>
