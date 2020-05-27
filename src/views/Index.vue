@@ -20,7 +20,7 @@
                 </span>
             </el-tab-pane>
 
-            <!-- <el-tab-pane label="趋势榜" name="trending">
+            <el-tab-pane label="趋势榜" name="trending">
                 <span slot="label">
                     <i class="el-icon-data-line"></i>
                     <b>趋势榜</b>
@@ -53,7 +53,7 @@
                     <i class="el-icon-medal-1"></i>
                     <b>编辑推荐榜</b>
                 </span>
-            </el-tab-pane> -->
+            </el-tab-pane>
             
         </el-tabs>
         <ul class="m-jx3data-list" v-if="data.length">
@@ -76,20 +76,19 @@
                         <Mark
                             v-if="i == 0"
                             :label="item.author.name"
-                            value="@jx3box"
                             BGR="#035cc1"
-                            v-clipboard:copy="item.author.name + '@jx3box'"
+                            v-clipboard:copy="item.author.name"
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
                         />
                         <Mark
                             v-if="i != 0 && feed.status"
                             :label="item.author.name"
-                            :value="'@jx3box@' + feed.name"
+                            :value="feed.name"
                             :BGR="item | highlight"
                             BGL="#24292e"
                             v-clipboard:copy="
-                                item.author.name + '@jx3box@' + feed.name
+                                item.author.name + '#' + feed.name
                             "
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
@@ -100,10 +99,8 @@
                     <div class="u-feed">
                         <Mark
                             :label="item.author.name"
-                            value="@jx3box"
-                            :BGR="item | highlight"
                             BGL="#24292e"
-                            v-clipboard:copy="item.author.name + '@jx3box'"
+                            v-clipboard:copy="item.author.name"
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
                         />

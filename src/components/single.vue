@@ -68,9 +68,7 @@
                         <div class="u-feed">
                             <Mark
                                 :label="author.name"
-                                value="@jx3box"
-                                BGR="#035cc1"
-                                v-clipboard:copy="author.name + '@jx3box'"
+                                v-clipboard:copy="author.name"
                                 v-clipboard:success="onCopy"
                                 v-clipboard:error="onError"
                             />
@@ -88,11 +86,11 @@
                         <div class="u-feed">
                             <Mark
                                 :label="author.name"
-                                :value="'@jx3box@' + feed.name"
+                                :value="feed.name"
                                 :BGR="post | highlight"
                                 BGL="#24292e"
                                 v-clipboard:copy="
-                                    author.name + '@jx3box@' + feed.name
+                                    author.name + '#' + feed.name
                                 "
                                 v-clipboard:success="onCopy"
                                 v-clipboard:error="onError"
@@ -109,9 +107,8 @@
                     </template>
                 </div>
                 <div class="u-data u-data-add">
-                    <div class="u-feed">
+                    <div class="u-feed" v-if="meta.github">
                         <Mark
-                            v-if="meta.github"
                             :label="meta.github"
                             value="@github"
                             BGR="#3d454d"
@@ -125,9 +122,8 @@
                                 src="../assets/img/github.svg"
                         /></Mark>
                     </div>
-                    <div class="u-feed">
+                    <div class="u-feed" v-if="meta.gitee">
                         <Mark
-                            v-if="meta.gitee"
                             :label="meta.gitee"
                             value="@gitee"
                             BGR="#c71d23"
@@ -141,9 +137,8 @@
                                 src="../assets/img/gitee.svg"
                         /></Mark>
                     </div>
-                    <div class="u-feed">
+                    <div class="u-feed" v-if="meta.aliyun">
                         <Mark
-                            v-if="meta.aliyun"
                             :label="meta.aliyun"
                             value="@aliyun"
                             BGR="#ff6a00"
