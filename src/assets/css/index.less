@@ -4,44 +4,43 @@
     margin:0;
 
     li{
-        border-bottom:1px solid #eee;
         &:hover{
-            background-color:@bg-light;
+            
         }
         .clearfix;
         .db;
-        padding:12px 0 8px 0;
-    }
+        padding:15px 10px 13px 10px;
+        border: 1px solid #eee;
+        margin-bottom: 10px;
+        border-radius: 4px;
 
-    .u-author{
-        .fr;
-        .db;
-        // margin:8px 10px;
-        .none;
-    }
+        &:nth-child(2n+1){
+            background-color:@bg-light;
+        }
+        .pr;
 
-    .u-avatar{
-        .size(24px);
-        .r(4px);
-        .db;
+        &:hover{
+            background-color:lighten(#f2f8ff,1%);
+        }
     }
 
     .u-feeds{
-        
+        .clearfix;
     }
 
     .u-feed{
         // .fl;
         // margin:8px 10px 8px 2px;
-        .dbi;
-        .y(top);
+        // .dbi;
+        // .y(top);
+        .fl;
 
         .w-mark{
             .mr(10px);
             .ps;
-            .dbi;
             .clearfix;
             .pointer;
+            .db;
 
             .w-mark-value{
                 padding-left:7px;
@@ -58,36 +57,65 @@
         &:hover{
             color:@primary;
         }
-        .fz(16px,32px);
-        font-weight:300;
-        .fl;
+        .fz(14px,20px);
+        .mt(10px);
+        // font-weight:300;
+        // .fl;
+
+        .u-tags{
+
+        }
+        .u-tag{
+            background-color:#f2f6fc;
+            color:#637a9c;
+            // background-color:#eee;
+            // color:#888;
+            .fz(12px);
+            font-style:normal;
+            .mr(5px);
+            .r(3px);
+            padding:2px 5px;
+        }
+
+        .mr(120px);
     }
 
-    .u-tags{
-
+    .u-desc{
+        .fz(12px,14px);color:#888;
+        .mt(5px);
+        .nobreak;
+        .mr(120px);
     }
-    .u-tag{
-        background-color:#f2f6fc;
-        color:#637a9c;
-        // background-color:#eee;
-        // color:#888;
-        .fz(12px);
-        font-style:normal;
-        .mr(5px);
-        .r(3px);
-        padding:2px 5px;
+
+    .u-info{
+        .pa;.rt(10px);
+        .clearfix;
+    }
+
+    .u-author{
+        .db;
+        .fz(12px,24px);
+
+        .u-avatar{
+            .size(24px);
+            .r(4px);
+            .db;
+            .fl;
+        }
+        .fr;
     }
 
     .u-update{
-        .fr;
-        .fz(12px);
+        .fl;
+        .fz(12px,24px);
         color:#888;
+        // margin:0 10px;
     }
 
     .u-view{
-        .fr;
+        .pa;.rb(10px,12px);
+        i{.ml(3px);}
     }
-
     
 }
 

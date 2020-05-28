@@ -16,7 +16,7 @@
             <el-tab-pane label="最后更新" name="index">
                 <span slot="label">
                     <i class="el-icon-s-promotion"></i>
-                    <b>最后更新</b>
+                    <b>最近更新</b>
                 </span>
             </el-tab-pane>
 
@@ -54,19 +54,9 @@
                     <b>编辑推荐榜</b>
                 </span>
             </el-tab-pane>
-            
         </el-tabs>
         <ul class="m-jx3data-list" v-if="data.length">
             <li v-for="(item, i) in data" :key="item + i">
-                <a class="u-author" :href="item.author.uid | authorLink"
-                    ><img
-                        :src="item.author.avatar | showAvatar"
-                        :alt="item.author.name"
-                        class="u-avatar"
-                /></a>
-                <time class="u-update">{{
-                    item.post.post_modified | dateFormat
-                }}</time>
                 <div class="u-feeds" v-if="item.post.post_meta.data.length">
                     <div
                         class="u-feed"
@@ -117,10 +107,26 @@
                         >
                     </span>
                 </a>
+                <div class="u-desc">
+                    {{item.post.post_excerpt}}
+                </div>
+                <div class="u-info">
+                    <!-- <a class="u-author" :href="item.author.uid | authorLink">
+                        <img
+                            :src="item.author.avatar | showAvatar"
+                            :alt="item.author.name"
+                            class="u-avatar"
+                        />
+                        <span>{{item.author.name}}</span>
+                    </a> -->
+                    <time class="u-update">{{
+                        item.post.post_modified | dateFormat
+                    }}</time>
+                </div>
                 <a
                     :href="item.post.ID | postLink"
                     class="u-view el-button el-button--default el-button--small is-plain"
-                    >查看详情</a
+                    >查看详情<i class="el-icon-arrow-right"></i></a
                 >
             </li>
         </ul>
@@ -172,7 +178,7 @@ export default {
             loading: false,
             subtype: 1,
             search: "",
-            view : 'index'
+            view: "index",
         };
     },
     computed: {
@@ -212,7 +218,7 @@ export default {
                 this
             )
                 .then((res) => {
-                    console.log(res.data.data);
+                    // console.log(res.data.data);
                     window.scrollTo(0, 0);
                     this.data = res.data.data.list;
                     this.total = res.data.data.total;
@@ -235,9 +241,7 @@ export default {
                 message: "请手动复制",
             });
         },
-        changeView : function (){
-            
-        }
+        changeView: function() {},
     },
     filters: {
         authorLink: function(val) {
