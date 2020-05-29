@@ -79,7 +79,7 @@
                             :BGR="item | highlight"
                             BGL="#24292e"
                             v-clipboard:copy="
-                                item.author.name + '#' + feed.name
+                                item.author.name + '-' + feed.name
                             "
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
