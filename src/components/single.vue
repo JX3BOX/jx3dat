@@ -62,7 +62,7 @@
         </header>
 
         <div class="m-single-meta">
-            <div class="u-subtype-1" v-if="data.length">
+            <div class="u-subtype-1" v-if="subtype == 1 && data.length">
                 <div class="u-data" v-for="(feed, i) in data" :key="feed + i">
                     <template v-if="i == 0">
                         <div class="u-feed">
@@ -173,7 +173,7 @@
                     </div>
                 </div>
             </div>
-            <div class="u-subtype-other">
+            <div class="u-subtype-other" v-if="subtype != 1">
                 <span class="u-typename">数据类型：{{ typename }}</span>
                 <a
                     class="u-download el-button el-button--primary el-button--small"
@@ -277,6 +277,9 @@ export default {
                 User.getInfo().uid == this.author.uid
             );
         },
+        subtype : function(){
+            return this.post.post_subtype || '1'
+        }
     },
     methods: {
         format: function(parent, key) {
