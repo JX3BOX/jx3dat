@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <a class="u-title" :href="item.post.ID | postLink">
-                    {{ item.post.post_title }}
+                    {{ item.post.post_title || '无标题'}}
                     <span class="u-tags" v-if="item.post.post_meta">
                         <i
                             class="u-tag"
