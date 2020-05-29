@@ -57,7 +57,7 @@
         </el-tabs>
         <ul class="m-jx3data-list" v-if="data.length">
             <li v-for="(item, i) in data" :key="item + i">
-                <div class="u-feeds" v-if="item.post.post_meta.data.length">
+                <div class="u-feeds" v-if="item.post.post_meta.data && item.post.post_meta.data.length">
                     <div
                         class="u-feed"
                         v-for="(feed, i) in item.post.post_meta.data"
