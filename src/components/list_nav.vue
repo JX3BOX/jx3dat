@@ -2,7 +2,7 @@
     <div class="m-jx3dat-list-nav">
         <h5 class="u-title">数据下载</h5>
         <div class="m-nav-group">
-            <router-link to="/"><img svg-inline src="../assets/img/jx3dat.svg" /><span>团控监控数据</span></router-link>
+            <router-link to="/"><img svg-inline src="../assets/img/jx3dat.svg" /><span>团队监控数据</span></router-link>
             <router-link to="/plugins/2"><img svg-inline src="../assets/img/jx3dat.svg" /><span>目标监控数据</span></router-link>
             <router-link to="/plugins/3"><img svg-inline src="../assets/img/jx3dat.svg" /><span>团队面板buff数据</span></router-link>
             <router-link to="/plugins/4"><img svg-inline src="../assets/img/jx3dat.svg" /><span>团队面板UI皮肤</span></router-link>
