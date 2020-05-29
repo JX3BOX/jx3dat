@@ -89,9 +89,28 @@
                                 :value="feed.name"
                                 :BGR="post | highlight"
                                 BGL="#24292e"
-                                v-clipboard:copy="
-                                    author.name + '#' + feed.name
-                                "
+                                v-clipboard:copy="author.name + '#' + feed.name"
+                                v-clipboard:success="onCopy"
+                                v-clipboard:error="onError"
+                            />
+                        </div>
+                        <span class="u-desc">{{ feed.desc }}</span>
+                        <a
+                            class="u-down el-button el-button--default el-button--small is-plain"
+                            :href="feed.file"
+                            target="_blank"
+                            ><i class="el-icon-download"></i
+                            ><span>本地下载</span></a
+                        >
+                    </template>
+                    <template v-if="!feed.status && cansee">
+                        <div class="u-feed">
+                            <Mark
+                                :label="author.name"
+                                :value="feed.name"
+                                BGR="#f39"
+                                BGL="#24292e"
+                                v-clipboard:copy="author.name + '#' + feed.name"
                                 v-clipboard:success="onCopy"
                                 v-clipboard:error="onError"
                             />
@@ -217,6 +236,7 @@ import {
 import User from "@jx3box/jx3box-common/js/user.js";
 import { fn } from "moment";
 import { jx3dat_types } from "@jx3box/jx3box-common/js/types.json";
+
 export default {
     name: "single",
     props: [],
@@ -250,6 +270,12 @@ export default {
         },
         typename: function() {
             return this.typemap[this.post.post_subtype];
+        },
+        cansee: function() {
+            return (
+                User.getInfo().group >= 64 ||
+                User.getInfo().uid == this.author.uid
+            );
         },
     },
     methods: {
@@ -292,29 +318,22 @@ export default {
             return "#035cc1";
         },
         showDown: function(val) {
-            return resolveImagePath(val);
+            return val && resolveImagePath(val);
         },
     },
     mounted: function() {
         if (this.$store.state.pid) {
-            getPost(this.$store.state.pid)
-                .then((res) => {
-                    this.post = this.$store.state.post = res.data.data.post;
-                    this.meta = this.$store.state.meta =
-                        res.data.data.post.post_meta;
-                    this.setting = this.$store.state.setting =
-                        res.data.data.post;
-                    this.author = this.$store.state.author =
-                        res.data.data.author;
-                    this.data = res.data.data.post.post_meta.data;
-                    this.$store.state.status = true;
+            getPost(this.$store.state.pid, this).then((res) => {
+                this.post = this.$store.state.post = res.data.data.post || {};
+                this.meta = this.$store.state.meta =
+                    res.data.data.post.post_meta || {};
+                this.author = this.$store.state.author =
+                    res.data.data.author || {};
+                this.data = (this.meta && this.meta.data) || [];
+                this.$store.state.status = true;
 
-                    this.loading = false;
-                })
-                .catch((err) => {
-                    console.log(err)
-                    // location.href = __Links.search;
-                });
+                this.loading = false;
+            });
         }
     },
 };

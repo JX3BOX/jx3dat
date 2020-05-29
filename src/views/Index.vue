@@ -70,6 +70,7 @@
                             v-clipboard:copy="item.author.name"
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
+                            :key="item.author.name + i"
                         />
                         <Mark
                             v-if="i != 0 && feed.status"
@@ -82,6 +83,7 @@
                             "
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
+                            :key="item.author.name + i"
                         />
                     </div>
                 </div>

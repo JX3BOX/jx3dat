@@ -18,7 +18,7 @@ function getPosts(params,vm) {
         failCallback(err,vm)
     })
 }
-function getPost(pid) {
+function getPost(pid,vm) {
     return axios.get(API_SINGLE, {
         params: {
             id: pid,
