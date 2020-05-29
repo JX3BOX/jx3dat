@@ -63,8 +63,8 @@
 
         <div class="m-single-meta">
             <div class="u-subtype-1" v-if="subtype == 1 && data.length">
-                <div class="u-data" v-for="(feed, i) in data" :key="feed + i">
-                    <template v-if="i == 0">
+                <div v-for="(feed, i) in data" :key="feed + i">
+                    <div class="u-data" v-if="i == 0">
                         <div class="u-feed">
                             <Mark
                                 :label="author.name"
@@ -81,8 +81,8 @@
                             ><i class="el-icon-download"></i
                             ><span>本地下载</span></a
                         >
-                    </template>
-                    <template v-if="i != 0 && feed.status">
+                    </div>
+                    <div class="u-data" v-if="i != 0 && feed.status">
                         <div class="u-feed">
                             <Mark
                                 :label="author.name"
@@ -102,8 +102,8 @@
                             ><i class="el-icon-download"></i
                             ><span>本地下载</span></a
                         >
-                    </template>
-                    <template v-if="!feed.status && cansee">
+                    </div>
+                    <div class="u-data" v-if="!feed.status && cansee">
                         <div class="u-feed">
                             <Mark
                                 :label="author.name"
@@ -123,7 +123,7 @@
                             ><i class="el-icon-download"></i
                             ><span>本地下载</span></a
                         >
-                    </template>
+                    </div>
                 </div>
                 <div class="u-data u-data-add">
                     <div class="u-feed" v-if="meta.github">
