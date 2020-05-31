@@ -41,7 +41,7 @@
                 </span>
             </el-tab-pane>
 
-            <el-tab-pane label="收藏榜" name="star">
+            <!-- <el-tab-pane label="收藏榜" name="star">
                 <span slot="label">
                     <i class="el-icon-star-on"></i>
                     <b>收藏口碑榜</b>
@@ -53,7 +53,7 @@
                     <i class="el-icon-medal-1"></i>
                     <b>编辑推荐榜</b>
                 </span>
-            </el-tab-pane>
+            </el-tab-pane> -->
         </el-tabs>
         <ul class="m-jx3data-list" v-if="data.length">
             <li v-for="(item, i) in data" :key="item + i">
@@ -79,7 +79,7 @@
                             :BGR="item | highlight"
                             BGL="#24292e"
                             v-clipboard:copy="
-                                item.author.name + '-' + feed.name
+                                item.author.name + '#' + feed.name
                             "
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
@@ -155,7 +155,7 @@
             background
             :hide-on-single-page="true"
             @current-change="changePage"
-            :current-page="page"
+            :current-page.sync="page"
             layout="total, prev, pager, next, jumper"
             :total="total"
         >
@@ -167,7 +167,6 @@
 import { getPosts } from "../service/post";
 import { authorLink, showAvatar } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
-import { fn } from "moment";
 export default {
     name: "Index",
     props: [],
