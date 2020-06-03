@@ -4,7 +4,7 @@
         placeholder="请输入关键词"
         v-model="search"
         @change="searchDBM"
-        disabled
+        disabled=""
     >
         <template slot="prepend">
             团队监控数据
@@ -25,7 +25,8 @@ export default {
     computed: {},
     methods: {
         searchDBM: function() {
-            // this.$router.push({ name: this.view });
+            this.$router.push({ name: 'query' });
+            this.$store.state.query = this.search
         },
     },
     mounted: function() {},

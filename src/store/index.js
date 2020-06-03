@@ -13,9 +13,12 @@ let store = {
         meta : {},
         setting : {},
         author : {},
-        status : false
+        status : false,
+
+        query : ''
     },
     mutations: {
+        
     },
     getters: {
     },

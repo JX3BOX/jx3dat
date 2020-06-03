@@ -15,12 +15,12 @@
                     ><i
                         class="el-icon-top u-trending"
                         v-if="trending(item) > 0"
-                        >{{ ~~(trending(item) * 100) + "%" }}</i
+                        >{{ (trending(item) * 100).toFixed(2) + "%" }}</i
                     >
                     <i
                         class="el-icon-bottom u-trending"
                         v-if="trending(item) < 0"
-                        >{{ ~~(trending(item) * 100) + "%" }}</i
+                        >{{ (trending(item) * 100).toFixed(2) + "%" }}</i
                     >
                     <span
                         class="u-trending u-trending-keep"
@@ -48,7 +48,7 @@ export default {
             let trending_1 = (item.before3 - item.before2) / item.before2;
             let trending_2 = (item.before2 - item.yesterday) / item.yesterday;
             let average = (trending_1 + trending_2) / 2;
-            return isNaN(average) ? "N/A" : average.toFixed(2);
+            return isNaN(average) ? "N/A" : average.toFixed(4);
         },
         viewRank : function (){
             this.$router.push({ name: 'rank' });

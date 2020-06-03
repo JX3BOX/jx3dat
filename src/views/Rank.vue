@@ -55,12 +55,12 @@
                         <i
                             class="el-icon-top u-trending"
                             v-if="trending(scope.row) > 0"
-                            >{{ ~~(trending(scope.row) * 100) + "%" }}</i
+                            >{{ (trending(scope.row) * 100).toFixed(2) + "%" }}</i
                         >
                         <i
                             class="el-icon-bottom u-trending"
                             v-if="trending(scope.row) < 0"
-                            >{{ ~~(trending(scope.row) * 100) + "%" }}</i
+                            >{{ (trending(scope.row) * 100).toFixed(2) + "%" }}</i
                         >
                         <span
                             class="u-trending u-trending-keep"
@@ -105,7 +105,7 @@ export default {
             let trending_1 = (row.before3 - row.before2) / row.before2;
             let trending_2 = (row.before2 - row.yesterday) / row.yesterday;
             let average = (trending_1 + trending_2) / 2;
-            return isNaN(average) ? "N/A" : average.toFixed(2);
+            return isNaN(average) ? "N/A" : average.toFixed(4);
         },
         tableRowClassName({ row, rowIndex }) {
             if (rowIndex < 3) {
