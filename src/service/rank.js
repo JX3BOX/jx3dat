@@ -1,8 +1,8 @@
 import axios from "axios";
 import { __hub } from "@jx3box/jx3box-common/js/jx3box.json";
 const rankAPI = __hub + "subscribe";
-// const statAPI = __hub + "api/plugins/jx3dat/rank";   //TODO:
-const statAPI = "/api/plugins/jx3dat/rank";
+const statAPI = __hub + "api/plugins/jx3dat/rank";   //TODO:
+// const statAPI = "/api/plugins/jx3dat/rank";
 import failCallback from "../utils/fail";
 
 // before2 是前面第二天一天的数据
