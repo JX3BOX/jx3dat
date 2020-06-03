@@ -6,7 +6,7 @@
         <div class="m-archive-list m-plugins-list" v-if="data.length">
             <ul class="u-list">
                 <li class="u-item" v-for="(item, i) in data" :key="i">
-                    <a class="u-banner" :href="item.post.ID | postLink" :style="{ background: randomColor(i) }">
+                    <a class="u-banner" :href="item.post.ID | postLink">
                         <img
                             v-if="item.post.post_banner"
                             :src="showBanner(item.post.post_banner)"
