@@ -1,63 +1,17 @@
 <template>
     <div class="m-jx3dat-jx3dat" v-loading="loading">
-        <el-input
-            class="m-jx3dat-search"
-            placeholder="请输入关键词"
-            v-model="search"
-            @change="searchDBM"
-            disabled
-        >
-            <template slot="prepend">
-                DBM
-            </template>
-            <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
-        <el-tabs class="m-jx3dat-tabs" v-model="view" @tab-click="changeView">
-            <el-tab-pane label="最后更新" name="index">
-                <span slot="label">
-                    <i class="el-icon-s-promotion"></i>
-                    <b>最近更新</b>
-                </span>
-            </el-tab-pane>
-
-            <el-tab-pane label="趋势榜" name="trending">
-                <span slot="label">
-                    <i class="el-icon-data-line"></i>
-                    <b>趋势榜</b>
-                </span>
-            </el-tab-pane>
-
-            <el-tab-pane label="7日下载排行" name="7days">
-                <span slot="label">
-                    <i class="el-icon-s-data"></i>
-                    <b>7日下载排行</b>
-                </span>
-            </el-tab-pane>
-
-            <el-tab-pane label="30日下载排行" name="30days">
-                <span slot="label">
-                    <i class="el-icon-trophy"></i>
-                    <b>30日下载排行</b>
-                </span>
-            </el-tab-pane>
-
-            <!-- <el-tab-pane label="收藏榜" name="star">
-                <span slot="label">
-                    <i class="el-icon-star-on"></i>
-                    <b>收藏口碑榜</b>
-                </span>
-            </el-tab-pane>
-
-            <el-tab-pane label="推荐榜" name="rec">
-                <span slot="label">
-                    <i class="el-icon-medal-1"></i>
-                    <b>编辑推荐榜</b>
-                </span>
-            </el-tab-pane> -->
-        </el-tabs>
+        <search />
+        <tabs />
         <ul class="m-jx3data-list" v-if="data.length">
             <li v-for="(item, i) in data" :key="item + i">
-                <div class="u-feeds" v-if="item.post.post_meta && item.post.post_meta.data && item.post.post_meta.data.length">
+                <div
+                    class="u-feeds"
+                    v-if="
+                        item.post.post_meta &&
+                            item.post.post_meta.data &&
+                            item.post.post_meta.data.length
+                    "
+                >
                     <div
                         class="u-feed"
                         v-for="(feed, i) in item.post.post_meta.data"
@@ -99,7 +53,7 @@
                     </div>
                 </div>
                 <a class="u-title" :href="item.post.ID | postLink">
-                    {{ item.post.post_title || '无标题'}}
+                    {{ item.post.post_title || "无标题" }}
                     <span class="u-tags" v-if="item.post.post_meta">
                         <i
                             class="u-tag"
@@ -110,17 +64,17 @@
                     </span>
                 </a>
                 <div class="u-desc">
-                    {{item.post.post_excerpt}}
+                    {{ item.post.post_excerpt }}
                 </div>
                 <div class="u-info">
                     <!-- <a class="u-author" :href="item.author.uid | authorLink">
-                        <img
-                            :src="item.author.avatar | showAvatar"
-                            :alt="item.author.name"
-                            class="u-avatar"
-                        />
-                        <span>{{item.author.name}}</span>
-                    </a> -->
+                    <img
+                        :src="item.author.avatar | showAvatar"
+                        :alt="item.author.name"
+                        class="u-avatar"
+                    />
+                    <span>{{item.author.name}}</span>
+                </a> -->
                     <time class="u-update">{{
                         item.post.post_modified | dateFormat
                     }}</time>
@@ -128,8 +82,8 @@
                 <a
                     :href="item.post.ID | postLink"
                     class="u-view el-button el-button--default el-button--small is-plain"
-                    >查看详情<i class="el-icon-arrow-right"></i></a
-                >
+                    >查看详情<i class="el-icon-arrow-right"></i
+                ></a>
             </li>
         </ul>
         <el-alert
@@ -164,6 +118,8 @@
 </template>
 
 <script>
+import tabs from '@/components/tabs.vue'
+import search from "@/components/search.vue";
 import { getPosts } from "../service/post";
 import { authorLink, showAvatar } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
@@ -178,8 +134,6 @@ export default {
             pages: 1,
             loading: false,
             subtype: 1,
-            search: "",
-            view: "index",
         };
     },
     computed: {
@@ -242,7 +196,6 @@ export default {
                 message: "请手动复制",
             });
         },
-        changeView: function() {},
     },
     filters: {
         authorLink: function(val) {
@@ -272,6 +225,10 @@ export default {
     },
     mounted: function() {
         this.changePage(1);
+    },
+    components: {
+        tabs,
+        search
     },
 };
 </script>

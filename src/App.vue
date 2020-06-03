@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" :class="{ 'p-list': mode == 'list', 'p-single': mode == 'single' }">
         <Header></Header>
         <Breadcrumb
             name="插件数据"

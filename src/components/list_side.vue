@@ -8,23 +8,7 @@
                 ></strong
             >
         </RightSideMsg>
-        <div class="m-jx3dat-rank">
-            <h3 class="c-sidebar-right-title">
-                <img
-                    class="u-icon"
-                    svg-inline
-                    src="../assets/img/rank.svg"
-                />排行榜
-            </h3>
-            <el-tabs v-model="focus" @tab-click="loadRank">
-                <el-tab-pane
-                    :label="name"
-                    :name="i + ''"
-                    v-for="(name, i) in subnav"
-                    :key="i"
-                ></el-tab-pane>
-            </el-tabs>
-        </div>
+        <minirank />
         <div class="m-jx3dat-links">
             <h3 class="c-sidebar-right-title">
                 <img
@@ -66,12 +50,12 @@
                 >
             </div>
         </div>
-
         <!-- <Github_REPO REPO="fb" coder="8"></Github_REPO> -->
     </div>
 </template>
 
 <script>
+import minirank from '@/components/minirank.vue'
 export default {
     name: "list_side",
     props: [],
@@ -83,12 +67,12 @@ export default {
     },
     computed: {},
     methods: {
-        loadRank(){
-
-        }
+        
     },
     mounted: function() {},
-    components: {},
+    components: {
+        minirank
+    },
 };
 </script>
 

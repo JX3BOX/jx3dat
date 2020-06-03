@@ -44,7 +44,7 @@
                         </span>
                     </h2>
 
-                    <div class="u-content">
+                    <div class="u-desc">
                         {{ item.post.post_content }}
                     </div>
 

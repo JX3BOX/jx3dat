@@ -1,7 +1,7 @@
 <template>
     <nav class="m-nav">
         <single_nav v-if="mode == 'single'" />
-        <list_nav v-else />
+        <list_nav />
     </nav>
 </template>
 
