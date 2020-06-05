@@ -1,6 +1,6 @@
 <template>
     <div class="m-jx3dat-jx3dat" v-loading="loading">
-        <search />
+        <!-- <search /> -->
         <tabs />
         <div class="m-jx3dat-rank-full m-jx3dat-rank">
             <el-table
@@ -85,7 +85,7 @@
 <script>
 import { getRank } from "../service/rank";
 import tabs from "@/components/tabs.vue";
-import search from "@/components/search.vue";
+// import search from "@/components/search.vue";
 export default {
     name: "Rank",
     data: function() {
@@ -137,7 +137,7 @@ export default {
     },
     components: {
         tabs,
-        search
+        // search
     },
 };
 </script>

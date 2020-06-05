@@ -17,7 +17,7 @@ function getRank(vm) {
         });
 }
 
-function searchFeed(query) {
+function searchFeed(query,vm) {
     return axios
         .get(searchAPI, {
             params: {

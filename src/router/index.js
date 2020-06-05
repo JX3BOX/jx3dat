@@ -6,7 +6,7 @@ import Rank from "../views/Rank.vue";
 import Plugins from "../views/Plugins.vue";
 import DBM from "../views/DBM.vue";
 import Store from "../views/Store.vue";
-import Query from "../views/Query.vue";
+// import Query from "../views/Query.vue";
 
 Vue.use(VueRouter);
 
@@ -16,7 +16,7 @@ const routes = [
     { name: "dbm", path: "/dbm", component: DBM },
     { name: "store", path: "/store", component: Store },
     { name: "rank", path: "/rank", component: Rank },
-    { name: "query", path: "/query", component: Query },
+    // { name: "query", path: "/query", component: Query },
 ];
 
 const router = new VueRouter({

@@ -1,7 +1,7 @@
 <template>
     <div class="m-jx3dat-jx3dat" v-loading="loading">
-        <search />
         <tabs />
+        <search />
         <ul class="m-jx3data-list" v-if="data.length">
             <li v-for="(item, i) in data" :key="item + i">
                 <div
@@ -142,7 +142,6 @@ export default {
         },
     },
     methods: {
-        searchDBM: function() {},
         appendPage: function(i) {
             this.loading = true;
             getPosts(
