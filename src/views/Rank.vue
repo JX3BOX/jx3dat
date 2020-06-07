@@ -14,7 +14,6 @@
                     prop="name"
                     label="订阅号"
                     sortable
-                    width="180"
                     :formatter="feed"
                 >
                 </el-table-column>
@@ -22,28 +21,24 @@
                     prop="7days"
                     label="7天下载量"
                     sortable
-                    width="180"
                 >
                 </el-table-column>
                 <el-table-column
                     prop="30days"
                     label="30天下载量"
                     sortable
-                    width="180"
                 >
                 </el-table-column>
                 <el-table-column
                     prop="yesterday"
                     label="昨日下载量"
                     sortable
-                    width="180"
                 >
                 </el-table-column>
                 <el-table-column
                     prop="before2"
                     label="前日下载量"
                     sortable
-                    width="180"
                 >
                 </el-table-column>
                 <el-table-column

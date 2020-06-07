@@ -1,7 +1,7 @@
 import axios from "axios";
 import { __hub } from "@jx3box/jx3box-common/js/jx3box.json";
-const statAPI = __hub + "api/plugins/jx3dat/rank";   //TODO:
-// const statAPI = "/api/plugins/jx3dat/rank";
+// const statAPI = __hub + "api/plugins/jx3dat/rank";   //TODO:
+const statAPI = "/api/plugins/jx3dat/rank";
 // const searchAPI = "https://dbm.j3cx.com/api/plugins/jx3dat/rank";
 const searchAPI = "/api/plugins/jx3dat/rank";
 import failCallback from "../utils/fail";

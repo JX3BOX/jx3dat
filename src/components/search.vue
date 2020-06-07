@@ -5,14 +5,13 @@
             placeholder="请输入关键词"
             v-model="search"
             @change="searchDBM"
-            disabled
         >
             <template slot="prepend">
-                订阅号搜索
+                订阅号
             </template>
             <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
-        <div class="m-jx3dat-search-result" v-if="data.length">
+        <!-- <div class="m-jx3dat-search-result" v-if="data.length">
             <ul>
                 <li v-for="(item, i) in data" :key="i">
                     <a :href="postLink(item.pid)">
@@ -22,36 +21,36 @@
                     </a>
                 </li>
             </ul>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
-import { searchFeed } from "../service/rank";
+// import { searchFeed } from "../service/rank";
 export default {
     name: "search",
     props: [],
     data: function() {
         return {
             search: "",
-            data: [],
+            // data: [],
         };
     },
     computed: {},
     methods: {
-        query: function() {
-            searchFeed(this.search,this).then((data) => {
-                this.data = data;
-            });
-        },
+        // query: function() {
+        //     searchFeed(this.search,this).then((data) => {
+        //         this.data = data;
+        //     });
+        // },
         searchDBM: function() {
-            if (this.search) {
-                this.query();
-            }
+            // if (this.search) {
+            //     this.query();
+            // }
         },
-        postLink: function(val) {
-            return "./?pid=" + val;
-        },
+        // postLink: function(val) {
+        //     return "./?pid=" + val;
+        // },
     },
     mounted: function() {},
     components: {},

@@ -1,7 +1,19 @@
 <template>
     <div class="m-jx3dat-jx3dat" v-loading="loading">
         <tabs />
-        <search />
+        <div class="m-jx3dat-search">
+            <el-input
+                class="m-jx3dat-input"
+                placeholder="请输入关键词"
+                v-model="search"
+                @change="commitSearch"
+            >
+                <template slot="prepend">
+                    订阅号
+                </template>
+                <el-button slot="append" icon="el-icon-search"></el-button>
+            </el-input>
+        </div>
         <ul class="m-jx3data-list" v-if="data.length">
             <li v-for="(item, i) in data" :key="item + i">
                 <div
@@ -105,7 +117,7 @@
         >
         <el-pagination
             class="m-archive-pages"
-            :page-size="20"
+            :page-size="per"
             background
             :hide-on-single-page="true"
             @current-change="changePage"
@@ -118,8 +130,7 @@
 </template>
 
 <script>
-import tabs from '@/components/tabs.vue'
-import search from "@/components/search.vue";
+import tabs from "@/components/tabs.vue";
 import { getPosts } from "../service/post";
 import { authorLink, showAvatar } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
@@ -128,32 +139,48 @@ export default {
     props: [],
     data: function() {
         return {
+            loading: false,
+
             data: [],
             page: 1,
             total: 1,
             pages: 1,
-            loading: false,
+            per : 20,
+            
             subtype: 1,
+
+            search : ''
         };
     },
     computed: {
         hasNextPage: function() {
             return this.total > 1 && this.page < this.pages;
         },
+        params: function() {
+            let params = {
+                per: this.per,
+                subtype: this.subtype,
+            };
+            if (this.search) {
+                params.authorname = this.search;
+            }
+            return params;
+        },
     },
     methods: {
-        appendPage: function(i) {
+        loadPosts: function(i = 1, append = false) {
+            let query = Object.assign(this.params, {
+                page: i,
+            });
             this.loading = true;
-            getPosts(
-                {
-                    page: i,
-                    per: 20,
-                    subtype: this.subtype,
-                },
-                this
-            )
+            getPosts(query, this)
                 .then((res) => {
-                    this.data = this.data.concat(res.data.data.list);
+                    if (append) {
+                        this.data = this.data.concat(res.data.data.list);
+                    } else {
+                        window.scrollTo(0, 0);
+                        this.data = res.data.data.list;
+                    }
                     this.total = res.data.data.total;
                     this.pages = res.data.data.pages;
                 })
@@ -161,26 +188,14 @@ export default {
                     this.loading = false;
                 });
         },
+        appendPage: function(i) {
+            this.loadPosts(i, true);
+        },
         changePage: function(i) {
-            this.loading = true;
-            getPosts(
-                {
-                    page: i,
-                    per: 20,
-                    subtype: this.subtype,
-                },
-                this
-            )
-                .then((res) => {
-                    // console.log(res.data.data);
-                    window.scrollTo(0, 0);
-                    this.data = res.data.data.list;
-                    this.total = res.data.data.total;
-                    this.pages = res.data.data.pages;
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
+            this.loadPosts(i);
+        },
+        commitSearch: function() {
+            this.loadPosts();
         },
         onCopy: function(val) {
             this.$notify({
@@ -223,11 +238,10 @@ export default {
         },
     },
     mounted: function() {
-        this.changePage(1);
+        this.loadPosts(1);
     },
     components: {
         tabs,
-        search
     },
 };
 </script>
