@@ -55,7 +55,7 @@ export default {
         }
     },
     mounted: function() {
-        getRank(this).then((data) => {
+        getRank(10,this).then((data) => {
             let _data = [];
             for (let [i, item] of data.entries()) {
                 if (item["7days"]) {

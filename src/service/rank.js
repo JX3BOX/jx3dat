@@ -5,10 +5,15 @@ const statAPI = __hub + "api/plugins/jx3dat/rank";   //TODO:
 // const searchAPI = "https://dbm.j3cx.com/api/plugins/jx3dat/rank";
 const searchAPI = "/api/plugins/jx3dat/rank";
 import failCallback from "../utils/fail";
+// https://pull.j3cx.com/api/plugins/jx3dat/rank?pageSize=20
 
-function getRank(vm) {
+function getRank(limit=10,vm) {
     return axios
-        .get(statAPI)
+        .get(statAPI,{
+            params : {
+                pageSize : limit
+            }
+        })
         .then((res) => {
             return res.data;
         })

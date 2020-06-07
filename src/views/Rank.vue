@@ -118,7 +118,7 @@ export default {
     },
     mounted: function() {
         this.loading = true
-        getRank(this).then((data) => {
+        getRank(40,this).then((data) => {
             let _data = [];
             data.forEach((item) => {
                 if (item["7days"]) {
