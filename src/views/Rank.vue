@@ -69,7 +69,7 @@
                     label="详情"
                 >
                     <template slot-scope="scope">
-                        <a :href="postLink(scope.row.pid)" class="el-button el-button--default is-plain el-button--mini"><i class="el-icon-arrow-right"></i>查看详情</a>
+                        <a :href="postLink(scope.row.pid)" class="el-button el-button--default is-plain el-button--mini">查看详情<i class="el-icon-arrow-right"></i></a>
                     </template>
                 </el-table-column>
             </el-table>
