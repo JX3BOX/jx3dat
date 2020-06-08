@@ -6,7 +6,7 @@
         <div class="m-archive-list m-plugins-list" v-if="data.length">
             <ul class="u-list">
                 <li class="u-item" v-for="(item, i) in data" :key="i">
-                    <a class="u-banner" :href="item.post.ID | postLink">
+                    <a class="u-banner" :href="item.post.ID | postLink" :target="target">
                         <img
                             v-if="item.post.post_banner"
                             :src="showBanner(item.post.post_banner)"
@@ -28,7 +28,7 @@
                             class="u-title"
                             :style="item.post.color | isHighlight"
                             :href="item.post.ID | postLink"
-                            target="_blank"
+                            :target="target"
                             >{{ item.post.post_title }}</a
                         >
                         <span
@@ -106,6 +106,7 @@ import {
     showAvatar,
     authorLink,
     showMinibanner,
+    buildTarget
 } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
 import { jx3dat_types } from "@jx3box/jx3box-common/js/types.json";
@@ -133,6 +134,9 @@ export default {
         defaultBanner: function() {
             return this.subtype + ".png";
         },
+        target: function (){
+            return buildTarget()
+        }
     },
     watch: {
         subtype(newdata) {

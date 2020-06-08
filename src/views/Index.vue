@@ -64,7 +64,7 @@
                         />
                     </div>
                 </div>
-                <a class="u-title" :href="item.post.ID | postLink">
+                <a class="u-title" :href="item.post.ID | postLink" :target="target">
                     {{ item.post.post_title || "无标题" }}
                     <span class="u-tags" v-if="item.post.post_meta">
                         <i
@@ -80,19 +80,19 @@
                 </div>
                 <div class="u-info">
                     <!-- <a class="u-author" :href="item.author.uid | authorLink">
-                    <img
-                        :src="item.author.avatar | showAvatar"
-                        :alt="item.author.name"
-                        class="u-avatar"
-                    />
-                    <span>{{item.author.name}}</span>
-                </a> -->
+                        <img
+                            :src="item.author.avatar | showAvatar"
+                            :alt="item.author.name"
+                            class="u-avatar"
+                        />
+                        <span>{{item.author.name}}</span>
+                    </a> -->
                     <time class="u-update">{{
                         item.post.post_modified | dateFormat
                     }}</time>
                 </div>
                 <a
-                    :href="item.post.ID | postLink"
+                    :href="item.post.ID | postLink"  :target="target"
                     class="u-view el-button el-button--default el-button--small is-plain"
                     >查看详情<i class="el-icon-arrow-right"></i
                 ></a>
@@ -132,7 +132,7 @@
 <script>
 import tabs from "@/components/tabs.vue";
 import { getPosts } from "../service/post";
-import { authorLink, showAvatar } from "@jx3box/jx3box-common/js/utils";
+import { authorLink, showAvatar,buildTarget } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
 export default {
     name: "Index",
@@ -166,6 +166,9 @@ export default {
             }
             return params;
         },
+        target: function (){
+            return buildTarget()
+        }
     },
     methods: {
         loadPosts: function(i = 1, append = false) {
