@@ -246,7 +246,7 @@ export default {
             setting: {},
             meta: {},
             author: {},
-            loading: true,
+            loading: false,
             url: location.href,
             data: [],
             typemap: jx3dat_types,
@@ -277,9 +277,9 @@ export default {
                 User.getInfo().uid == this.author.uid
             );
         },
-        subtype : function(){
-            return this.post.post_subtype || '1'
-        }
+        subtype: function() {
+            return this.post.post_subtype || "1";
+        },
     },
     methods: {
         format: function(parent, key) {
@@ -326,17 +326,24 @@ export default {
     },
     created: function() {
         if (this.id) {
-            getPost(this.id, this).then((res) => {
-                this.post = this.$store.state.post = res.data.data.post || {};
-                this.meta = this.$store.state.meta =
-                    res.data.data.post.post_meta || {};
-                this.author = this.$store.state.author =
-                    res.data.data.author || {};
-                this.data = (this.meta && this.meta.data) || [];
-                this.$store.state.status = true;
-
-                this.loading = false;
-            });
+            this.loading = true;
+            getPost(this.id, this)
+                .then((res) => {
+                    this.post = this.$store.state.post =
+                        res.data.data.post || {};
+                    this.meta = this.$store.state.meta =
+                        res.data.data.post.post_meta || {};
+                    this.author = this.$store.state.author =
+                        res.data.data.author || {};
+                    this.data = (this.meta && this.meta.data) || [];
+                    this.$store.state.status = true;
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
         }
     },
 };
