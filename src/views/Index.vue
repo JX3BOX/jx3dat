@@ -240,7 +240,7 @@ export default {
             return dateFormat(val);
         },
     },
-    mounted: function() {
+    created: function() {
         this.loadPosts(1);
     },
     components: {

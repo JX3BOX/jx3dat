@@ -16,8 +16,8 @@
             <Nav />
         </LeftSidebar>
         <Main :withoutRight="false">
-            <list v-if="mode == 'list'" />
             <single v-if="mode == 'single'" />
+            <list v-else />
             <RightSidebar>
                 <Extend />
             </RightSidebar>
@@ -54,7 +54,7 @@ export default {
             deep: true,
         }
     },
-    mounted: function() {
+    beforeCreate: function() {
         let params = new URLSearchParams(location.search);
         this.$store.state.pid = params.get("pid") || getRewrite("pid");
         this.$store.state.mode = this.$store.state.pid ? "single" : "list";
