@@ -338,9 +338,6 @@ export default {
                     this.data = (this.meta && this.meta.data) || [];
                     this.$store.state.status = true;
                 })
-                .catch((err) => {
-                    console.log(err);
-                })
                 .finally(() => {
                     this.loading = false;
                 });
