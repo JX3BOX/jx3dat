@@ -75,7 +75,7 @@
                         >
                     </span>
                 </a>
-                <div class="u-desc">
+                <div class="u-desc" v-if="item.post.post_excerpt">
                     {{ item.post.post_excerpt }}
                 </div>
                 <div class="u-info">

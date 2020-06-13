@@ -6,44 +6,45 @@
             <el-table
                 :data="data"
                 :default-sort="{ prop: '7days', order: 'descending' }"
-                :row-class-name="tableRowClassName"
             >
-                <el-table-column type="index" label="排名" width="48">
+                <el-table-column type="index" label="👑" width="48">
                 </el-table-column>
                 <el-table-column
                     prop="name"
                     label="订阅号"
                     sortable
                     :formatter="feed"
+                    width="120px"
                 >
                 </el-table-column>
                 <el-table-column
                     prop="7days"
-                    label="7天下载量"
+                    label="7天"
                     sortable
                 >
                 </el-table-column>
                 <el-table-column
                     prop="30days"
-                    label="30天下载量"
+                    label="30天"
                     sortable
                 >
                 </el-table-column>
                 <el-table-column
                     prop="yesterday"
-                    label="昨日下载量"
+                    label="昨日"
                     sortable
                 >
                 </el-table-column>
                 <el-table-column
                     prop="before2"
-                    label="前日下载量"
+                    label="前日"
                     sortable
                 >
                 </el-table-column>
                 <el-table-column
                     prop="trending"
-                    label="累计趋势"
+                    label="趋势"
+                    width="100"
                     :formatter="trending"
                 >
                     <template slot-scope="scope">
@@ -67,6 +68,7 @@
                 <el-table-column
                     prop="view"
                     label="详情"
+                    width="120"
                 >
                     <template slot-scope="scope">
                         <a :href="postLink(scope.row.pid)" class="el-button el-button--default is-plain el-button--mini">查看详情<i class="el-icon-arrow-right"></i></a>
@@ -89,7 +91,18 @@ export default {
             loading: false,
         };
     },
-    computed: {},
+    computed: {
+        // tableRowClassName({ row, rowIndex }) {
+        //     if (rowIndex < 3) {
+        //         return "t1";
+        //     } else if (rowIndex >= 3 && rowIndex < 10) {
+        //         return "t2";
+        //     } else if (rowIndex >= 10 && rowIndex < 20) {
+        //         return "t3";
+        //     }
+        //     return "";
+        // },
+    },
     methods: {
         feed: function(row, column) {
             let name = row.author;
@@ -102,23 +115,13 @@ export default {
             let average = (trending_1 + trending_2) / 2;
             return isNaN(average) ? "N/A" : average.toFixed(4);
         },
-        tableRowClassName({ row, rowIndex }) {
-            if (rowIndex < 3) {
-                return "t1";
-            } else if (rowIndex >= 3 && rowIndex < 10) {
-                return "t2";
-            } else if (rowIndex >= 10 && rowIndex < 20) {
-                return "t3";
-            }
-            return "";
-        },
         postLink: function(val) {
             return "./?pid=" + val;
         },
     },
     mounted: function() {
         this.loading = true
-        getRank(40,this).then((data) => {
+        getRank(100,this).then((data) => {
             let _data = [];
             data.forEach((item) => {
                 if (item["7days"]) {

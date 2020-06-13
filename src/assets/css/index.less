@@ -1,3 +1,7 @@
+.m-jx3dat-search{
+    .mt(10px);
+}
+
 .m-jx3data-list{
     list-style: none;
     padding:0;
@@ -134,14 +138,26 @@
 
 @media screen and (max-width:@phone){
     .m-jx3data-list{
-        // .u-author{
-        //     .fl;
-        // }
-        // .u-feed,.u-update{
-        //     .none;
-        // }
-        // .u-title{
-        //     max-width:80%;
-        // }
+        .u-view{
+            .none;
+        }
+        .u-title{
+            max-width:none;
+            .mr(0);
+        }
+        .u-desc{
+            .mb(5px);
+            .mr(0);
+        }
+        .u-info{
+            .ps;
+            .db;
+            .x(right);
+        }
+    }
+}
+@media screen and (max-width:@phone){
+    .m-jx3dat-rank-mini,.m-jx3dat-tabs{
+        .none;
     }
 }
