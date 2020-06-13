@@ -1,5 +1,5 @@
 <template>
-    <div class="m-jx3dat-jx3dat" v-loading="loading">
+    <div class="v-rank" v-loading="loading">
         <!-- <search /> -->
         <tabs />
         <div class="m-jx3dat-rank-full m-jx3dat-rank">

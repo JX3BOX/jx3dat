@@ -1,6 +1,104 @@
 <template>
     <div class="m-jx3dat-jx3dat" v-loading="loading">
         <tabs />
+
+        <!-- 排序 -->
+        <div class="m-archive-order">
+            <!-- 发布按钮 -->
+            <a
+                :href="publish_link"
+                class="u-publish el-button el-button--primary el-button--small"
+            >
+                + 创建订阅号
+            </a>
+            <a
+                :href="mywork_link"
+                class="u-publish el-button el-button--primary el-button--small"
+            >
+                <i class="el-icon-setting"></i> 我的团控数据
+            </a>
+
+            <!-- 角标过滤 -->
+            <!-- <div class="u-filter" :class="{ on: filter_visible }">
+                <span class="u-label" @click="showFilter">
+                    <span class="u-current-filter"
+                        >筛选 : {{ currentMark || "全部" }}</span
+                    >
+                    <span class="u-toggle">
+                        <i class="el-icon-arrow-down"></i>
+                        <i class="el-icon-arrow-up"></i>
+                    </span>
+                </span>
+                <span class="u-options">
+                    <span
+                        class="u-mode u-all"
+                        :class="{ on: mark == '' }"
+                        @click="filterMark('')"
+                        ><i class="el-icon-s-operation"></i> 全部</span
+                    >
+                    <span
+                        class="u-mode u-newbie"
+                        :class="{ on: mark == 'newbie' }"
+                        @click="filterMark('newbie')"
+                        ><i class="el-icon-user"></i> 新手易用</span
+                    >
+                    <span
+                        class="u-mode u-advanced"
+                        :class="{ on: mark == 'advanced' }"
+                        @click="filterMark('advanced')"
+                        ><i class="el-icon-data-line"></i> 进阶推荐</span
+                    >
+                    <span
+                        class="u-mode u-recommended"
+                        :class="{ on: mark == 'recommended' }"
+                        @click="filterMark('recommended')"
+                        ><i class="el-icon-star-off"></i> 编辑精选</span
+                    >
+                    <span
+                        class="u-mode u-geek"
+                        :class="{ on: mark == 'geek' }"
+                        plain
+                        @click="filterMark('geek')"
+                        ><i class="el-icon-medal-1"></i> 骨灰必备</span
+                    >
+                </span>
+            </div> -->
+
+            <!-- 排序模式 -->
+            <div class="u-modes" :class="{ on: order_visible }">
+                <span class="u-label" @click="showOrder">
+                    <span class="u-current-order"
+                        >排序 : {{ currentOrder || "最后更新" }}</span
+                    >
+                    <span class="u-toggle">
+                        <i class="el-icon-arrow-down"></i>
+                        <i class="el-icon-arrow-up"></i>
+                    </span>
+                </span>
+                <span class="u-options">
+                    <span
+                        class="u-mode u-update"
+                        :class="{ on: order == 'update' }"
+                        @click="reorder('update')"
+                        ><i class="el-icon-refresh"></i> 最后更新</span
+                    >
+                    <span
+                        class="u-mode u-podate"
+                        :class="{ on: order == 'podate' }"
+                        @click="reorder('podate')"
+                        ><i class="el-icon-sort"></i> 最早发布</span
+                    >
+                    <span
+                        class="u-mode u-likes"
+                        :class="{ on: order == 'favs' }"
+                        @click="reorder('favs')"
+                        ><i class="el-icon-star-off"></i> 收藏最多</span
+                    >
+                </span>
+            </div>
+        </div>
+
+        <!-- 搜索 -->
         <div class="m-jx3dat-search">
             <el-input
                 class="m-jx3dat-input"
@@ -14,6 +112,8 @@
                 <el-button slot="append" icon="el-icon-search"></el-button>
             </el-input>
         </div>
+
+        <!-- 列表 -->
         <ul class="m-jx3data-list" v-if="data.length">
             <li v-for="(item, i) in data" :key="item + i">
                 <div
@@ -64,8 +164,13 @@
                         />
                     </div>
                 </div>
-                <a class="u-title" :href="item.post.ID | postLink" :target="target">
-                    <i class="el-icon-box"></i> {{ item.post.post_title || "无标题" }}
+                <a
+                    class="u-title"
+                    :href="item.post.ID | postLink"
+                    :target="target"
+                >
+                    <i class="el-icon-box"></i>
+                    {{ item.post.post_title || "无标题" }}
                     <span class="u-tags" v-if="item.post.post_meta">
                         <i
                             class="u-tag"
@@ -76,7 +181,11 @@
                     </span>
                 </a>
                 <div class="u-desc">
-                    {{ item.post.post_excerpt || item.post.post_title || '作者很懒,什么也没有留下'}}
+                    {{
+                        item.post.post_excerpt ||
+                            item.post.post_title ||
+                            "作者很懒,什么也没有留下"
+                    }}
                 </div>
                 <div class="u-info">
                     <!-- <a class="u-author" :href="item.author.uid | authorLink">
@@ -92,12 +201,15 @@
                     }}</time>
                 </div>
                 <a
-                    :href="item.post.ID | postLink"  :target="target"
+                    :href="item.post.ID | postLink"
+                    :target="target"
                     class="u-view el-button el-button--default el-button--small is-plain"
                     >查看详情<i class="el-icon-arrow-right"></i
                 ></a>
             </li>
         </ul>
+
+        <!-- 空 -->
         <el-alert
             v-else
             class="m-archive-null"
@@ -107,6 +219,8 @@
             show-icon
         >
         </el-alert>
+
+        <!-- 下一页 -->
         <el-button
             class="m-archive-more"
             :class="{ show: hasNextPage }"
@@ -115,6 +229,8 @@
             @click="appendPage(++page)"
             >加载更多</el-button
         >
+
+        <!-- 分页 -->
         <el-pagination
             class="m-archive-pages"
             :page-size="per"
@@ -132,8 +248,27 @@
 <script>
 import tabs from "@/components/tabs.vue";
 import { getPosts } from "../service/post";
-import { authorLink, showAvatar,buildTarget } from "@jx3box/jx3box-common/js/utils";
+import {__Links} from '@jx3box/jx3box-common/js/jx3box.json'
+import {
+    authorLink,
+    showAvatar,
+    buildTarget,
+    publishLink,
+} from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
+const mark_map = {
+    newbie: "新手易用",
+    advanced: "进阶推荐",
+    recommended: "编辑精选",
+    geek: "骨灰必备",
+};
+const order_map = {
+    update: "最后更新",
+    podate: "最早发布",
+    favs: "收藏最多",
+    likes: "点赞最多",
+    downs: "下载最多",
+};
 export default {
     name: "Index",
     props: [],
@@ -141,15 +276,20 @@ export default {
         return {
             loading: false,
 
-            data: [],
-            page: 1,
-            total: 1,
-            pages: 1,
-            per : 20,
-            
+            data: [], //数据列表
+            page: 1, //当前页数
+            total: 1, //总条目数
+            pages: 1, //总页数
+            per: 20, //每页条目
+            order: "", //排序模式
+            mark: "", //筛选模式
+
+            filter_visible: false,
+            order_visible: false,
+
             subtype: 1,
 
-            search : ''
+            search: "",
         };
     },
     computed: {
@@ -164,10 +304,28 @@ export default {
             if (this.search) {
                 params.authorname = this.search;
             }
+            if (this.order) {
+                params.order = this.order;
+            }
+            if (this.mark) {
+                params.mark = this.mark;
+            }
             return params;
         },
-        target: function (){
-            return buildTarget()
+        target: function() {
+            return buildTarget();
+        },
+        currentMark: function() {
+            return mark_map[this.mark];
+        },
+        currentOrder: function() {
+            return order_map[this.order];
+        },
+        publish_link: function(val) {
+            return publishLink("jx3dat");
+        },
+        mywork_link : function (val){
+            return __Links.dashboard.work
         }
     },
     methods: {
@@ -212,6 +370,22 @@ export default {
                 title: "复制失败",
                 message: "请手动复制",
             });
+        },
+        filterMark: function(val) {
+            this.mark = val;
+            this.filter_visible = false;
+            this.loadPosts();
+        },
+        reorder: function(val) {
+            this.order = val;
+            this.order_visible = false;
+            this.loadPosts();
+        },
+        showFilter: function() {
+            this.filter_visible = !this.filter_visible;
+        },
+        showOrder: function() {
+            this.order_visible = !this.order_visible;
         },
     },
     filters: {
