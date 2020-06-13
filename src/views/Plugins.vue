@@ -44,9 +44,7 @@
                         </span>
                     </h2>
 
-                    <div class="u-desc">
-                        {{ item.post.post_content || item.post.post_title }}
-                    </div>
+                    <div class="u-desc">{{ item.post.post_content || item.post.post_title }}</div>
 
                     <div class="u-misc">
                         <img
