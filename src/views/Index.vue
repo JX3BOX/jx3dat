@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 <a class="u-title" :href="item.post.ID | postLink" :target="target">
-                    {{ item.post.post_title || "无标题" }}
+                    <i class="el-icon-box"></i> {{ item.post.post_title || "无标题" }}
                     <span class="u-tags" v-if="item.post.post_meta">
                         <i
                             class="u-tag"
@@ -75,8 +75,8 @@
                         >
                     </span>
                 </a>
-                <div class="u-desc" v-if="item.post.post_excerpt">
-                    {{ item.post.post_excerpt }}
+                <div class="u-desc">
+                    {{ item.post.post_excerpt || item.post.post_title || '作者很懒,什么也没有留下'}}
                 </div>
                 <div class="u-info">
                     <!-- <a class="u-author" :href="item.author.uid | authorLink">
