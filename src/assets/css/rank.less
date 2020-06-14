@@ -36,23 +36,24 @@
         }
     }
     // 排行榜表格内容
-    .el-table{
+    .el-table {
         .cell {
             .fz(13px);
             font-family: Cambria, Cochin, Georgia, Times, "Times New Roman",
                 -apple-system, "Microsoft YaHei", Trebuchet MS, Calibri,
-                BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica, sans-serif;
+                BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica,
+                sans-serif;
             text-rendering: optimizelegibility;
         }
-        td:nth-child(2){
+        td:nth-child(2) {
             .bold;
         }
     }
 }
-@media screen and (max-width:@phone){
-    .m-jx3dat-rank-full{
+@media screen and (max-width: @phone) {
+    .m-jx3dat-rank-full {
         .el-table__header-wrapper {
-            top:112px;
+            top: 112px;
         }
     }
 }
@@ -93,7 +94,7 @@
         .fz(12px);
         .pointer;
         font-weight: normal;
-        color: @darkblue;
+        color: #777;
         &:hover {
             color: @pink;
         }
@@ -106,9 +107,27 @@
     .u-per {
         .fr;
     }
+
+    .u-link{
+        .db;
+        &:hover{
+            .u-name{
+                color:@pink;
+            }
+        }
+    }
+    .u-name{
+        color:@color;
+    }
+    .u-count {
+        .fz(12px);
+        color: @primary;
+        .fr;
+        margin-right: 2px;
+    }
 }
-@media screen and (max-width:@phone){
-    .m-jx3dat-rank-mini{
+@media screen and (max-width: @phone) {
+    .m-jx3dat-rank-mini {
         .none;
     }
 }
@@ -131,8 +150,8 @@
     }
 }
 
-.v-rank{
-    .el-tabs__header{
+.v-rank {
+    .el-tabs__header {
         .mb(0);
     }
 }

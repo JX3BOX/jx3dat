@@ -11,15 +11,15 @@
             >
                 + 创建订阅号
             </a>
-            <a
+            <!-- <a
                 :href="mywork_link"
                 class="u-publish el-button el-button--primary el-button--small"
             >
                 <i class="el-icon-setting"></i> 我的团控数据
-            </a>
+            </a> -->
 
             <!-- 角标过滤 -->
-            <!-- <div class="u-filter" :class="{ on: filter_visible }">
+            <div class="u-filter" :class="{ on: filter_visible }">
                 <span class="u-label" @click="showFilter">
                     <span class="u-current-filter"
                         >筛选 : {{ currentMark || "全部" }}</span
@@ -62,7 +62,7 @@
                         ><i class="el-icon-medal-1"></i> 骨灰必备</span
                     >
                 </span>
-            </div> -->
+            </div>
 
             <!-- 排序模式 -->
             <div class="u-modes" :class="{ on: order_visible }">
@@ -169,14 +169,30 @@
                     :href="item.post.ID | postLink"
                     :target="target"
                 >
-                    <i class="el-icon-box"></i>
-                    {{ item.post.post_title || "无标题" }}
+                    <i class="u-prefix el-icon-box"></i>
+                    <span
+                        class="u-text"
+                        :style="item.post.color | isHighlight"
+                        >{{ item.post.post_title || '无标题'}}
+                    </span>
                     <span class="u-tags" v-if="item.post.post_meta">
                         <i
                             class="u-tag"
                             v-for="tag in item.post.post_meta.tag"
                             :key="tag"
                             >{{ tag }}</i
+                        >
+                    </span>
+                    <!-- 角标 -->
+                    <span
+                        class="u-marks"
+                        v-if="item.post.mark && item.post.mark.length"
+                    >
+                        <i
+                            v-for="mark in item.post.mark"
+                            class="u-mark"
+                            :key="mark"
+                            >{{ mark | showMark }}</i
                         >
                     </span>
                 </a>
@@ -248,7 +264,7 @@
 <script>
 import tabs from "@/components/tabs.vue";
 import { getPosts } from "../service/post";
-import {__Links} from '@jx3box/jx3box-common/js/jx3box.json'
+import { __Links } from "@jx3box/jx3box-common/js/jx3box.json";
 import {
     authorLink,
     showAvatar,
@@ -324,9 +340,9 @@ export default {
         publish_link: function(val) {
             return publishLink("jx3dat");
         },
-        mywork_link : function (val){
-            return __Links.dashboard.work
-        }
+        mywork_link: function(val) {
+            return __Links.dashboard.work;
+        },
     },
     methods: {
         loadPosts: function(i = 1, append = false) {
@@ -412,6 +428,12 @@ export default {
         },
         dateFormat: function(val) {
             return dateFormat(val);
+        },
+        isHighlight: function(val) {
+            return val ? `color:${val};font-weight:600;` : "";
+        },
+        showMark: function(val) {
+            return mark_map[val];
         },
     },
     created: function() {

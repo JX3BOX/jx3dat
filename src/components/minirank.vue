@@ -6,13 +6,15 @@
         </h3>
         <ul class="u-list">
             <li v-for="(item, j) in data" :key="j">
+                <a class="u-link" :href="item.pid | postLink">
                 <span class="u-order">{{ j + 1 }}</span>
                 <span class="u-name"
                     >{{ item.author
                     }}<span v-if="item.v != '默认版'">#{{ item.v }}</span></span
                 >
-                <span class="u-per"
-                    ><i
+                <span class="u-per">
+                    <em class="u-count">+ {{item["7days"]}}</em>
+                    <!-- <i
                         class="el-icon-top u-trending"
                         v-if="trending(item) > 0"
                         >{{ (trending(item) * 100).toFixed(2) + "%" }}</i
@@ -26,8 +28,9 @@
                         class="u-trending u-trending-keep"
                         v-if="trending(item) == 0"
                         >-</span
-                    ></span
-                >
+                    > -->
+                </span>
+                </a>
             </li>
         </ul>
     </div>
@@ -52,6 +55,11 @@ export default {
         },
         viewRank : function (){
             this.$router.push({ name: 'rank' });
+        }
+    },
+    filters : {
+        postLink : function (pid){
+            return '/jx3dat?pid=' + pid
         }
     },
     mounted: function() {
