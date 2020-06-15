@@ -1,6 +1,6 @@
 import axios from "axios";
-import { __hub } from "@jx3box/jx3box-common/js/jx3box.json";
-const statAPI = __hub + "api/plugins/jx3dat/rank";   //TODO:
+import { __next } from "@jx3box/jx3box-common/js/jx3box.json";
+const statAPI = __next + "api/plugins/jx3dat/rank";   //TODO:
 // const statAPI = "/api/plugins/jx3dat/rank";
 import failCallback from "../utils/fail";
 // https://pull.j3cx.com/api/plugins/jx3dat/rank?pageSize=20
