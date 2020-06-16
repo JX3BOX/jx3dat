@@ -11,12 +11,12 @@
             >
                 + 创建订阅号
             </a>
-            <!-- <a
+            <a
                 :href="mywork_link"
                 class="u-publish el-button el-button--primary el-button--small"
             >
-                <i class="el-icon-setting"></i> 我的团控数据
-            </a> -->
+                <i class="el-icon-setting"></i> 我的订阅号
+            </a>
 
             <!-- 角标过滤 -->
             <div class="u-filter" :class="{ on: filter_visible }">
@@ -341,7 +341,7 @@ export default {
             return publishLink("jx3dat");
         },
         mywork_link: function(val) {
-            return __Links.dashboard.work;
+            return __Links.dashboard.work + '/jx3dat';
         },
     },
     methods: {
