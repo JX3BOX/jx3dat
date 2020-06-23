@@ -22,31 +22,31 @@
                     class="u-item"
                     href="https://www.jx3box.com/tool/13912/"
                     target="_blank"
-                    >新版订阅号发布规则须知</a
+                    ><i class="el-icon-collection"></i> 新版订阅号发布规则须知</a
                 >
                 <a
                     class="u-item"
                     href="https://www.jx3box.com/tool/260/"
                     target="_blank"
-                    >如何加载团队监控数据文件？</a
+                    ><i class="el-icon-collection"></i> 如何加载团队监控数据文件？</a
                 >
                 <a
                     class="u-item"
                     href="https://www.jx3box.com/tool/420/"
                     target="_blank"
-                    >团队监控插件教程</a
+                    ><i class="el-icon-collection"></i> 团队监控插件教程</a
                 >
                 <a
                     class="u-item"
                     href="https://gitee.com/tinymins/my/issues"
                     target="_blank"
-                    >茗伊插件集反馈</a
+                    ><i class="el-icon-warning-outline"></i> 茗伊插件集反馈</a
                 >
                 <a
                     class="u-item"
                     href="https://gitee.com/hugeforest/PLUGIN_ISSUES/issues"
                     target="_blank"
-                    >懒人插件集反馈</a
+                    ><i class="el-icon-warning-outline"></i> 懒人插件集反馈</a
                 >
             </div>
         </div>

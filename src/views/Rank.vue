@@ -13,9 +13,13 @@
                     prop="name"
                     label="订阅号"
                     sortable
-                    :formatter="feed"
-                    width="120px"
+                    width="220px"
                 >
+                <template slot-scope="scope">
+                        <a class="u-feed"
+                            :href="postLink(scope.row.pid)" target="_blank"
+                            >{{scope.row.author}}{{scope.row.v == '默认版' ? '' : '#'+scope.row.v}}</a>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="7days"
@@ -65,7 +69,7 @@
                         >
                     </template>
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     prop="view"
                     label="详情"
                     width="120"
@@ -73,7 +77,7 @@
                     <template slot-scope="scope">
                         <a :href="postLink(scope.row.pid)" class="el-button el-button--default is-plain el-button--mini">查看详情<i class="el-icon-arrow-right"></i></a>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
             </el-table>
         </div>
     </div>
@@ -92,16 +96,7 @@ export default {
         };
     },
     computed: {
-        // tableRowClassName({ row, rowIndex }) {
-        //     if (rowIndex < 3) {
-        //         return "t1";
-        //     } else if (rowIndex >= 3 && rowIndex < 10) {
-        //         return "t2";
-        //     } else if (rowIndex >= 10 && rowIndex < 20) {
-        //         return "t3";
-        //     }
-        //     return "";
-        // },
+        
     },
     methods: {
         feed: function(row, column) {
@@ -117,6 +112,16 @@ export default {
         },
         postLink: function(val) {
             return "./?pid=" + val;
+        },
+        highlight({ row, rowIndex }) {
+            if (rowIndex < 3) {
+                return "t1";
+            } else if (rowIndex >= 3 && rowIndex < 10) {
+                return "t2";
+            } else if (rowIndex >= 10 && rowIndex < 20) {
+                return "t3";
+            }
+            return "";
         },
     },
     mounted: function() {

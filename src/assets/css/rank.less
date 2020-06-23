@@ -1,24 +1,34 @@
+.highlight(@i: 1,@n,@bgcolor:#fc3c3c) when (@i <= @n) {
+    .el-table__row:nth-child(@{i}) .el-table_1_column_1{
+        background-color: @bgcolor;
+        color: #fff;
+    }
+    .highlight((@i + 1),@n,@bgcolor);
+}
+
 .m-jx3dat-rank-full {
-    // .el-table_1_column_1 {
-    //     .x;
-    // }
-    // .t1 .el-table_1_column_1 {
-    //     background-color: #fc3c3c;
-    //     color: #fff;
-    // }
-    // .t2 .el-table_1_column_1 {
-    //     background-color: #fba524;
-    //     color: #fff;
-    // }
-    // .t3 .el-table_1_column_1 {
-    //     background-color: @primary;
-    //     color: #fff;
-    // }
-    // .el-table--enable-row-hover .el-table__body tr:hover {
-    //     .el-table_1_column_1 {
-    //         background-color: #49c10f;
-    //     }
-    // }
+
+    .el-table__row .el-table_1_column_1{
+        .x;
+    }
+    @t1 : #fc3c3c;
+    .highlight(1,3);
+
+    @t2 : #fba524;
+    .highlight(4,10,@t2);
+
+    @t3 : @primary;
+    .highlight(11,20,@t3);
+}
+
+.m-jx3dat-rank-full {
+
+    .u-feed{
+        color:@darkblue;
+    }
+    .u-feed:hover{
+        color:@pink;
+    }
 
     // 固定表头
     .el-table {
@@ -44,9 +54,6 @@
                 BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica,
                 sans-serif;
             text-rendering: optimizelegibility;
-        }
-        td:nth-child(2) {
-            .bold;
         }
     }
 }
