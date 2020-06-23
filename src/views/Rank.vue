@@ -6,6 +6,7 @@
             <el-table
                 :data="data"
                 :default-sort="{ prop: '7days', order: 'descending' }"
+                :row-class-name="highlight"
             >
                 <el-table-column type="index" label="👑" width="48">
                 </el-table-column>
