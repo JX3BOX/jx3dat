@@ -235,7 +235,7 @@ import {
 } from "@jx3box/jx3box-common/js/utils.js";
 import User from "@jx3box/jx3box-common/js/user.js";
 import { fn } from "moment";
-import { jx3dat_types } from "@jx3box/jx3box-common/js/types.json";
+import { jx3dat_types } from "../assets/data/types.json";
 
 export default {
     name: "single",

@@ -20,19 +20,19 @@
             <div class="c-sidebar-right-list">
                 <a
                     class="u-item"
-                    href="https://www.jx3box.com/tool/13912/"
+                    href="/tool/?pid=13912"
                     target="_blank"
                     ><i class="el-icon-collection"></i> 新版订阅号发布规则须知</a
                 >
                 <a
                     class="u-item"
-                    href="https://www.jx3box.com/tool/260/"
+                    href="/tool/?pid=260"
                     target="_blank"
                     ><i class="el-icon-collection"></i> 如何加载团队监控数据文件？</a
                 >
                 <a
                     class="u-item"
-                    href="https://www.jx3box.com/tool/420/"
+                    href="/tool/?pid=420"
                     target="_blank"
                     ><i class="el-icon-collection"></i> 团队监控插件教程</a
                 >

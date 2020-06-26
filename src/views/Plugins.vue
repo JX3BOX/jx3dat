@@ -107,7 +107,7 @@ import {
     buildTarget
 } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
-import { jx3dat_types } from "@jx3box/jx3box-common/js/types.json";
+import { jx3dat_types } from "../assets/data/types.json";
 import { fn } from "moment";
 export default {
     name: "Plugins",
