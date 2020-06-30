@@ -1,7 +1,7 @@
 <template>
     <div class="m-info">
         <div class="m-info-notice">
-            <a class="u-item" href="https://www.jx3box.com/tool/13912/" target="_blank">🌈 新版团控数据发布指南（支持子版本与私藏版）</a>
+            <a class="u-item" href="https://www.jx3box.com/tool/13912/" target="_blank">🌈 新版团控数据发布指南</a>
             <!-- <a class="u-item" href="/jx3dat/#/dbm">🍬 即将开启·游戏内一键下载默认数据</a> -->
             <!-- <a class="u-item" href="/jx3dat/#/store">⚽️ 即将开启·在线数据构建功能即将来袭</a> -->
         </div>

@@ -88,12 +88,12 @@
                         @click="reorder('podate')"
                         ><i class="el-icon-sort"></i> 最早发布</span
                     >
-                    <span
+                    <!-- <span
                         class="u-mode u-likes"
                         :class="{ on: order == 'favs' }"
                         @click="reorder('favs')"
                         ><i class="el-icon-star-off"></i> 收藏最多</span
-                    >
+                    > -->
                 </span>
             </div>
         </div>

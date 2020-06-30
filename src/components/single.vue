@@ -41,6 +41,12 @@
                     <time>{{ post.post_modified | dateFormat }}</time>
                 </span>
 
+                <!-- 查看次数 -->
+                <span class="u-views u-sub-block">
+                    <i class="el-icon-view"></i>
+                    {{setting.views}}
+                </span>
+
                 <!-- 编辑 -->
                 <a class="u-edit u-sub-block" :href="editLink" v-if="showEdit">
                     <i class="u-icon-edit el-icon-edit-outline"></i>
@@ -236,6 +242,7 @@ import {
 import User from "@jx3box/jx3box-common/js/user.js";
 import { fn } from "moment";
 import { jx3dat_types } from "../assets/data/types.json";
+import { getStat,postStat } from "../service/stat.js";
 
 export default {
     name: "single",
@@ -341,6 +348,11 @@ export default {
                 .finally(() => {
                     this.loading = false;
                 });
+
+            getStat(this.id).then((data) => {
+                if(data) this.setting = this.$store.state.setting = data;
+            })
+            postStat(this.id)
         }
     },
 };
