@@ -1,6 +1,5 @@
 <template>
     <div class="m-jx3dat-jx3dat" v-loading="loading">
-        <tabs />
 
         <!-- 排序 -->
         <div class="m-archive-order">
@@ -440,7 +439,7 @@ export default {
         this.loadPosts(1);
     },
     components: {
-        tabs,
+        // tabs,
     },
 };
 </script>

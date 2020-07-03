@@ -1,13 +1,13 @@
 import axios from "axios";
 import { __next } from "@jx3box/jx3box-common/js/jx3box.json";
-const statAPI = __next + "api/plugins/jx3dat/rank";   //TODO:
-// const statAPI = "/api/plugins/jx3dat/rank";
 import failCallback from "../utils/fail";
-// https://pull.j3cx.com/api/plugins/jx3dat/rank?pageSize=20
+
+const API = __next + "api/plugins/";   //TODO:
+// const API = "/api/plugins/";
 
 function getRank(limit=10,vm) {
     return axios
-        .get(statAPI,{
+        .get(API + 'jx3dat/rank',{
             params : {
                 pageSize : limit
             }
@@ -20,19 +20,12 @@ function getRank(limit=10,vm) {
         });
 }
 
-function searchFeed(query,vm) {
-    return axios
-        .get(searchAPI, {
-            params: {
-                search: query,
-            },
-        })
-        .then((res) => {
-            return res.data;
-        })
-        .catch((err) => {
-            failCallback(err, vm);
-        });
+function getHistory(uid){
+    return axios.get(API + uid + '/dbm/list').then((res) => {
+        return res.data
+    }).catch((err) => {
+        failCallback(err, vm);
+    });
 }
 
-export { getRank, searchFeed };
+export { getRank, getHistory };

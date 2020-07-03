@@ -1,7 +1,5 @@
 <template>
     <div class="v-rank" v-loading="loading">
-        <!-- <search /> -->
-        <tabs />
         <div class="m-jx3dat-rank-full m-jx3dat-rank">
             <el-table
                 :data="data"
@@ -140,7 +138,7 @@ export default {
         })
     },
     components: {
-        tabs,
+        // tabs,
         // search
     },
 };
