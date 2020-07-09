@@ -3,9 +3,7 @@
         <header class="m-single-header">
             <div class="m-single-title">
                 <!-- 标题 -->
-                <a class="u-title u-sub-block" :href="url">{{
-                    post.post_title
-                }}</a>
+                <a class="u-title u-sub-block" :href="url">{{ title }}</a>
             </div>
 
             <div class="m-single-info">
@@ -44,7 +42,7 @@
                 <!-- 查看次数 -->
                 <span class="u-views u-sub-block">
                     <i class="el-icon-view"></i>
-                    {{setting.views}}
+                    {{ setting.views }}
                 </span>
 
                 <!-- 编辑 -->
@@ -52,18 +50,6 @@
                     <i class="u-icon-edit el-icon-edit-outline"></i>
                     <span>编辑</span>
                 </a>
-            </div>
-
-            <div class="m-single-panel">
-                <!-- 收藏 -->
-                <Fav />
-                <el-button
-                    size="mini"
-                    type="primary"
-                    disabled
-                    title="即将推出.."
-                    ><i class="el-icon-bell"></i><span>订阅</span></el-button
-                >
             </div>
         </header>
 
@@ -209,7 +195,17 @@
             </div>
         </div>
 
-        <div class="m-single-append"></div>
+        <div class="m-single-append">
+            <!-- 操作 -->
+            <div class="m-single-panel" v-if="!loading">
+                <div class="u-minigroup">
+                    <Print class="u-fn" :title="title" />
+                    <QRcode class="u-fn" />
+                    <Sharing class="u-fn" :title="title" />
+                </div>
+                <Fav />
+            </div>
+        </div>
 
         <div class="m-single-comment">
             <el-divider content-position="left">评论</el-divider>
@@ -242,8 +238,8 @@ import {
 import User from "@jx3box/jx3box-common/js/user.js";
 import { fn } from "moment";
 import { jx3dat_types } from "../assets/data/types.json";
-import { getStat,postStat } from "../service/stat.js";
-
+import { getStat, postStat } from "../service/stat.js";
+import Article from "@jx3box/jx3box-editor/src/Article.vue";
 export default {
     name: "single",
     props: [],
@@ -286,6 +282,9 @@ export default {
         },
         subtype: function() {
             return this.post.post_subtype || "1";
+        },
+        title: function() {
+            return _.get(this.post, "post_title") || "无标题";
         },
     },
     methods: {
@@ -350,10 +349,13 @@ export default {
                 });
 
             getStat(this.id).then((data) => {
-                if(data) this.setting = this.$store.state.setting = data;
-            })
-            postStat(this.id)
+                if (data) this.setting = this.$store.state.setting = data;
+            });
+            postStat(this.id);
         }
+    },
+    components: {
+        Article,
     },
 };
 </script>
