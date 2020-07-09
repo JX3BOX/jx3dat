@@ -1,5 +1,5 @@
 <template>
-    <div class="m-jx3dat-single-nav">
+    <div class="m-single-nav m-jx3dat-single-nav">
         <Author :author="author" v-if="$store.state.status"/>
         <Authorposts :uid="uid" v-if="$store.state.status"/>
         <ins 

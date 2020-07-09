@@ -1,5 +1,5 @@
 <template>
-    <div class="m-jx3dat-list-nav">
+    <div class="m-list-nav m-jx3dat-list-nav">
         <h5 class="u-title">数据下载</h5>
         <div class="m-nav-group">
             <router-link to="/"><i class="el-icon-box"></i><span>团队监控数据</span></router-link>
