@@ -38,6 +38,7 @@
 
 <script>
 import { getRank } from "../service/rank";
+import {postLink} from '@jx3box/jx3box-common/js/utils'
 export default {
     name: "rank",
     data: function() {
@@ -68,7 +69,7 @@ export default {
     },
     filters : {
         postLink : function (pid){
-            return '/jx3dat?pid=' + pid
+            return postLink('jx3dat',pid)
         }
     },
     mounted: function() {

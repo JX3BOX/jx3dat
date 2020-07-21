@@ -28,21 +28,22 @@ export default {
     name: "tabs",
     data: function() {
         return {
-            view : 'index'
+            view: "index",
         };
     },
-    computed: {
-    },
+    computed: {},
     methods: {
         changeView: function() {
             this.$router.push({ name: this.view });
         },
     },
     mounted: function() {
-        this.view = this.$route.name
+        this.view = this.$route.name;
     },
     components: {},
 };
 </script>
 
-<style lang="less"></style>
+<style lang="less">
+@import "../assets/css/tabs.less";
+</style>

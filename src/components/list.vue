@@ -1,6 +1,6 @@
 <template>
     <div class="m-jx3dat">
-        <tabs />
+        <tabs v-if="isDBM"/>
         <router-view />
     </div>
 </template>
@@ -14,10 +14,18 @@ export default {
         return {
         };
     },
-    computed: {},
+    computed: {
+        subtype: function() {
+            return this.$store.state.subtype;
+        },
+        isDBM : function (){
+            return this.subtype == '1' || !this.subtype
+        }
+    },
     methods: {
     },
-    mounted: function() {},
+    mounted: function() {
+    },
     components: {
         tabs,
     },

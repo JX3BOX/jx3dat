@@ -1,104 +1,107 @@
 <template>
     <div class="m-jx3dat-plugins" v-loading="loading">
-        <h1 class="m-plugins-title">
-            <i :class="typeicon(subtype)"></i>{{ typemap[subtype] }}
-        </h1>
-        <div class="m-archive-list m-plugins-list" v-if="data.length">
-            <ul class="u-list">
-                <li class="u-item" v-for="(item, i) in data" :key="i">
-                    <a class="u-banner" :href="item.post.ID | postLink" :target="target">
-                        <img
-                            v-if="item.post.post_banner"
-                            :src="showBanner(item.post.post_banner)"
-                        />
-                        <img
-                            class="u-default-banner"
-                            v-else
-                            src="../assets/img/logo2.svg"
-                        />
-                    </a>
-
-                    <h2 class="u-post" :class="{ isSticky: item.post.sticky }">
-                        <img
-                            class="u-icon"
-                            svg-inline
-                            src="../assets/img/post.svg"
-                        />
-                        <a
-                            class="u-title"
-                            :style="item.post.color | isHighlight"
-                            :href="item.post.ID | postLink"
-                            :target="target"
-                            >{{ item.post.post_title }}</a
-                        >
-                        <span
-                            class="u-marks"
-                            v-if="item.post.mark && item.post.mark.length"
-                        >
-                            <i
-                                v-for="mark in item.post.mark"
-                                class="u-mark"
-                                :key="mark"
-                                >{{ mark | showMark }}</i
-                            >
-                        </span>
-                    </h2>
-
-                    <div class="u-desc">{{ item.post.post_content || item.post.post_title }}</div>
-
-                    <div class="u-misc">
-                        <img
-                            class="u-author-avatar"
-                            :src="item.author.avatar | showAvatar"
-                            :alt="item.author.name"
-                        />
-                        <a
-                            class="u-author-name"
-                            :href="item.author.uid | authorLink"
-                            target="_blank"
-                            >{{ item.author.name }}</a
-                        >
-                        <span class="u-date">
-                            Updated on
-                            <time>{{
-                                item.post.post_modified | dateFormat
-                            }}</time>
-                        </span>
-                    </div>
-                </li>
-            </ul>
+        <div class="m-plugins-header">
+            <h1 class="m-plugins-title">
+                <i :class="typeicon(subtype)"></i>{{ typemap[subtype] }}
+            </h1>
+            <!-- 排序过滤 -->
+            <orderBy @filter="filter"></orderBy>
         </div>
-        <el-alert
-            v-else
-            class="m-archive-null"
-            title="没有找到相关条目"
-            type="info"
-            center
-            show-icon
-        >
-        </el-alert>
-        <el-button
-            class="m-archive-more"
-            :class="{ show: hasNextPage }"
-            type="primary"
-            :loading="loading"
-            @click="appendPage(++page)"
-            >加载更多</el-button
-        >
-        <el-pagination
-            class="m-archive-pages"
-            background
-            :hide-on-single-page="true"
-            @current-change="changePage"
-            :current-page.sync="page"
-            layout="total, prev, pager, next, jumper"
+        <listbox
+            :data="data"
             :total="total"
+            :pages="pages"
+            :per="per"
+            :page="page"
+            @appendPage="appendPage"
+            @changePage="changePage"
         >
-        </el-pagination>
+            <!-- 搜索 -->
+            <div class="m-jx3dat-search" slot="search-after">
+                <el-input
+                    class="m-jx3dat-input"
+                    placeholder="请输入关键词"
+                    v-model="search"
+                    @change="loadPosts"
+                >
+                    <template slot="prepend">
+                        关键词
+                    </template>
+                    <el-button slot="append" icon="el-icon-search"></el-button>
+                </el-input>
+            </div>
+
+            <div class="m-archive-list m-plugins-list" v-if="data.length">
+                <ul class="u-list">
+                    <li class="u-item" v-for="(item, i) in data" :key="i">
+                        <a class="u-banner" :href="item.post.ID | postLink" :target="target">
+                            <img
+                                v-if="item.post.post_banner"
+                                :src="showBanner(item.post.post_banner)"
+                            />
+                            <img
+                                class="u-default-banner"
+                                v-else
+                                src="../assets/img/logo2.svg"
+                            />
+                        </a>
+
+                        <h2 class="u-post" :class="{ isSticky: item.post.sticky }">
+                            <img
+                                class="u-icon"
+                                svg-inline
+                                src="../assets/img/post.svg"
+                            />
+                            <a
+                                class="u-title"
+                                :style="item.post.color | isHighlight"
+                                :href="item.post.ID | postLink"
+                                :target="target"
+                                >{{ item.post.post_title }}</a
+                            >
+                            <span
+                                class="u-marks"
+                                v-if="item.post.mark && item.post.mark.length"
+                            >
+                                <i
+                                    v-for="mark in item.post.mark"
+                                    class="u-mark"
+                                    :key="mark"
+                                    >{{ mark | showMark }}</i
+                                >
+                            </span>
+                        </h2>
+
+                        <div class="u-desc">{{ item.post.post_content || item.post.post_title }}</div>
+
+                        <div class="u-misc">
+                            <img
+                                class="u-author-avatar"
+                                :src="item.author.avatar | showAvatar"
+                                :alt="item.author.name"
+                            />
+                            <a
+                                class="u-author-name"
+                                :href="item.author.uid | authorLink"
+                                target="_blank"
+                                >{{ item.author.name }}</a
+                            >
+                            <span class="u-date">
+                                Updated on
+                                <time>{{
+                                    item.post.post_modified | dateFormat
+                                }}</time>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </listbox>
     </div>
 </template>
 
 <script>
+import listbox from "@jx3box/jx3box-page/src/cms-list.vue";
 import { getPosts } from "../service/post";
 import {
     showAvatar,
@@ -114,26 +117,48 @@ const typeicons = {
     "4" : "el-icon-brush",
     "5" : "el-icon-magic-stick"
 }
+import { cms as mark_map } from "@jx3box/jx3box-common/js/mark.json";
 
 export default {
     name: "Plugins",
     props: [],
     data: function() {
         return {
-            data: [],
-            page: 1,
-            total: 1,
-            pages: 1,
             loading: false,
+
+            data: [], //数据列表
+            page: 1, //当前页数
+            total: 1, //总条目数
+            pages: 1, //总页数
+            per: 10, //每页条目
+
+            search: "",
+
+            order: "", //排序
+            mark: "", //角标
+            
             typemap: jx3dat_types,
         };
     },
     computed: {
+        params: function() {
+            let params = {
+                per: this.per,
+                subtype: this.subtype,
+            };
+            if (this.search) {
+                params.title = this.search;
+            }
+            if (this.order) {
+                params.order = this.order;
+            }
+            if (this.mark) {
+                params.mark = this.mark;
+            }
+            return params;
+        },
         subtype: function() {
             return this.$store.state.subtype;
-        },
-        hasNextPage: function() {
-            return this.total > 1 && this.page < this.pages;
         },
         defaultBanner: function() {
             return this.subtype + ".png";
@@ -148,17 +173,19 @@ export default {
         },
     },
     methods: {
-        appendPage: function(i) {
+        loadPosts: function(i = 1, append = false) {
+            let query = Object.assign(this.params, {
+                page: i,
+            });
             this.loading = true;
-            getPosts(
-                {
-                    page: i,
-                    subtype: this.subtype,
-                },
-                this
-            )
+            getPosts(query, this)
                 .then((res) => {
-                    this.data = this.data.concat(res.data.data.list);
+                    if (append) {
+                        this.data = this.data.concat(res.data.data.list);
+                    } else {
+                        window.scrollTo(0, 0);
+                        this.data = res.data.data.list;
+                    }
                     this.total = res.data.data.total;
                     this.pages = res.data.data.pages;
                 })
@@ -166,25 +193,15 @@ export default {
                     this.loading = false;
                 });
         },
+        appendPage: function(i) {
+            this.loadPosts(i, true);
+        },
         changePage: function(i) {
-            this.loading = true;
-            getPosts(
-                {
-                    page: i,
-                    subtype: this.subtype,
-                },
-                this
-            )
-                .then((res) => {
-                    // console.log(res.data.data);
-                    window.scrollTo(0, 0);
-                    this.data = res.data.data.list;
-                    this.total = res.data.data.total;
-                    this.pages = res.data.data.pages;
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
+            this.loadPosts(i);
+        },
+        filter : function (o){
+            this[o['type']] = o['val']
+            this.loadPosts();
         },
         showBanner: function(val) {
             return showMinibanner(val);
@@ -227,18 +244,15 @@ export default {
             return val ? `color:${val};font-weight:600;` : "";
         },
         showMark: function(val) {
-            const mark_map = {
-                newbie: "新手易用",
-                advanced: "进阶推荐",
-                recommended: "编辑精选",
-                geek: "骨灰必备",
-            };
             return mark_map[val];
         },
     },
     mounted: function() {
-        if (this.subtype != "1") this.changePage(1);
+        if (this.subtype != "1") this.loadPosts(1);
     },
+    components : {
+        listbox
+    }
 };
 </script>
 
