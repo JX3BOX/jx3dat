@@ -14,12 +14,6 @@
             </span>
         </el-tab-pane>
 
-        <el-tab-pane label="我的数据仓库" name="store">
-            <span slot="label">
-                <i class="el-icon-receiving"></i>
-                <b>我的数据仓库</b>
-            </span>
-        </el-tab-pane>
     </el-tabs>
 </template>
 

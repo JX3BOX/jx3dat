@@ -9,11 +9,14 @@
             <router-link to="/plugins/5"><i class="el-icon-magic-stick"></i><span>其它数据下载</span></router-link>
         </div>
 
-        <!-- <h5 class="u-title">在线应用</h5>
-        <div class="m-nav-group">
-            <router-link to="/dbm"><img svg-inline src="../assets/img/logo.svg" /><span>数据在线构建</span></router-link>
-            <router-link to="/store"><img svg-inline src="../assets/img/logo.svg" /><span>我的数据仓库</span></router-link>
-        </div> -->
+        <!-- <h5 class="u-title">在线应用</h5> -->
+        <!-- <div class="m-nav-group"> -->
+        <a class="m-nav-dbm" href="/dbm" target="_blank">
+            <img svg-inline src="../assets/img/jx3datbuilder.svg" />
+            <b>数据在线构建</b>
+            <span>DBM Data Builder</span>
+        </a>
+        <!-- </div> -->
     </div>
 </template>
 

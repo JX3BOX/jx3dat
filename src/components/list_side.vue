@@ -22,13 +22,7 @@
                     class="u-item"
                     href="/tool/?pid=13912"
                     target="_blank"
-                    ><i class="el-icon-collection"></i> 新版订阅号发布规则须知</a
-                >
-                <a
-                    class="u-item"
-                    href="/tool/?pid=260"
-                    target="_blank"
-                    ><i class="el-icon-collection"></i> 如何加载团队监控数据文件？</a
+                    ><i class="el-icon-collection"></i> 团队监控订阅号指南</a
                 >
                 <a
                     class="u-item"
