@@ -13,7 +13,7 @@
         <!-- <div class="m-nav-group"> -->
         <a class="m-nav-dbm" href="/dbm" target="_blank">
             <img svg-inline src="../assets/img/jx3datbuilder.svg" />
-            <b>数据在线构建</b>
+            <b>在线数据构建器</b>
             <span>DBM Data Builder</span>
         </a>
         <!-- </div> -->

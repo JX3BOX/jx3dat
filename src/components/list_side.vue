@@ -30,18 +30,6 @@
                     target="_blank"
                     ><i class="el-icon-collection"></i> 团队监控插件教程</a
                 >
-                <a
-                    class="u-item"
-                    href="https://gitee.com/tinymins/my/issues"
-                    target="_blank"
-                    ><i class="el-icon-warning-outline"></i> 茗伊插件集反馈</a
-                >
-                <a
-                    class="u-item"
-                    href="https://gitee.com/hugeforest/PLUGIN_ISSUES/issues"
-                    target="_blank"
-                    ><i class="el-icon-warning-outline"></i> 懒人插件集反馈</a
-                >
             </div>
         </div>
         <!-- <Github_REPO REPO="fb" coder="8"></Github_REPO> -->
