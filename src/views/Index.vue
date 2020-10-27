@@ -204,7 +204,7 @@ export default {
                 subtype: this.subtype,
             };
             if (this.search) {
-                params.authorname = this.search;
+                params.search = this.search;
             }
             if (this.order) {
                 params.order = this.order;
