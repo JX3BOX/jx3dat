@@ -9,14 +9,11 @@
             <router-link to="/plugins/5"><i class="el-icon-magic-stick"></i><span>其它数据下载</span></router-link>
         </div>
 
-        <!-- <h5 class="u-title">在线应用</h5> -->
-        <!-- <div class="m-nav-group"> -->
-        <a class="m-nav-dbm" href="/dbm" target="_blank">
+        <!-- <a class="m-nav-dbm" href="/dbm" target="_blank">
             <img svg-inline src="../assets/img/jx3datbuilder.svg" />
             <b>在线数据构建器</b>
             <span>DBM Data Builder</span>
-        </a>
-        <!-- </div> -->
+        </a> -->
     </div>
 </template>
 
