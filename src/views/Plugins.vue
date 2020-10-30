@@ -4,8 +4,6 @@
             <h1 class="m-plugins-title">
                 <i :class="typeicon(subtype)"></i>{{ typemap[subtype] }}
             </h1>
-            <!-- 排序过滤 -->
-            <orderBy @filter="filter"></orderBy>
         </div>
         <listbox
             :data="data"
@@ -16,11 +14,23 @@
             @appendPage="appendPage"
             @changePage="changePage"
         >
+            <template slot="filter">
+                <a
+                    :href="publish_link"
+                    class="u-publish el-button el-button--primary el-button--small"
+                >
+                    + 发布插件数据
+                </a>
+                <!-- 角标过滤 -->
+                <markBy @filter="filter"></markBy>
+                <!-- 排序过滤 -->
+                <orderBy @filter="filter"></orderBy>
+            </template>
             <!-- 搜索 -->
             <div class="m-jx3dat-search" slot="search-after">
                 <el-input
                     class="m-jx3dat-input"
-                    placeholder="请输入关键词"
+                    placeholder="请输入搜索内容"
                     v-model="search"
                     @change="loadPosts"
                 >
@@ -30,11 +40,11 @@
                     <el-button slot="append" icon="el-icon-search"></el-button>
                 </el-input>
             </div>
-
+            <!-- 列表 -->
             <div class="m-archive-list m-plugins-list" v-if="data.length">
                 <ul class="u-list">
                     <li class="u-item" v-for="(item, i) in data" :key="i">
-                        <a class="u-banner" :href="item.post.ID | postLink" :target="target">
+                        <!-- <a class="u-banner" :href="item.post.ID | postLink" :target="target">
                             <img
                                 v-if="item.post.post_banner"
                                 :src="showBanner(item.post.post_banner)"
@@ -44,7 +54,7 @@
                                 v-else
                                 src="../assets/img/logo2.svg"
                             />
-                        </a>
+                        </a> -->
 
                         <h2 class="u-post" :class="{ isSticky: item.post.sticky }">
                             <img
@@ -107,7 +117,8 @@ import {
     showAvatar,
     authorLink,
     showMinibanner,
-    buildTarget
+    buildTarget,
+    publishLink,
 } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
 import { jx3dat_types } from "../assets/data/types.json";
@@ -147,7 +158,7 @@ export default {
                 subtype: this.subtype,
             };
             if (this.search) {
-                params.title = this.search;
+                params.search = this.search;
             }
             if (this.order) {
                 params.order = this.order;
@@ -165,7 +176,10 @@ export default {
         },
         target: function (){
             return buildTarget()
-        }
+        },
+        publish_link: function(val) {
+            return publishLink("jx3dat");
+        },
     },
     watch: {
         subtype(newdata) {

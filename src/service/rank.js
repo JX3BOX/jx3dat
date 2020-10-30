@@ -1,30 +1,20 @@
-import axios from "axios";
-import { __next } from "@jx3box/jx3box-common/js/jx3box.json";
-import failCallback from "../utils/fail";
+import { $next } from "@jx3box/jx3box-common/js/axios";
 
-const API = __next + "api/plugins/";   //TODO:
-// const API = "/api/plugins/";
-
-function getRank(limit=10,vm) {
-    return axios
-        .get(API + 'jx3dat/rank',{
-            params : {
-                pageSize : limit
-            }
+function getRank(limit = 10, vm) {
+    return $next
+        .get("api/plugins/jx3dat/rank", {
+            params: {
+                pageSize: limit,
+            },
         })
         .then((res) => {
             return res.data;
-        })
-        .catch((err) => {
-            failCallback(err, vm);
         });
 }
 
-function getHistory(uid){
-    return axios.get(API + uid + '/dbm/list').then((res) => {
-        return res.data
-    }).catch((err) => {
-        failCallback(err, vm);
+function getHistory(uid) {
+    return $next.get("api/plugins/" + uid + "/dbm/list").then((res) => {
+        return res.data;
     });
 }
 

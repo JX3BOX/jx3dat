@@ -30,13 +30,8 @@ module.exports = {
                     request.setHeader("origin", "");
                 }
             },
-            // "/api": {
-            //     "target": process.env["DEV_SERVER"] == "true" ? "http://localhost:51818" : "https://dbm.j3cx.com",
-            //     "onProxyReq": function (request) {
-            //         request.setHeader("origin", "");
-            //     }
-            // },
-        }
+        },
+        disableHostCheck: true
     },
 
     //❤️ define path for static files ~
