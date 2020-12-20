@@ -1,8 +1,12 @@
 <template>
     <div class="m-list-nav m-jx3dat-list-nav">
-        <h5 class="u-title">数据下载</h5>
+        <h5 class="u-title">团队监控</h5>
         <div class="m-nav-group">
-            <router-link to="/"><i class="el-icon-box"></i><span>团队监控数据</span></router-link>
+            <router-link to="/"><i class="el-icon-box"></i><span>订阅号</span></router-link>
+        </div>
+
+        <h5 class="u-title">其它数据</h5>
+        <div class="m-nav-group">
             <router-link to="/plugins/2"><i class="el-icon-aim"></i><span>目标监控数据</span></router-link>
             <router-link to="/plugins/3"><i class="el-icon-news"></i><span>团队面板buff数据</span></router-link>
             <router-link to="/plugins/4"><i class="el-icon-brush"></i><span>团队面板UI皮肤</span></router-link>

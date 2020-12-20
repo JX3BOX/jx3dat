@@ -17,18 +17,13 @@
                     src="../assets/img/puzzle.svg"
                 />相关链接
             </h3>
-            <div class="c-sidebar-right-list">
+            <div class="c-sidebar-right-list" v-if="links && links.length">
                 <a
+                    v-for="(item, i) in links"
+                    :key="i"
                     class="u-item"
-                    href="/tool/?pid=13912"
-                    target="_blank"
-                    ><i class="el-icon-collection"></i> 团队监控订阅号指南</a
-                >
-                <a
-                    class="u-item"
-                    href="/tool/?pid=420"
-                    target="_blank"
-                    ><i class="el-icon-collection"></i> 团队监控插件教程</a
+                    :href="item.link"
+                    ><i class="el-icon-collection"></i>{{ item.label }}</a
                 >
             </div>
         </div>
@@ -38,20 +33,26 @@
 
 <script>
 import minirank from '@/components/minirank.vue'
+import { getLinks } from "@/service/helper.js";
 export default {
     name: "list_side",
     props: [],
     data: function() {
         return {
             focus:0,
-            subnav : ['趋势榜','7日下载榜','30日下载榜']
+            subnav : ['趋势榜','7日下载榜','30日下载榜'],
+            links : []
         };
     },
     computed: {},
     methods: {
         
     },
-    mounted: function() {},
+    mounted: function() {
+        getLinks().then((res) => {
+            this.links = res.data.data.menu_group.menus
+        })
+    },
     components: {
         minirank
     },
