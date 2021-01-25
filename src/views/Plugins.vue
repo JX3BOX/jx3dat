@@ -119,6 +119,7 @@ import {
     showMinibanner,
     buildTarget,
     publishLink,
+    getAppType
 } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
 import { jx3dat_types } from "../assets/data/types.json";
@@ -252,7 +253,8 @@ export default {
             return dateFormat(val);
         },
         postLink: function(val) {
-            return "./?pid=" + val;
+            // return "./?pid=" + val;
+            return location.origin + '/' + getAppType() + '/' + val;
         },
         isHighlight: function(val) {
             return val ? `color:${val};font-weight:600;` : "";

@@ -168,6 +168,7 @@ import {
     showAvatar,
     buildTarget,
     publishLink,
+    getAppType
 } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
 
@@ -280,7 +281,8 @@ export default {
             return showAvatar(val);
         },
         postLink: function(val) {
-            return "./?pid=" + val;
+            // return "./?pid=" + val;
+            return location.origin + '/' + getAppType() + '/' + val;
         },
         highlight: function(item) {
             const colormap = {
