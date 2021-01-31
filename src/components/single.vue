@@ -136,7 +136,7 @@
 <script>
 import singlebox from "@jx3box/jx3box-page/src/cms-single";
 import { getPost } from "../service/post.js";
-import { getStat, postStat } from "../service/stat.js";
+import { getStat, postStat } from "@jx3box/jx3box-common/js/stat";
 import { jx3dat_types } from "../assets/data/types.json";
 import {resolveImagePath} from '@jx3box/jx3box-common/js/utils'
 export default {
@@ -215,10 +215,10 @@ export default {
                     this.loading = false;
                 });
 
-            getStat(this.id).then((data) => {
-                if (data) this.stat = this.$store.state.stat = data;
+            getStat('jx3dat',this.id).then((res) => {
+                this.stat = this.$store.state.stat = res.data;
             });
-            postStat(this.id);
+            postStat('jx3dat',this.id);
         }
     },
     components: {
