@@ -1,5 +1,8 @@
 <template>
-    <div id="app" :class="{ 'p-list': mode == 'list', 'p-single': mode == 'single' }">
+    <div
+        id="app"
+        :class="{ 'p-list': mode == 'list', 'p-single': mode == 'single' }"
+    >
         <Header></Header>
         <Breadcrumb
             name="插件数据"
@@ -32,8 +35,13 @@ import Nav from "@/components/Nav.vue";
 import Extend from "@/components/Extend.vue";
 import list from "@/components/list.vue";
 import single from "@/components/single.vue";
-import {getPID,getAppID,getQuery,getAppType} from '@jx3box/jx3box-common/js/utils'
-import {__Root} from '@jx3box/jx3box-common/js/jx3box.json'
+import {
+    getPID,
+    getAppID,
+    getQuery,
+    getAppType,
+} from "@jx3box/jx3box-common/js/utils";
+import { __Root } from "@jx3box/jx3box-common/js/jx3box.json";
 
 export default {
     name: "App",
@@ -47,33 +55,29 @@ export default {
         },
     },
     methods: {},
-    watch : {
+    watch: {
         $route: {
-            handler : function (newdata){
+            handler: function(newdata) {
                 this.$store.state.subtype = newdata.params.subtype;
             },
             deep: true,
-        }
+            immediate:true
+        },
     },
     beforeCreate: function() {
-        let id = getAppID()
-        let pid = getPID()
+        let id = getAppID();
+        let pid = getPID();
 
         // 旧单页链接跳转
-        if(!id && pid){
-            let type = getAppType()
-            let test = __Root + type + '/' + pid
-            location.href = __Root + type + '/' + pid
+        if (!id && pid) {
+            let type = getAppType();
+            let test = __Root + type + "/" + pid;
+            location.href = __Root + type + "/" + pid;
         }
 
         // 处理模式 & 文章ID
-        this.$store.state.mode = id ? 'single' : 'list'
-        this.$store.state.pid = id
-
-        // 捕获subtype
-        if(this.$store.state.mode == 'list'){
-            this.$store.state.subtype = getQuery("subtype");
-        }
+        this.$store.state.mode = id ? "single" : "list";
+        this.$store.state.pid = id;
     },
     components: {
         Info,
@@ -86,5 +90,5 @@ export default {
 </script>
 
 <style lang="less">
-    @import './assets/css/layout.less';
+@import "./assets/css/layout.less";
 </style>
