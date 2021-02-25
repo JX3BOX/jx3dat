@@ -315,7 +315,7 @@ export default {
     created: function() {
         this.loadPosts(1);
 
-        hasFeed().then((res) => {
+        this.isLogin && hasFeed().then((res) => {
             this.hasFeed = !!res.data.data
         })
     },
