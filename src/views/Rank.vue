@@ -104,13 +104,12 @@ export default {
             return name;
         },
         trending: function(row, column) {
-            // let trending_1 = (row.before3 - row.before2) / row.before2;
             let trending = (row.before2 - row.yesterday) / row.yesterday;
-            // let average = (trending_1 + trending_2) / 2;
+            if(!isFinite(trending)) trending = 0
             return isNaN(trending) ? "N/A" : trending.toFixed(4);
         },
         postLink: function(val) {
-            return "./?pid=" + val;
+            return "./" + val;
         },
         highlight({ row, rowIndex }) {
             if (rowIndex < 3) {
