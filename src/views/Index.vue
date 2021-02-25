@@ -13,12 +13,14 @@
                 <a
                     :href="publish_link"
                     class="u-publish el-button el-button--primary el-button--small"
+                    v-if="!isLogin || !hasFeed"
                 >
                     + 创建订阅号
                 </a>
                 <a
-                    :href="mywork_link"
+                    :href="myFeed"
                     class="u-publish el-button el-button--primary el-button--small"
+                    v-else
                 >
                     <i class="el-icon-setting"></i> 我的订阅号
                 </a>
@@ -161,6 +163,7 @@
 <script>
 import listbox from "@jx3box/jx3box-page/src/cms-list.vue";
 import { getPosts } from "../service/post";
+import {hasFeed} from '@/service/server.js'
 import { cms as mark_map } from "@jx3box/jx3box-common/js/mark.json";
 import { __Links } from "@jx3box/jx3box-common/js/jx3box.json";
 import {
@@ -171,6 +174,7 @@ import {
     getAppType
 } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
+import User from '@jx3box/jx3box-common/js/user'
 
 export default {
     name: "Index",
@@ -196,6 +200,8 @@ export default {
                 tr: "繁體中文",
             },
             subtype: 1,
+            hasFeed : false,
+            isLogin : User.isLogin()
         };
     },
     computed: {
@@ -224,7 +230,7 @@ export default {
         publish_link: function(val) {
             return publishLink("jx3dat");
         },
-        mywork_link: function(val) {
+        myFeed: function(val) {
             return __Links.dashboard.work + "/jx3dat";
         },
     },
@@ -308,6 +314,10 @@ export default {
     },
     created: function() {
         this.loadPosts(1);
+
+        hasFeed().then((res) => {
+            this.hasFeed = !!res.data.data
+        })
     },
     components: {
         listbox,
