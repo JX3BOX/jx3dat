@@ -126,7 +126,7 @@
                     target="_blank"
                     v-if="meta.down"
                 >
-                    <i class="el-icon-download"></i><span>默认数据下载</span>
+                    <i class="el-icon-download"></i><span class="u-long">默认数据下载</span><span class="u-short">下载</span>
                 </a>
             </div>
         </div>

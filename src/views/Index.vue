@@ -37,7 +37,6 @@
                     class="m-jx3dat-input"
                     placeholder="请输入关键词"
                     v-model="search"
-                    @change="loadPosts"
                 >
                     <template slot="prepend">
                         订阅号
@@ -188,6 +187,7 @@ export default {
             total: 1, //总条目数
             pages: 1, //总页数
             per: 20, //每页条目
+            appendMode : false, //追加模式
 
             search: "",
 
@@ -209,6 +209,7 @@ export default {
             let params = {
                 per: this.per,
                 subtype: this.subtype,
+                page : ~~this.page || 1
             };
             if (this.search) {
                 params.search = this.search;
@@ -235,17 +236,13 @@ export default {
         },
     },
     methods: {
-        loadPosts: function(i = 1, append = false) {
-            let query = Object.assign(this.params, {
-                page: i,
-            });
+        loadPosts: function() {
             this.loading = true;
-            getPosts(query, this)
+            getPosts(this.params, this)
                 .then((res) => {
-                    if (append) {
+                    if (this.appendMode) {
                         this.data = this.data.concat(res.data.data.list);
                     } else {
-                        window.scrollTo(0, 0);
                         this.data = res.data.data.list;
                     }
                     this.total = res.data.data.total;
@@ -255,15 +252,18 @@ export default {
                     this.loading = false;
                 });
         },
-        appendPage: function(i) {
-            this.loadPosts(i, true);
-        },
         changePage: function(i) {
-            this.loadPosts(i);
+            this.appendMode = false
+            this.page = i
+            window.scrollTo(0, 0);
         },
-        filter : function (o){
-            this[o['type']] = o['val']
-            this.loadPosts();
+        appendPage: function(i) {
+            this.appendMode = true
+            this.page = i
+        },
+        filter: function(o) {
+            this.appendMode = false
+            this[o["type"]] = o["val"];
         },
         onCopy: function(val) {
             this.$notify({
@@ -312,9 +312,20 @@ export default {
             return mark_map[val];
         },
     },
+    watch : {
+        params : {
+            deep : true,
+            handler : function (){
+                this.loadPosts()
+            }
+        },
+        '$route.query.page' : function (val){
+            this.page = ~~val
+        }
+    },
     created: function() {
-        this.loadPosts(1);
-
+        this.page = ~~this.$route.query.page || 1
+        this.loadPosts()
         this.isLogin && hasFeed().then((res) => {
             this.hasFeed = !!res.data.data
         })

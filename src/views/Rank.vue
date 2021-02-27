@@ -14,35 +14,25 @@
                     sortable
                     width="220px"
                 >
-                <template slot-scope="scope">
-                        <a class="u-feed"
-                            :href="postLink(scope.row.pid)" target="_blank"
-                            >{{scope.row.author}}{{scope.row.v == '默认版' ? '' : '#'+scope.row.v}}</a>
+                    <template slot-scope="scope">
+                        <a
+                            class="u-feed"
+                            :href="postLink(scope.row.pid)"
+                            target="_blank"
+                            >{{ scope.row.author
+                            }}{{
+                                scope.row.v == "默认版" ? "" : "#" + scope.row.v
+                            }}</a
+                        >
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="7days"
-                    label="7天"
-                    sortable
-                >
+                <el-table-column prop="7days" label="7天" sortable>
                 </el-table-column>
-                <el-table-column
-                    prop="30days"
-                    label="30天"
-                    sortable
-                >
+                <el-table-column prop="30days" label="30天" sortable>
                 </el-table-column>
-                <el-table-column
-                    prop="yesterday"
-                    label="昨日"
-                    sortable
-                >
+                <el-table-column prop="yesterday" label="昨日" sortable>
                 </el-table-column>
-                <el-table-column
-                    prop="before2"
-                    label="前日"
-                    sortable
-                >
+                <el-table-column prop="before2" label="前日" sortable>
                 </el-table-column>
                 <el-table-column
                     prop="trending"
@@ -54,12 +44,16 @@
                         <i
                             class="el-icon-top u-trending"
                             v-if="trending(scope.row) > 0"
-                            >{{ (trending(scope.row) * 100).toFixed(2) + "%" }}</i
+                            >{{
+                                (trending(scope.row) * 100).toFixed(2) + "%"
+                            }}</i
                         >
                         <i
                             class="el-icon-bottom u-trending"
                             v-if="trending(scope.row) < 0"
-                            >{{ (trending(scope.row) * 100).toFixed(2) + "%" }}</i
+                            >{{
+                                (trending(scope.row) * 100).toFixed(2) + "%"
+                            }}</i
                         >
                         <span
                             class="u-trending u-trending-keep"
@@ -85,7 +79,7 @@
 <script>
 import { getRank } from "../service/rank";
 import tabs from "@/components/tabs.vue";
-// import search from "@/components/search.vue";
+import { postLink } from "@jx3box/jx3box-common/js/utils";
 export default {
     name: "Rank",
     data: function() {
@@ -94,9 +88,7 @@ export default {
             loading: false,
         };
     },
-    computed: {
-        
-    },
+    computed: {},
     methods: {
         feed: function(row, column) {
             let name = row.author;
@@ -105,11 +97,11 @@ export default {
         },
         trending: function(row, column) {
             let trending = (row.before2 - row.yesterday) / row.yesterday;
-            if(!isFinite(trending)) trending = 0
+            if (!isFinite(trending)) trending = 0;
             return isNaN(trending) ? "N/A" : trending.toFixed(4);
         },
-        postLink: function(val) {
-            return "./" + val;
+        postLink: function(pid) {
+            return postLink("jx3dat", pid);
         },
         highlight({ row, rowIndex }) {
             if (rowIndex < 3) {
@@ -123,18 +115,20 @@ export default {
         },
     },
     mounted: function() {
-        this.loading = true
-        getRank(100,this).then((data) => {
-            let _data = [];
-            data.forEach((item) => {
-                if (item["7days"]) {
-                    _data.push(item);
-                }
+        this.loading = true;
+        getRank(100, this)
+            .then((data) => {
+                let _data = [];
+                data.forEach((item) => {
+                    if (item["7days"]) {
+                        _data.push(item);
+                    }
+                });
+                this.data = _data;
+            })
+            .finally(() => {
+                this.loading = false;
             });
-            this.data = _data;
-        }).finally(() => {
-            this.loading = false
-        })
     },
     components: {
         // tabs,

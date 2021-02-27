@@ -11,6 +11,7 @@
             :publishEnable="true"
             :adminEnable="true"
             :feedbackEnable="true"
+            :crumbEnable="true"
         >
             <img slot="logo" svg-inline src="./assets/img/jx3dat.svg" />
             <Info />
