@@ -43,7 +43,7 @@
             <div class="m-archive-list m-plugins-list" v-if="data.length">
                 <ul class="u-list">
                     <li class="u-item" v-for="(item, i) in data" :key="i">
-                        <!-- <a class="u-banner" :href="item.post.ID | postLink" :target="target">
+                        <a class="u-banner" :href="item.post.ID | postLink" :target="target">
                             <img
                                 v-if="item.post.post_banner"
                                 :src="showBanner(item.post.post_banner)"
@@ -51,9 +51,9 @@
                             <img
                                 class="u-default-banner"
                                 v-else
-                                src="../assets/img/logo2.svg"
+                                :src="item.post_subtype | showDefaultBanner"
                             />
-                        </a> -->
+                        </a>
 
                         <h2 class="u-post" :class="{ isSticky: item.post.sticky }">
                             <img
@@ -111,11 +111,12 @@
 
 <script>
 import listbox from "@jx3box/jx3box-page/src/cms-list.vue";
+import {__imgPath} from '@jx3box/jx3box-common/js/jx3box.json'
 import { getPosts } from "../service/post";
 import {
     showAvatar,
     authorLink,
-    showMinibanner,
+    getThumbnail,
     buildTarget,
     publishLink,
     getAppType
@@ -219,7 +220,7 @@ export default {
             this[o["type"]] = o["val"];
         },
         showBanner: function(val) {
-            return showMinibanner(val);
+            return val + '?x-oss-process=image/auto-orient,1/resize,m_fill,w_168,h_88/quality,q_100'
         },
         randomColor: function(i) {
             const colormap = [
@@ -262,6 +263,10 @@ export default {
         showMark: function(val) {
             return mark_map[val];
         },
+        showDefaultBanner : function (val){
+            val = val || '2'
+            return __imgPath + 'image/banner/jx3dat' + val + '.png'
+        }
     },
     watch : {
         params : {

@@ -15,7 +15,7 @@ let store = {
         author : {},
         status : false,
 
-        query : ''
+        query : '',
     },
     mutations: {
         

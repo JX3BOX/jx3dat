@@ -24,6 +24,8 @@
         // &:hover{
         //     background-color:lighten(#f2f8ff,1%);
         // }
+
+        padding-left:65px;
     }
 
     .u-feeds{
@@ -123,12 +125,29 @@
         .fz(12px,24px);
 
         .u-avatar{
-            .size(24px);
+            .size(48px);
             .r(4px);
             .db;
             .fl;
+
+            &.isCircle {
+                border-radius: 100%;
+            }
         }
-        .fr;
+
+        .u-avatar-frame {
+            position: absolute;
+            left: -6px;
+            top: -6px;
+            width: 60px;
+            height: 60px;
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .pa;.lt(0);
     }
 
     .u-update{

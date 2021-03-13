@@ -27,7 +27,12 @@
                 <!-- 角标过滤 -->
                 <markBy @filter="filter"></markBy>
                 <!-- 语言过滤 -->
-                <menuBy @filter="filter" :data="langs" type="lang" placeholder="语言"></menuBy>
+                <menuBy
+                    @filter="filter"
+                    :data="langs"
+                    type="lang"
+                    placeholder="语言"
+                ></menuBy>
                 <!-- 排序过滤 -->
                 <orderBy @filter="filter"></orderBy>
             </template>
@@ -47,6 +52,17 @@
             <!-- 列表 -->
             <ul class="m-jx3data-list" v-if="data.length">
                 <li v-for="(item, i) in data" :key="item + i">
+                    <a class="u-author" :href="item.author.uid | authorLink" target="_blank">
+                        <img
+                            :src="item.author.avatar | showAvatar"
+                            :alt="item.author.name"
+                            class="u-avatar"
+                            :class="isCircle(item.author.avatar_frame)"
+                        />
+                        <i class="u-avatar-frame" v-if="isValidFrame(item.author.avatar_frame)"
+                            ><img :src="showFrame(item.author.avatar_frame)"
+                        /></i>
+                    </a>
                     <div
                         class="u-feeds"
                         v-if="
@@ -135,14 +151,6 @@
                         }}
                     </div>
                     <div class="u-info">
-                        <!-- <a class="u-author" :href="item.author.uid | authorLink">
-                        <img
-                            :src="item.author.avatar | showAvatar"
-                            :alt="item.author.name"
-                            class="u-avatar"
-                        />
-                        <span>{{item.author.name}}</span>
-                    </a> -->
                         <time class="u-update">{{
                             item.post.post_modified | dateFormat
                         }}</time>
@@ -162,19 +170,20 @@
 <script>
 import listbox from "@jx3box/jx3box-page/src/cms-list.vue";
 import { getPosts } from "../service/post";
-import {hasFeed} from '@/service/server.js'
+import { hasFeed } from "@/service/server.js";
 import { cms as mark_map } from "@jx3box/jx3box-common/js/mark.json";
-import { __Links } from "@jx3box/jx3box-common/js/jx3box.json";
+import { __Links,default_avatar,__imgPath } from "@jx3box/jx3box-common/js/jx3box.json";
 import {
     authorLink,
-    showAvatar,
+    getThumbnail,
     buildTarget,
     publishLink,
-    getAppType
+    getAppType,
 } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
-import User from '@jx3box/jx3box-common/js/user'
-
+import User from "@jx3box/jx3box-common/js/user";
+import frames from "@jx3box/jx3box-common/data/user_avatar_frame.json";
+import {getFrames} from '@/service/static.js'
 export default {
     name: "Index",
     props: [],
@@ -187,7 +196,7 @@ export default {
             total: 1, //总条目数
             pages: 1, //总页数
             per: 20, //每页条目
-            appendMode : false, //追加模式
+            appendMode: false, //追加模式
 
             search: "",
 
@@ -200,8 +209,10 @@ export default {
                 tr: "繁體中文",
             },
             subtype: 1,
-            hasFeed : false,
-            isLogin : User.isLogin()
+            hasFeed: false,
+            isLogin: User.isLogin(),
+
+            frames,
         };
     },
     computed: {
@@ -209,7 +220,7 @@ export default {
             let params = {
                 per: this.per,
                 subtype: this.subtype,
-                page : ~~this.page || 1
+                page: ~~this.page || 1,
             };
             if (this.search) {
                 params.search = this.search;
@@ -253,16 +264,16 @@ export default {
                 });
         },
         changePage: function(i) {
-            this.appendMode = false
-            this.page = i
+            this.appendMode = false;
+            this.page = i;
             window.scrollTo(0, 0);
         },
         appendPage: function(i) {
-            this.appendMode = true
-            this.page = i
+            this.appendMode = true;
+            this.page = i;
         },
         filter: function(o) {
-            this.appendMode = false
+            this.appendMode = false;
             this[o["type"]] = o["val"];
         },
         onCopy: function(val) {
@@ -278,17 +289,35 @@ export default {
                 message: "请手动复制",
             });
         },
+        isValidFrame : function (frame){
+            return frame && this.frames[frame]
+        },
+        isCircle : function (frame){
+            return frame && this.frames[frame] && this.frames[frame].style == "circle";
+        },
+        loadFrames: function() {
+            getFrames().then((res) => {
+                this.frames = res.data
+            })
+        },
+        showFrame : function (frame){
+            if(frame){
+                let fileName = this.frames[frame].files.s.file
+                return __imgPath + `image/avatar/${frame}/${fileName}`
+            }
+            return ''
+        }
     },
     filters: {
         authorLink: function(val) {
             return authorLink(val);
         },
         showAvatar: function(val) {
-            return showAvatar(val);
+            return val && getThumbnail(val,48,true) || getThumbnail(default_avatar,48,true);
         },
         postLink: function(val) {
             // return "./?pid=" + val;
-            return location.origin + '/' + getAppType() + '/' + val;
+            return location.origin + "/" + getAppType() + "/" + val;
         },
         highlight: function(item) {
             const colormap = {
@@ -312,23 +341,25 @@ export default {
             return mark_map[val];
         },
     },
-    watch : {
-        params : {
-            deep : true,
-            handler : function (){
-                this.loadPosts()
-            }
+    watch: {
+        params: {
+            deep: true,
+            handler: function() {
+                this.loadPosts();
+            },
         },
-        '$route.query.page' : function (val){
-            this.page = ~~val
-        }
+        "$route.query.page": function(val) {
+            this.page = ~~val;
+        },
     },
     created: function() {
-        this.page = ~~this.$route.query.page || 1
-        this.loadPosts()
-        this.isLogin && hasFeed().then((res) => {
-            this.hasFeed = !!res.data.data
-        })
+        this.page = ~~this.$route.query.page || 1;
+        this.loadPosts();
+        this.loadFrames()
+        this.isLogin &&
+            hasFeed().then((res) => {
+                this.hasFeed = !!res.data.data;
+            });
     },
     components: {
         listbox,
