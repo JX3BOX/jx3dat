@@ -119,7 +119,8 @@ import {
     getThumbnail,
     buildTarget,
     publishLink,
-    getAppType
+    getAppType,
+    showMinibanner,
 } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
 import { jx3dat_types } from "../assets/data/types.json";
@@ -219,9 +220,7 @@ export default {
             this.appendMode = false
             this[o["type"]] = o["val"];
         },
-        showBanner: function(val) {
-            return val + '?x-oss-process=image/auto-orient,1/resize,m_fill,w_168,h_88/quality,q_100'
-        },
+        showBanner: showMinibanner,
         randomColor: function(i) {
             const colormap = [
                 "rgb(143,179,204)",
