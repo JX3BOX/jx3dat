@@ -1,7 +1,7 @@
-import { $next } from "@jx3box/jx3box-common/js/axios";
+import { $next } from "@jx3box/jx3box-common/js/https";
 
 function getRank(limit = 10, vm) {
-    return $next
+    return $next()
         .get("api/plugins/jx3dat/rank", {
             params: {
                 pageSize: limit,
@@ -13,7 +13,7 @@ function getRank(limit = 10, vm) {
 }
 
 function getHistory(uid) {
-    return $next.get("api/plugins/" + uid + "/dbm/list").then((res) => {
+    return $next().get("api/plugins/" + uid + "/dbm/list").then((res) => {
         return res.data;
     });
 }

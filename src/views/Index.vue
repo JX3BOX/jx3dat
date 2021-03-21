@@ -9,21 +9,37 @@
             @appendPage="appendPage"
             @changePage="changePage"
         >
-            <template slot="filter">
+            <!-- 搜索 -->
+            <div class="m-archive-search m-jx3dat-search" slot="search-before">
                 <a
                     :href="publish_link"
-                    class="u-publish el-button el-button--primary el-button--small"
+                    class="u-publish el-button el-button--primary"
                     v-if="!isLogin || !hasFeed"
                 >
-                    + 创建订阅号
+                    + 创建订阅
                 </a>
                 <a
                     :href="myFeed"
-                    class="u-publish el-button el-button--primary el-button--small"
+                    class="u-publish el-button el-button--primary"
                     v-else
                 >
-                    <i class="el-icon-setting"></i> 我的订阅号
+                    <i class="el-icon-setting"></i> 我的数据
                 </a>
+                <el-input
+                    class="m-jx3dat-input"
+                    placeholder="请输入关键词"
+                    v-model="search"
+                >
+                    <template slot="prepend">
+                        订阅号
+                    </template>
+                    <el-button slot="append" icon="el-icon-search"></el-button>
+                </el-input>
+            </div>
+            <!-- 过滤 -->
+            <template slot="filter">
+                <!-- 版本过滤 -->
+                <clientBy @filter="filter" type="std"></clientBy>
                 <!-- 角标过滤 -->
                 <markBy @filter="filter"></markBy>
                 <!-- 语言过滤 -->
@@ -36,30 +52,23 @@
                 <!-- 排序过滤 -->
                 <orderBy @filter="filter"></orderBy>
             </template>
-            <!-- 搜索 -->
-            <div class="m-jx3dat-search" slot="search-after">
-                <el-input
-                    class="m-jx3dat-input"
-                    placeholder="请输入关键词"
-                    v-model="search"
-                >
-                    <template slot="prepend">
-                        订阅号
-                    </template>
-                    <el-button slot="append" icon="el-icon-search"></el-button>
-                </el-input>
-            </div>
             <!-- 列表 -->
             <ul class="m-jx3data-list" v-if="data.length">
                 <li v-for="(item, i) in data" :key="item + i">
-                    <a class="u-author" :href="item.author.uid | authorLink" target="_blank">
+                    <a
+                        class="u-author"
+                        :href="item.author.uid | authorLink"
+                        target="_blank"
+                    >
                         <img
                             :src="item.author.avatar | showAvatar"
                             :alt="item.author.name"
                             class="u-avatar"
                             :class="isCircle(item.author.avatar_frame)"
                         />
-                        <i class="u-avatar-frame" v-if="isValidFrame(item.author.avatar_frame)"
+                        <i
+                            class="u-avatar-frame"
+                            v-if="isValidFrame(item.author.avatar_frame)"
                             ><img :src="showFrame(item.author.avatar_frame)"
                         /></i>
                     </a>
@@ -171,8 +180,12 @@
 import listbox from "@jx3box/jx3box-page/src/cms-list.vue";
 import { getPosts } from "../service/post";
 import { hasFeed } from "@/service/server.js";
-import { cms as mark_map } from "@jx3box/jx3box-common/js/mark.json";
-import { __Links,default_avatar,__imgPath } from "@jx3box/jx3box-common/js/jx3box.json";
+import { cms as mark_map } from "@jx3box/jx3box-common/data/mark.json";
+import {
+    __Links,
+    default_avatar,
+    __imgPath,
+} from "@jx3box/jx3box-common/data/jx3box.json";
 import {
     authorLink,
     getThumbnail,
@@ -183,7 +196,7 @@ import {
 import dateFormat from "../utils/moment";
 import User from "@jx3box/jx3box-common/js/user";
 import frames from "@jx3box/jx3box-common/data/user_avatar_frame.json";
-import {getFrames} from '@/service/static.js'
+import { getFrames } from "@/service/static.js";
 export default {
     name: "Index",
     props: [],
@@ -203,6 +216,7 @@ export default {
             order: "", //排序
             mark: "", //角标
             lang: "", //语言
+            client:"",  //版本选择
 
             langs: {
                 cn: "简体中文",
@@ -233,6 +247,9 @@ export default {
             }
             if (this.lang) {
                 params.meta_4 = this.lang;
+            }
+            if(this.client){
+                params.client = this.client
             }
             return params;
         },
@@ -289,31 +306,38 @@ export default {
                 message: "请手动复制",
             });
         },
-        isValidFrame : function (frame){
-            return frame && this.frames[frame]
+        isValidFrame: function(frame) {
+            return frame && this.frames[frame];
         },
-        isCircle : function (frame){
-            return frame && this.frames[frame] && this.frames[frame].style == "circle";
+        isCircle: function(frame) {
+            return (
+                frame &&
+                this.frames[frame] &&
+                this.frames[frame].style == "circle"
+            );
         },
         loadFrames: function() {
             getFrames().then((res) => {
-                this.frames = res.data
-            })
+                this.frames = res.data;
+            });
         },
-        showFrame : function (frame){
-            if(frame){
-                let fileName = this.frames[frame].files.s.file
-                return __imgPath + `image/avatar/${frame}/${fileName}`
+        showFrame: function(frame) {
+            if (frame) {
+                let fileName = this.frames[frame].files.s.file;
+                return __imgPath + `image/avatar/${frame}/${fileName}`;
             }
-            return ''
-        }
+            return "";
+        },
     },
     filters: {
         authorLink: function(val) {
             return authorLink(val);
         },
         showAvatar: function(val) {
-            return val && getThumbnail(val,48,true) || getThumbnail(default_avatar,48,true);
+            return (
+                (val && getThumbnail(val, 48, true)) ||
+                getThumbnail(default_avatar, 48, true)
+            );
         },
         postLink: function(val) {
             // return "./?pid=" + val;
@@ -355,7 +379,7 @@ export default {
     created: function() {
         this.page = ~~this.$route.query.page || 1;
         this.loadPosts();
-        this.loadFrames()
+        this.loadFrames();
         this.isLogin &&
             hasFeed().then((res) => {
                 this.hasFeed = !!res.data.data;

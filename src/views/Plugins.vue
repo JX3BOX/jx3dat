@@ -14,20 +14,14 @@
             @appendPage="appendPage"
             @changePage="changePage"
         >
-            <template slot="filter">
+            <!-- 搜索 -->
+            <div class="m-archive-search m-jx3dat-search" slot="search-before">
                 <a
                     :href="publish_link"
-                    class="u-publish el-button el-button--primary el-button--small"
+                    class="u-publish el-button el-button--primary"
                 >
-                    + 发布插件数据
+                    + 发布数据
                 </a>
-                <!-- 角标过滤 -->
-                <markBy @filter="filter"></markBy>
-                <!-- 排序过滤 -->
-                <orderBy @filter="filter"></orderBy>
-            </template>
-            <!-- 搜索 -->
-            <div class="m-jx3dat-search" slot="search-after">
                 <el-input
                     class="m-jx3dat-input"
                     placeholder="请输入搜索内容"
@@ -39,6 +33,15 @@
                     <el-button slot="append" icon="el-icon-search"></el-button>
                 </el-input>
             </div>
+            <!-- 过滤 -->
+            <template slot="filter">
+                <!-- 版本过滤 -->
+                <clientBy @filter="filter" type="std"></clientBy>
+                <!-- 角标过滤 -->
+                <markBy @filter="filter"></markBy>
+                <!-- 排序过滤 -->
+                <orderBy @filter="filter"></orderBy>
+            </template>
             <!-- 列表 -->
             <div class="m-archive-list m-plugins-list" v-if="data.length">
                 <ul class="u-list">
@@ -111,7 +114,7 @@
 
 <script>
 import listbox from "@jx3box/jx3box-page/src/cms-list.vue";
-import {__imgPath} from '@jx3box/jx3box-common/js/jx3box.json'
+import {__imgPath} from '@jx3box/jx3box-common/data/jx3box.json'
 import { getPosts } from "../service/post";
 import {
     showAvatar,
@@ -120,7 +123,7 @@ import {
     buildTarget,
     publishLink,
     getAppType,
-    showMinibanner,
+    showBanner,
 } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/moment";
 import { jx3dat_types } from "../assets/data/types.json";
@@ -130,7 +133,7 @@ const typeicons = {
     "4" : "el-icon-brush",
     "5" : "el-icon-magic-stick"
 }
-import { cms as mark_map } from "@jx3box/jx3box-common/js/mark.json";
+import { cms as mark_map } from "@jx3box/jx3box-common/data/mark.json";
 
 export default {
     name: "Plugins",
@@ -150,6 +153,7 @@ export default {
 
             order: "", //排序
             mark: "", //角标
+            client:"",  //版本选择
             
             typemap: jx3dat_types,
         };
@@ -169,6 +173,9 @@ export default {
             }
             if (this.mark) {
                 params.mark = this.mark;
+            }
+            if(this.client){
+                params.client = this.client
             }
             return params;
         },
@@ -220,7 +227,7 @@ export default {
             this.appendMode = false
             this[o["type"]] = o["val"];
         },
-        showBanner: showMinibanner,
+        showBanner: showBanner,
         randomColor: function(i) {
             const colormap = [
                 "rgb(143,179,204)",
