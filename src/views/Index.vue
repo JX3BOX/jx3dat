@@ -240,6 +240,7 @@ export default {
                     this.pages = res.data.data.pages;
                 })
                 .finally(() => {
+                    this.appendMode = false
                     this.loading = false;
                 });
         },
