@@ -212,6 +212,7 @@ export default {
                     this.data = this.post.post_meta && this.post.post_meta.data;
                     this.meta = this.post.post_meta;
                     this.$store.state.user_id = this.post.post_author;
+                    document.title = this.post.post_title
                 })
                 .finally(() => {
                     this.loading = false;
