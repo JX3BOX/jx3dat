@@ -179,6 +179,9 @@ export default {
         },
     },
     watch: {
+        subtype : function (){
+            this.search = ''  
+        },
         resetParams: function () {
             this.page = 1;
         },
