@@ -106,7 +106,12 @@
                             class="u-text"
                             :style="item.color | isHighlight"
                         >{{ item.post_title || "无标题" }}</span>
-                        <span class="u-tags" v-if="item.post_meta">
+
+                        <!-- TAG兼容 -->
+                        <span class="u-tags" v-if="item.tags">
+                            <i class="u-tag" v-for="tag in item.tags" :key="tag">{{ tag }}</i>
+                        </span>
+                        <span class="u-tags" v-else-if="item.post_meta.tag">
                             <i class="u-tag" v-for="tag in item.post_meta.tag" :key="tag">{{ tag }}</i>
                         </span>
                         <!-- 角标 -->
