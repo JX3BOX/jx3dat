@@ -12,8 +12,6 @@ let store = {
         id : getAppID(),
         user_id : 0,
         post : '',
-        // tab
-        my_macro_count: 0,
     },
     mutations: {},
     getters: {},
