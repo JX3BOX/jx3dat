@@ -1,5 +1,5 @@
 <template>
-    <el-tabs class="m-jx3dat-tabs" v-model="view" @tab-click="changeView">
+    <el-tabs class="m-jx3dat-tabs" v-model="tab">
         <el-tab-pane label="最后更新数据" name="index">
             <span slot="label">
                 <i class="el-icon-s-promotion"></i>
@@ -22,17 +22,27 @@ export default {
     name: "tabs",
     data: function() {
         return {
-            view: "index",
+            tab : 'index'
         };
     },
-    computed: {},
-    methods: {
-        changeView: function() {
-            this.$router.push({ name: this.view });
+    computed: {
+        view : function (){
+            return this.$route.name
+        }
+    },
+    watch : {
+        view : function (val){
+            this.tab = val
         },
+        tab : function (val){
+            this.$router.push({
+                name : val
+            })
+        }
+    },
+    methods: {
     },
     mounted: function() {
-        this.view = this.$route.name;
     },
     components: {},
 };

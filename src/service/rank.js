@@ -13,9 +13,11 @@ function getRank(limit = 10, vm) {
 }
 
 function getHistory(uid) {
-    return $next().get("api/plugins/" + uid + "/dbm/list").then((res) => {
-        return res.data;
-    });
+    return $next()
+        .get("api/plugins/" + uid + "/dbm/list")
+        .then((res) => {
+            return res.data;
+        });
 }
 
 export { getRank, getHistory };

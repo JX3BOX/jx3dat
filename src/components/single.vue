@@ -1,5 +1,5 @@
 <template>
-    <singlebox :post="post" :author="author" :stat="stat" v-loading="loading">
+    <singlebox :post="post" :stat="stat" v-loading="loading">
         <div class="u-meta u-sub-block" slot="single-header">
             <em class="u-label">类型</em>
             <span class="u-value">
@@ -12,8 +12,8 @@
                     <div class="u-data" v-if="i == 0">
                         <div class="u-feed">
                             <Mark
-                                :label="author.name"
-                                v-clipboard:copy="author.name"
+                                :label="post.author"
+                                v-clipboard:copy="post.author"
                                 v-clipboard:success="onCopy"
                                 v-clipboard:error="onError"
                             />
@@ -30,11 +30,11 @@
                     <div class="u-data" v-if="i != 0 && feed.status">
                         <div class="u-feed">
                             <Mark
-                                :label="author.name"
+                                :label="post.author"
                                 :value="feed.name"
                                 :BGR="post | highlight"
                                 BGL="#24292e"
-                                v-clipboard:copy="author.name + '#' + feed.name"
+                                v-clipboard:copy="post.author + '#' + feed.name"
                                 v-clipboard:success="onCopy"
                                 v-clipboard:error="onError"
                             />
@@ -51,11 +51,11 @@
                     <div class="u-data" v-if="!feed.status && cansee">
                         <div class="u-feed">
                             <Mark
-                                :label="author.name"
+                                :label="post.author"
                                 :value="feed.name"
                                 BGR="#f39"
                                 BGL="#24292e"
-                                v-clipboard:copy="author.name + '#' + feed.name"
+                                v-clipboard:copy="post.author + '#' + feed.name"
                                 v-clipboard:success="onCopy"
                                 v-clipboard:error="onError"
                             />
@@ -155,7 +155,7 @@ export default {
     },
     computed: {
         id: function() {
-            return this.$store.state.pid;
+            return this.$store.state.id;
         },
         subtype : function (){
             return _.get(this.post, "post_subtype");
@@ -205,11 +205,10 @@ export default {
             this.loading = true;
             getPost(this.id, this)
                 .then((res) => {
-                    this.post = this.$store.state.post = res.data.data.post;
-                    this.meta = this.$store.state.meta = res.data.data.post.post_meta;
-                    this.data = (this.meta && this.meta.data) || [];
-                    this.author = this.$store.state.author = res.data.data.author;
-                    this.$store.state.status = true;
+                    this.post = this.$store.state.post = res.data.data;
+                    this.data = this.post.post_meta && this.post.post_meta.data;
+                    this.meta = this.post.post_meta;
+                    this.$store.state.user_id = this.post.post_author;
                 })
                 .finally(() => {
                     this.loading = false;

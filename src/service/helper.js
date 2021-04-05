@@ -1,28 +1,21 @@
-import axios from 'axios';
-import { __helperUrl } from "@jx3box/jx3box-common/data/jx3box.json";
-import {
-    installInterceptors,
-    installNextInterceptors,
-} from "@jx3box/jx3box-common/js/axios";
+import { $helper } from "@jx3box/jx3box-common/js/https";
+import axios from "axios";
+import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
 
-function getLinks() {
-    return axios.get(__helperUrl + "api/menu_group/jx3dat-links");
+function getFrames() {
+    return axios.get(__imgPath + "data/user_avatar_frame.json");
 }
 
-const $http = axios.create({
-    withCredentials: true,
-    // baseURL: process.env.NODE_ENV === "production" ? __helperUrl : "/",
-    baseURL: __helperUrl,
-});
-installInterceptors($http);
-
 function getCollection($collection_id, params = {}) {
-    return $http({
+    return $helper()({
         method: "GET",
         url: `/api/post/collection/${$collection_id}`,
-        headers: { Accept: "application/prs.helper.v2+json" },
         params: params,
     });
 }
 
-export { $http, getCollection,getLinks };
+function getLinks() {
+    return $helper().get("api/menu_group/jx3dat-links");
+}
+
+export { getCollection, getLinks, getFrames };

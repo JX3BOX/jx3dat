@@ -1,8 +1,5 @@
 <template>
-    <div
-        id="app"
-        :class="{ 'p-list': mode == 'list', 'p-single': mode == 'single' }"
-    >
+    <div id="app">
         <Header></Header>
         <Breadcrumb
             name="插件数据"
@@ -17,13 +14,15 @@
             <Info />
         </Breadcrumb>
         <LeftSidebar>
-            <Nav />
+            <Nav class="m-nav" />
         </LeftSidebar>
         <Main :withoutRight="false">
-            <single v-if="mode == 'single'" />
-            <list v-else />
+            <div class="m-jx3dat">
+                <tabs v-if="isDBM" />
+                <router-view />
+            </div>
             <RightSidebar>
-                <Extend />
+                <Side class="m-extend" />
             </RightSidebar>
             <Footer></Footer>
         </Main>
@@ -32,64 +31,33 @@
 
 <script>
 import Info from "@/components/Info.vue";
-import Nav from "@/components/Nav.vue";
-import Extend from "@/components/Extend.vue";
-import list from "@/components/list.vue";
-import single from "@/components/single.vue";
-import {
-    getPID,
-    getAppID,
-    getQuery,
-    getAppType,
-} from "@jx3box/jx3box-common/js/utils";
-import { __Root } from "@jx3box/jx3box-common/data/jx3box.json";
+import Nav from "@/components/list_nav.vue";
+import Side from "@/components/list_side.vue";
+import tabs from "@/components/tabs";
 
 export default {
     name: "App",
     props: [],
-    data: function() {
+    data: function () {
         return {};
     },
     computed: {
-        mode: function() {
-            return this.$store.state.mode;
+        isDBM: function () {
+            return !this.$route.params.subtype || this.$route.params.subtype == '1'
         },
     },
     methods: {},
-    watch: {
-        $route: {
-            handler: function(newdata) {
-                this.$store.state.subtype = newdata.params.subtype;
-            },
-            deep: true,
-            immediate:true
-        },
-    },
-    beforeCreate: function() {
-        let id = getAppID();
-        let pid = getPID();
-
-        // 旧单页链接跳转
-        if (!id && pid) {
-            let type = getAppType();
-            let test = __Root + type + "/" + pid;
-            location.href = __Root + type + "/" + pid;
-        }
-
-        // 处理模式 & 文章ID
-        this.$store.state.mode = id ? "single" : "list";
-        this.$store.state.pid = id;
-    },
+    watch: {},
     components: {
         Info,
         Nav,
-        Extend,
-        list,
-        single,
+        Side,
+        tabs,
     },
 };
 </script>
 
 <style lang="less">
 @import "./assets/css/layout.less";
+@import "./assets/css/list.less";
 </style>
