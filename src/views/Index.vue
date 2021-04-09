@@ -43,7 +43,7 @@
                             :src="item.author_info.user_avatar | showAvatar"
                             :alt="item.author_info.display_name"
                             class="u-avatar"
-                            :class="{isCircle : isCircle(item.author.avatar_frame)}"
+                            :class="{isCircle : isCircle(item.author_info.user_avatar_frame)}"
                         />
                         <i
                             class="u-avatar-frame"
