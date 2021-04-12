@@ -127,7 +127,7 @@ export default {
 
             search: "",
 
-            order: "", //排序
+            order: "update", //排序
             mark: "", //角标
             client: this.$store.state.client, //版本选择
 
