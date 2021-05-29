@@ -88,7 +88,11 @@ export default {
             loading: false,
         };
     },
-    computed: {},
+    computed: {
+        client : function (){
+            return this.$store.state.client
+        }
+    },
     methods: {
         feed: function(row, column) {
             let name = row.author;
@@ -116,7 +120,7 @@ export default {
     },
     mounted: function() {
         this.loading = true;
-        getRank(100, this)
+        getRank(this.client,100)
             .then((data) => {
                 let _data = [];
                 data.forEach((item) => {

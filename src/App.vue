@@ -43,7 +43,7 @@ export default {
     },
     computed: {
         isDBM: function () {
-            return !this.$route.params.subtype || this.$route.params.subtype == '1'
+            return this.$route.name == 'index'
         },
     },
     methods: {},

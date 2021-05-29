@@ -77,7 +77,9 @@
                             >{{ item.author_info.display_name }}</a>
                             <span class="u-date">
                                 Updated on
-                                <time v-if="order == 'update'">{{item.post_modified | dateFormat}}</time>
+                                <time
+                                    v-if="order == 'update'"
+                                >{{item.post_modified | dateFormat}}</time>
                                 <time v-else>{{item.post_date | dateFormat}}</time>
                             </span>
                         </div>
@@ -166,7 +168,7 @@ export default {
             return params;
         },
         subtype: function () {
-            return this.$route.params.subtype;
+            return this.$store.state.subtype;
         },
         defaultBanner: function () {
             return this.subtype + ".png";
@@ -179,8 +181,8 @@ export default {
         },
     },
     watch: {
-        subtype : function (){
-            this.search = ''  
+        subtype: function () {
+            this.search = "";
         },
         resetParams: function () {
             this.page = 1;
@@ -194,6 +196,9 @@ export default {
         },
         "$route.query.page": function (val) {
             this.page = ~~val;
+        },
+        "$route.params.subtype": function (val) {
+            this.$store.state.subtype = val;
         },
     },
     methods: {
@@ -210,7 +215,7 @@ export default {
                     this.pages = res.data.data.pages;
                 })
                 .finally(() => {
-                    this.appendMode = false
+                    this.appendMode = false;
                     this.loading = false;
                 });
         },

@@ -1,10 +1,11 @@
 import { $next } from "@jx3box/jx3box-common/js/https";
 
-function getRank(limit = 10, vm) {
+function getRank(client, limit = 10) {
     return $next()
         .get("api/plugins/jx3dat/rank", {
             params: {
                 pageSize: limit,
+                client,
             },
         })
         .then((res) => {
