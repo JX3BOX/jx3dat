@@ -11,7 +11,7 @@ Vue.use(VueRouter);
 const routes = [
     { name: "index", path: "/", component: Index },
     { name: "plugins", path: "/plugins/:subtype", component: Plugins },
-    { name: "lanren", path: "/lanren/:subtype", component: Lanren },
+    { name: "lanren", path: "/lanren", component: Lanren },
     { name: "rank", path: "/rank", component: Rank },
 ];
 
