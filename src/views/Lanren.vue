@@ -35,11 +35,122 @@
                 <!-- 排序过滤 -->
                 <orderBy @filter="filter"></orderBy>
             </template>
+
+            <!-- 列表 -->
+            <ul class="m-jx3data-list" v-if="data.length">
+                <li v-for="item in data" :key="item.ID">
+                    <a class="u-author" :href="item.post_author | authorLink" target="_blank">
+                        <img
+                            :src="item.author_info.user_avatar | showAvatar"
+                            :alt="item.author_info.display_name"
+                            class="u-avatar"
+                            :class="{isCircle : isCircle(item.author_info.user_avatar_frame)}"
+                        />
+                        <i
+                            class="u-avatar-frame"
+                            v-if="isValidFrame(item.author_info.user_avatar_frame)"
+                        >
+                            <img :src="showFrame(item.author_info.user_avatar_frame)" />
+                        </i>
+                    </a>
+                    <!-- <div
+                        class="u-feeds"
+                        v-if="
+                            item.post_meta &&
+                                item.post_meta.data &&
+                                item.post_meta.data.length
+                        "
+                    >
+                        <div
+                            class="u-feed"
+                            v-for="(feed, i) in item.post_meta.data"
+                            :key="feed + i"
+                        >
+                            <Mark
+                                v-if="i == 0"
+                                :label="item.author_info.display_name"
+                                BGR="#035cc1"
+                                v-clipboard:copy="item.author_info.display_name"
+                                v-clipboard:success="onCopy"
+                                v-clipboard:error="onError"
+                                :key="item.author_info.display_name + i"
+                            />
+                            <Mark
+                                v-if="i != 0 && feed.status"
+                                :label="item.author_info.display_name"
+                                :value="feed.name"
+                                :BGR="item | highlight"
+                                BGL="#24292e"
+                                v-clipboard:copy="
+                                    item.author_info.display_name + '#' + feed.name
+                                "
+                                v-clipboard:success="onCopy"
+                                v-clipboard:error="onError"
+                                :key="item.author_info.display_name + i"
+                            />
+                        </div>
+                    </div> -->
+                    <!-- <div class="u-feeds" v-else>
+                        <div class="u-feed">
+                            <Mark
+                                :label="item.author_info.display_name"
+                                BGL="#24292e"
+                                v-clipboard:copy="item.author_info.display_name"
+                                v-clipboard:success="onCopy"
+                                v-clipboard:error="onError"
+                            />
+                        </div>
+                    </div> -->
+                    <a class="u-title" :href="item.ID | postLink" :target="target">
+                        <i class="u-prefix el-icon-box"></i>
+                        <span
+                            class="u-text"
+                            :style="item.color | isHighlight"
+                        >{{ item.post_title || "无标题" }}</span>
+
+                        <!-- TAG兼容 -->
+                        <span class="u-tags" v-if="item.tags">
+                            <i class="u-tag" v-for="tag in item.tags" :key="tag">{{ tag }}</i>
+                        </span>
+                        <span class="u-tags" v-else-if="item.post_meta.tag">
+                            <i class="u-tag" v-for="tag in item.post_meta.tag" :key="tag">{{ tag }}</i>
+                        </span>
+                        <!-- 角标 -->
+                        <span class="u-marks" v-if="item.mark && item.mark.length">
+                            <i
+                                v-for="mark in item.mark"
+                                class="u-mark"
+                                :key="mark"
+                            >{{ mark | showMark }}</i>
+                        </span>
+                    </a>
+                    <div class="u-desc">
+                        {{
+                        item.post_excerpt ||
+                        item.post_title ||
+                        "作者很懒,什么也没有留下"
+                        }}
+                    </div>
+                    <div class="u-info">
+                        <time class="u-update" v-if="order == 'update'">{{item.post_modified | dateFormat}}</time>
+                        <time class="u-update" v-else>{{item.post_date | dateFormat}}</time>
+                    </div>
+                    <a
+                        :href="item.ID | postLink"
+                        :target="target"
+                        class="u-view el-button el-button--default el-button--small is-plain"
+                    >
+                        查看详情
+                        <i class="el-icon-arrow-right"></i>
+                    </a>
+                </li>
+            </ul>
         </listbox>
     </div>
 </template>
 
 <script>
+import { getPosts, getMyPostCount } from "../service/post";
 import listbox from "@jx3box/jx3box-page/src/cms-list.vue";
 import {
     authorLink,
@@ -49,6 +160,10 @@ import {
     getAppType,
 } from "@jx3box/jx3box-common/js/utils";
 import User from "@jx3box/jx3box-common/js/user";
+import dateFormat from "../utils/moment";
+import frames from "@jx3box/jx3box-common/data/user_avatar_frame.json";
+
+import { getFrames } from "@/service/helper.js";
 export default {
     name: 'Lanren',
     props: [],
@@ -81,26 +196,140 @@ export default {
             subtype: 'lanren',
             hasFeed: false,
             isLogin: User.isLogin(),
+
+            frames
         }
     },
     computed: {
+        // todo 跳转到插件数据创作中心时，直接默认选择懒人数据
         publish_link() {
             return publishLink("jx3dat");
         },
         myFeed: function () {
             return "/publish/#/cms/jx3dat";
         },
+        params: function () {
+            let params = {
+                per: this.per,
+                page: ~~this.page || 1,
+                sticky: 1,
+                subtype: 'lanren',
+            };
+            let optionalParams = ["search", "order", "mark", "lang", "client"];
+            optionalParams.forEach((item) => {
+                if (this[item]) {
+                    params[item] = this[item];
+                }
+            });
+            return params;
+        },
+        target: function () {
+            return buildTarget();
+        }
     },
     methods: {
+        // 获取数据列表
+        loadData() {
+            this.loading = true
+            getPosts(this.params).then(res => {
+                console.log(res)
+                this.data = res.data.data.list
+            })
+        },
         appendPage() {},
         changePage() {},
         filter: function (o) {
             this.appendMode = false;
             this[o["type"]] = o["val"];
         },
+        onCopy: function (val) {
+            this.$notify({
+                title: "订阅号复制成功",
+                message: "复制内容 : " + val.text,
+                type: "success",
+            });
+        },
+        onError: function () {
+            this.$notify.error({
+                title: "复制失败",
+                message: "请手动复制",
+            });
+        },
+        isValidFrame: function (frame) {
+            return frame && this.frames[frame];
+        },
+        isCircle: function (frame) {
+            return (
+                frame &&
+                this.frames[frame] &&
+                this.frames[frame].style == "circle"
+            );
+        },
+        loadFrames: function () {
+            getFrames().then((res) => {
+                this.frames = res.data;
+            });
+        },
+        showFrame: function (frame) {
+            if (frame) {
+                let fileName = this.frames[frame].files.s.file;
+                return __imgPath + `image/avatar/${frame}/${fileName}`;
+            }
+            return "";
+        },
     },
-    filters: {},
-    created: function () {},
+    filters: {
+        authorLink: function (val) {
+            return authorLink(val);
+        },
+        showAvatar: function (val) {
+            return (
+                (val && getThumbnail(val, 48, true)) ||
+                getThumbnail(default_avatar, 48, true)
+            );
+        },
+        postLink: function (val) {
+            return location.origin + "/" + getAppType() + "/" + val;
+        },
+        highlight: function (item) {
+            const colormap = {
+                newbie: "#49c10f",
+                advanced: "#fba524",
+                recommended: "#cb91ff",
+                geek: "#fc3c3c",
+            };
+            if (item.mark) {
+                return colormap[item.mark[0]];
+            }
+            return "#035cc1";
+        },
+        dateFormat: function (val) {
+            return dateFormat(val);
+        },
+        isHighlight: function (val) {
+            return val ? `color:${val};font-weight:600;` : "";
+        },
+        showMark: function (val) {
+            return mark_map[val];
+        },
+    },
+    watch: {
+        params: {
+            deep: true,
+            immediate: true,
+            handler() {
+                this.loadData()
+            }
+        }
+    },
+    created: function () {
+        this.page = ~~this.$route.query.page || 1;
+        this.loadFrames();
+        this.isLogin &&
+            getMyPostCount().then((res) => {
+                this.hasFeed = !!res.data.data.jx3dat;
+            });
+    },
     mounted: function () {},
 }
 </script>
