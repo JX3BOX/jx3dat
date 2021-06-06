@@ -118,7 +118,26 @@
                     </div>
                 </div>
             </div>
-            <div class="u-subtype-other" v-if="subtype != 1">
+            <div class="u-subtype-lanren" v-else-if="subtype === 'lanren' && data.length">
+                <div v-for="(feed, i) in data" :key="feed + i">
+                    <div class="u-data" v-if="feed.file">
+                        <div class="u-feed">
+                            <Mark
+                                :label="feed.lanren_type"
+                            />
+                        </div>
+                        <span class="u-desc">{{ feed.desc }}</span>
+                        <a
+                            class="u-down el-button el-button--default el-button--small is-plain"
+                            :href="feed.file"
+                            target="_blank"
+                            ><i class="el-icon-download"></i
+                            ><span>本地下载</span></a
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="u-subtype-other" v-else-if="subtype != 1">
                 <span class="u-typename">数据类型：{{ post_subtype }}</span>
                 <a
                     class="u-download el-button el-button--primary el-button--small"
