@@ -123,7 +123,9 @@
                     <div class="u-data" v-if="feed.file">
                         <div class="u-feed">
                             <Mark
-                                :label="feed.lanren_type"
+                                :label="post.author"
+                                :value="feed.lanren_type"
+                                BGL="#24292e"
                             />
                         </div>
                         <span class="u-desc">{{ feed.desc }}</span>
