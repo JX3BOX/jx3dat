@@ -1,5 +1,5 @@
 <template>
-    <div class="m-lanren-box">
+    <div class="m-lanren-box" v-loading="loading">
         <listbox 
             :data="data"
             :total="total" 
@@ -232,8 +232,9 @@ export default {
         loadData() {
             this.loading = true
             getPosts(this.params).then(res => {
-                console.log(res)
                 this.data = res.data.data.list
+            }).finally(() => {
+                this.loading = false
             })
         },
         appendPage() {},
