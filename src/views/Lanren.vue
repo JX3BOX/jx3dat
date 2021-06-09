@@ -153,6 +153,11 @@
 import { getPosts, getMyPostCount } from "../service/post";
 import listbox from "@jx3box/jx3box-page/src/cms-list.vue";
 import {
+    __Links,
+    default_avatar,
+    __imgPath,
+} from "@jx3box/jx3box-common/data/jx3box.json";
+import {
     authorLink,
     getThumbnail,
     buildTarget,
