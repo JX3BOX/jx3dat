@@ -168,7 +168,7 @@ export default {
             return params;
         },
         subtype: function () {
-            return this.$store.state.subtype;
+            return this.$store.state.subtype || 2;
         },
         defaultBanner: function () {
             return this.subtype + ".png";
