@@ -3,7 +3,7 @@
         <div class="m-plugins-header">
             <h1 class="m-plugins-title">
                 <i :class="typeicon(subtype)"></i>
-                {{ typemap[subtype] }}
+                {{ typelabel(subtype) }}
             </h1>
         </div>
         <listbox
@@ -168,7 +168,7 @@ export default {
             return params;
         },
         subtype: function () {
-            return this.$store.state.subtype || 2;
+            return this.$route.params.subtype || 2;
         },
         defaultBanner: function () {
             return this.subtype + ".png";
@@ -232,7 +232,7 @@ export default {
             this.appendMode = false;
             this[o["type"]] = o["val"];
         },
-        showBanner: showBanner,
+        showBanner,
         randomColor: function (i) {
             const colormap = [
                 "rgb(143,179,204)",
@@ -253,6 +253,9 @@ export default {
         typeicon: function (subtype) {
             return typeicons[subtype];
         },
+        typelabel : function (subtype){
+            return this.typemap[subtype]
+        }
     },
     filters: {
         authorLink: function (val) {
