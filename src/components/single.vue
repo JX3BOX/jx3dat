@@ -151,6 +151,7 @@
                 </a>
             </div>
         </div>
+        <Thx class="m-thx" slot="single-append" :postId="id" postType="share" :userId="author_id" :adminBoxcoinEnable="true" :userBoxcoinEnable="true"/>
     </singlebox>
 </template>
 
@@ -177,6 +178,9 @@ export default {
     computed: {
         id: function() {
             return this.$store.state.id;
+        },
+        author_id : function (){
+            return this.post?.post_author || 0  
         },
         subtype : function (){
             return _.get(this.post, "post_subtype");
