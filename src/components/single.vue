@@ -151,7 +151,7 @@
                 </a>
             </div>
         </div>
-        <Thx class="m-thx" slot="single-append" :postId="id" postType="share" :userId="author_id" :adminBoxcoinEnable="true" :userBoxcoinEnable="true"/>
+        <Thx class="m-thx" slot="single-append" :postId="id" postType="jx3dat" :userId="author_id" :adminBoxcoinEnable="true" :userBoxcoinEnable="true"/>
     </singlebox>
 </template>
 
