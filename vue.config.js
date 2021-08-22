@@ -12,7 +12,7 @@ module.exports = {
             template: "public/index.html",
             filename: "index.html",
         },
-        post: {
+        jx3dat: {
             title: "插件数据 - JX3BOX",
             entry: "src/post.js",
             template: "public/index.html",
@@ -36,13 +36,13 @@ module.exports = {
                 },
             },
             "/api/summary": {
-                target: "https://next.jx3box.com",
+                target: "https://next2.jx3box.com",
                 onProxyReq: function(request) {
                     request.setHeader("origin", "");
                 },
             },
             "/api/comment": {
-                target: "https://next.jx3box.com",
+                target: "https://next2.jx3box.com",
                 onProxyReq: function(request) {
                     request.setHeader("origin", "");
                 },
@@ -61,11 +61,6 @@ module.exports = {
                 onProxyReq: function(request) {
                     request.setHeader("origin", "");
                 },
-            },
-            "/jx3dat/*": {
-                target: "http://localhost:8082",
-                changeOrigin: false,
-                pathRewrite: { "^/jx3dat/*": "/post.html/" },
             },
         },
         disableHostCheck: true,
