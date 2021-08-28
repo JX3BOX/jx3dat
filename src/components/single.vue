@@ -245,6 +245,9 @@ export default {
                 message: "请手动复制",
             });
         },
+        handleShow: function (){
+            this.showCollection = !this.showCollection;
+        },
     },
     filters: {
         highlight: function(item) {
