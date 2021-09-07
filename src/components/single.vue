@@ -2,13 +2,13 @@
     <singlebox :post="post" :stat="stat" v-loading="loading">
         <div class="u-meta u-sub-block" slot="single-header">
             <em class="u-label">类型</em>
-            <span class="u-value">
-                {{ post_subtype }}
-            </span>
+            <span class="u-value">{{ post_subtype }}</span>
         </div>
         <div class="u-collection" v-if="collectionList && collectionList.length">
             <div class="u-collection-title" @click="handleShow" :class="{ on: showCollection }">
-                <span><i class="el-icon-notebook-1"></i> 该作品已被收录至作者的剑三小册</span>
+                <span>
+                    <i class="el-icon-notebook-1"></i> 该作品已被收录至作者的剑三小册
+                </span>
                 <a @click.stop :href="collectionInfo.id | getLink">《{{ collapseTitle }}》</a>
             </div>
             <transition name="fade">
@@ -40,14 +40,24 @@
                                 v-clipboard:error="onError"
                             />
                         </div>
+                        <a
+                            class="u-sync"
+                            v-if="isAuthor || isAdmin"
+                            :href="'https://pull.j3cx.com/api/dbm/feed?key='+post.author+'&no_cache'"
+                            target="_blank"
+                            title="默认存在1分钟缓存，如需要即时生效请点击此按钮"
+                        >
+                            <i class="el-icon-video-play"></i> 云端同步刷新
+                        </a>
                         <span class="u-desc">{{ feed.desc }}</span>
                         <a
                             class="u-down el-button el-button--default el-button--small is-plain"
                             :href="feed.file"
                             target="_blank"
-                            ><i class="el-icon-download"></i
-                            ><span>本地下载</span></a
                         >
+                            <i class="el-icon-download"></i>
+                            <span>本地下载</span>
+                        </a>
                     </div>
                     <div class="u-data" v-if="i != 0 && feed.status">
                         <div class="u-feed">
@@ -61,14 +71,24 @@
                                 v-clipboard:error="onError"
                             />
                         </div>
+                        <a
+                            class="u-sync"
+                            v-if="isAuthor || isAdmin"
+                            :href="'https://pull.j3cx.com/api/dbm/feed?key='+post.author + '-' + feed.name+'&no_cache'"
+                            target="_blank"
+                            title="默认存在1分钟缓存，如需要即时生效请点击此按钮"
+                        >
+                            <i class="el-icon-video-play"></i> 云端同步刷新
+                        </a>
                         <span class="u-desc">{{ feed.desc }}</span>
                         <a
                             class="u-down el-button el-button--default el-button--small is-plain"
                             :href="feed.file"
                             target="_blank"
-                            ><i class="el-icon-download"></i
-                            ><span>本地下载</span></a
                         >
+                            <i class="el-icon-download"></i>
+                            <span>本地下载</span>
+                        </a>
                     </div>
                     <div class="u-data" v-if="!feed.status && cansee">
                         <div class="u-feed">
@@ -82,14 +102,24 @@
                                 v-clipboard:error="onError"
                             />
                         </div>
+                        <a
+                            class="u-sync"
+                            v-if="isAuthor || isAdmin"
+                            :href="'https://pull.j3cx.com/api/dbm/feed?key='+post.author + '-' + feed.name+'&no_cache'"
+                            target="_blank"
+                            title="默认存在1分钟缓存，如需要即时生效请点击此按钮"
+                        >
+                            <i class="el-icon-video-play"></i> 云端同步刷新
+                        </a>
                         <span class="u-desc">{{ feed.desc }}</span>
                         <a
                             class="u-down el-button el-button--default el-button--small is-plain"
                             :href="feed.file"
                             target="_blank"
-                            ><i class="el-icon-download"></i
-                            ><span>本地下载</span></a
                         >
+                            <i class="el-icon-download"></i>
+                            <span>本地下载</span>
+                        </a>
                     </div>
                 </div>
                 <div class="u-data u-data-add">
@@ -102,11 +132,9 @@
                             v-clipboard:copy="meta.github + '@github'"
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
-                            ><img
-                                class=""
-                                svg-inline
-                                src="../assets/img/github.svg"
-                        /></Mark>
+                        >
+                            <img class svg-inline src="../assets/img/github.svg" />
+                        </Mark>
                     </div>
                     <div class="u-feed" v-if="meta.gitee">
                         <Mark
@@ -117,11 +145,9 @@
                             v-clipboard:copy="meta.gitee + '@gitee'"
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
-                            ><img
-                                class="u-gitee"
-                                svg-inline
-                                src="../assets/img/gitee.svg"
-                        /></Mark>
+                        >
+                            <img class="u-gitee" svg-inline src="../assets/img/gitee.svg" />
+                        </Mark>
                     </div>
                     <div class="u-feed" v-if="meta.aliyun">
                         <Mark
@@ -132,11 +158,9 @@
                             v-clipboard:copy="meta.aliyun + '@aliyun'"
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
-                            ><img
-                                class=""
-                                svg-inline
-                                src="../assets/img/aliyun.svg"
-                        /></Mark>
+                        >
+                            <img class svg-inline src="../assets/img/aliyun.svg" />
+                        </Mark>
                     </div>
                 </div>
             </div>
@@ -144,20 +168,17 @@
                 <div v-for="(feed, i) in data" :key="feed + i">
                     <div class="u-data" v-if="feed.file">
                         <div class="u-feed">
-                            <Mark
-                                :label="post.author"
-                                :value="feed.lanren_type"
-                                BGL="#24292e"
-                            />
+                            <Mark :label="post.author" :value="feed.lanren_type" BGL="#24292e" />
                         </div>
                         <span class="u-desc">{{ feed.desc }}</span>
                         <a
                             class="u-down el-button el-button--default el-button--small is-plain"
                             :href="feed.file"
                             target="_blank"
-                            ><i class="el-icon-download"></i
-                            ><span>本地下载</span></a
                         >
+                            <i class="el-icon-download"></i>
+                            <span>本地下载</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -169,11 +190,21 @@
                     target="_blank"
                     v-if="meta.down"
                 >
-                    <i class="el-icon-download"></i><span class="u-long">默认数据下载</span><span class="u-short">下载</span>
+                    <i class="el-icon-download"></i>
+                    <span class="u-long">默认数据下载</span>
+                    <span class="u-short">下载</span>
                 </a>
             </div>
         </div>
-        <Thx class="m-thx" slot="single-append" :postId="id" postType="jx3dat" :userId="author_id" :adminBoxcoinEnable="true" :userBoxcoinEnable="true"/>
+        <Thx
+            class="m-thx"
+            slot="single-append"
+            :postId="id"
+            postType="jx3dat"
+            :userId="author_id"
+            :adminBoxcoinEnable="true"
+            :userBoxcoinEnable="true"
+        />
     </singlebox>
 </template>
 
@@ -182,12 +213,13 @@ import singlebox from "@jx3box/jx3box-page/src/cms-single";
 import { getPost } from "../service/post.js";
 import { getStat, postStat } from "@jx3box/jx3box-common/js/stat";
 import { jx3dat_types } from "../assets/data/types.json";
-import {resolveImagePath} from '@jx3box/jx3box-common/js/utils'
-import { getLink } from "@jx3box/jx3box-common/js/utils.js"
+import { resolveImagePath } from "@jx3box/jx3box-common/js/utils";
+import { getLink } from "@jx3box/jx3box-common/js/utils.js";
+import User from "@jx3box/jx3box-common/js/user";
 export default {
     name: "single",
     props: [],
-    data: function() {
+    data: function () {
         return {
             loading: false,
             post: {},
@@ -197,60 +229,65 @@ export default {
             stat: {},
             typemap: jx3dat_types,
 
-            showCollection: false
+            showCollection: false,
+
+            isAdmin: false,
         };
     },
     computed: {
-        id: function() {
+        id: function () {
             return this.$store.state.id;
         },
-        author_id : function (){
-            return this.post?.post_author || 0  
+        author_id: function () {
+            return this.post?.post_author || 0;
         },
-        subtype : function (){
+        isAuthor: function () {
+            return User.getInfo().uid == this.author_id;
+        },
+        subtype: function () {
             return _.get(this.post, "post_subtype");
         },
-        post_subtype: function() {
+        post_subtype: function () {
             if (this.subtype) {
                 return this.typemap[this.subtype];
             } else {
                 return "";
             }
         },
-        visible : function (){
-            return this.post._check
+        visible: function () {
+            return this.post._check;
         },
 
-        collectionInfo: function (){
+        collectionInfo: function () {
             return this.$store.state.collectionInfo;
         },
-        collapseTitle: function (){
-            return this.collectionInfo?.title
+        collapseTitle: function () {
+            return this.collectionInfo?.title;
         },
-        collectionList: function (){
-            return this.collectionInfo?.posts
-        }
+        collectionList: function () {
+            return this.collectionInfo?.posts;
+        },
     },
     methods: {
-        onCopy: function(val) {
+        onCopy: function (val) {
             this.$notify({
                 title: "订阅号复制成功",
                 message: "复制内容 : " + val.text,
                 type: "success",
             });
         },
-        onError: function() {
+        onError: function () {
             this.$notify.error({
                 title: "复制失败",
                 message: "请手动复制",
             });
         },
-        handleShow: function (){
+        handleShow: function () {
             this.showCollection = !this.showCollection;
         },
     },
     filters: {
-        highlight: function(item) {
+        highlight: function (item) {
             const colormap = {
                 newbie: "#49c10f",
                 advanced: "#fba524",
@@ -262,11 +299,11 @@ export default {
             }
             return "#035cc1";
         },
-        showDown: function(val) {
+        showDown: function (val) {
             return val && resolveImagePath(val);
         },
-        getLink: function (id){
-            return getLink('collection', id);
+        getLink: function (id) {
+            return getLink("collection", id);
         },
         showLink: function (item) {
             if (item.type == "custom") {
@@ -276,7 +313,7 @@ export default {
             }
         },
     },
-    created: function() {
+    created: function () {
         if (this.id) {
             this.loading = true;
             getPost(this.id, this)
@@ -285,17 +322,19 @@ export default {
                     this.data = this.post.post_meta && this.post.post_meta.data;
                     this.meta = this.post.post_meta;
                     this.$store.state.user_id = this.post.post_author;
-                    document.title = this.post.post_title
+                    document.title = this.post.post_title;
                 })
                 .finally(() => {
                     this.loading = false;
                 });
 
-            getStat('jx3dat',this.id).then((res) => {
+            getStat("jx3dat", this.id).then((res) => {
                 this.stat = this.$store.state.stat = res.data;
             });
-            postStat('jx3dat',this.id);
+            postStat("jx3dat", this.id);
         }
+
+        this.isAdmin = User.isAdmin();
     },
     components: {
         singlebox,
