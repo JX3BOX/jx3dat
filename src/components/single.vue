@@ -43,7 +43,7 @@
                         <a
                             class="u-sync"
                             v-if="isAuthor || isAdmin"
-                            :href="'https://pull.j3cx.com/api/dbm/feed?key='+post.author+'&no_cache'"
+                            :href="'https://pull.j3cx.com/api/dbm/feed?key='+post.author+'&_no_cache'"
                             target="_blank"
                             title="默认存在1分钟缓存，如需要即时生效请点击此按钮"
                         >
@@ -74,7 +74,7 @@
                         <a
                             class="u-sync"
                             v-if="isAuthor || isAdmin"
-                            :href="'https://pull.j3cx.com/api/dbm/feed?key='+post.author + '-' + feed.name+'&no_cache'"
+                            :href="'https://pull.j3cx.com/api/dbm/feed?key='+post.author + '-' + feed.name+'&_no_cache'"
                             target="_blank"
                             title="默认存在1分钟缓存，如需要即时生效请点击此按钮"
                         >
@@ -105,7 +105,7 @@
                         <a
                             class="u-sync"
                             v-if="isAuthor || isAdmin"
-                            :href="'https://pull.j3cx.com/api/dbm/feed?key='+post.author + '-' + feed.name+'&no_cache'"
+                            :href="'https://pull.j3cx.com/api/dbm/feed?key='+post.author + '-' + feed.name+'&_no_cache'"
                             target="_blank"
                             title="默认存在1分钟缓存，如需要即时生效请点击此按钮"
                         >
