@@ -309,7 +309,7 @@ export default {
             );
         },
         postLink: function (val) {
-            return location.origin + "/" + getAppType() + "/" + val;
+            return location.origin + "/jx3dat/" + val;
         },
         highlight: function (item) {
             const colormap = {

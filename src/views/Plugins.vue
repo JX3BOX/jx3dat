@@ -268,7 +268,7 @@ export default {
             return dateFormat(val);
         },
         postLink: function (val) {
-            return location.origin + "/" + getAppType() + "/" + val;
+            return location.origin + "/jx3dat/" + val;
         },
         isHighlight: function (val) {
             return val ? `color:${val};font-weight:600;` : "";

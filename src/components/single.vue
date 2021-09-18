@@ -4,30 +4,9 @@
             <em class="u-label">类型</em>
             <span class="u-value">{{ post_subtype }}</span>
         </div>
-        <div class="u-collection" v-if="collectionList && collectionList.length">
-            <div class="u-collection-title" @click="handleShow" :class="{ on: showCollection }">
-                <span>
-                    <i class="el-icon-notebook-1"></i> 该作品已被收录至作者的剑三小册
-                </span>
-                <a @click.stop :href="collectionInfo.id | getLink">《{{ collapseTitle }}》</a>
-            </div>
-            <transition name="fade">
-                <div v-if="showCollection">
-                    <ol
-                        v-if="collectionList && collectionList.length"
-                        class="u-list u-collection-content"
-                        :style="{ display: showCollection ? 'block' : 'none' }"
-                    >
-                        <li v-for="(item, i) in collectionList" :key="i" class="u-item">
-                            <a v-if="item" :href="item | showLink" target="_blank">
-                                <i class="el-icon-link"></i>
-                                {{ item.title }}
-                            </a>
-                        </li>
-                    </ol>
-                </div>
-            </transition>
-        </div>
+        <!-- 文集+联合创作者 -->
+        <Creators class="m-creators" :postId="id" :postType="post.post_type"/>
+        <Collection class="m-collection" :id="post.post_collection" :defaultVisible="post.collection_collapse"/>
         <div class="m-single-meta" v-if="visible">
             <div class="u-subtype-1" v-if="subtype == 1 && data.length">
                 <div v-for="(feed, i) in data" :key="feed + i">
@@ -216,6 +195,9 @@ import { jx3dat_types } from "../assets/data/types.json";
 import { resolveImagePath } from "@jx3box/jx3box-common/js/utils";
 import { getLink } from "@jx3box/jx3box-common/js/utils.js";
 import User from "@jx3box/jx3box-common/js/user";
+import Collection from '@jx3box/jx3box-common-ui/src/single/Collection.vue'
+import Creators from '@jx3box/jx3box-common-ui/src/single/Creators.vue'
+
 export default {
     name: "single",
     props: [],
@@ -338,6 +320,8 @@ export default {
     },
     components: {
         singlebox,
+        Collection,
+        Creators
     },
 };
 </script>
