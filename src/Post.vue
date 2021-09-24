@@ -29,7 +29,7 @@
 import Nav from "@/components/single_nav.vue";
 import Side from "@/components/single_side.vue";
 import single from "@/components/single.vue";
-import {getAppIcon} from '@jx3box/jx3box-common/js/utils'
+import { getAppIcon } from "@jx3box/jx3box-common/js/utils";
 export default {
     name: "App",
     props: [],
@@ -37,22 +37,22 @@ export default {
         return {};
     },
     methods: {
-        getAppIcon
+        getAppIcon,
     },
     components: {
         Nav,
         Side,
         single,
     },
-    beforeCreate : function (){
-        
-    }
+    beforeCreate: function () {},
 };
 </script>
 
 <style lang="less">
 @import "./assets/css/layout.less";
-.c-crumb{
-    .none;
+@media screen and (max-width: @phone) {
+    .c-crumb {
+        .none;
+    }
 }
 </style>
