@@ -7,22 +7,42 @@
             </strong>
         </RightSideMsg>
         <minirank />
-        <div class="m-jx3dat-links">
-            <h3 class="c-sidebar-right-title">
-                <img class="u-icon" svg-inline src="../assets/img/puzzle.svg" />相关链接
+        <!-- 其他链接 -->
+        <div class="m-jx3dat-links m-side-links">
+            <h3 class="c-sidebar-right-title" style="border-bottom:none;">
+                <img class="u-icon" svg-inline src="../assets/img/puzzle.svg" />
+                帮助文档
             </h3>
-            <div class="c-sidebar-right-list" v-if="links && links.length">
-                <a
-                    v-for="(item, i) in links"
-                    :key="i"
-                    class="u-item"
-                    :href="item.link"
-                    target="_blank"
-                >
-                    <i class="el-icon-collection"></i>
-                    {{ item.label }}
-                </a>
-            </div>
+            <el-collapse class="u-groups" v-model="activeDocGroup">
+                <el-collapse-item title="入门帮助" name="newbie">
+                    <div class="u-docs">
+                        <a
+                            v-for="(item, i) in jx3dat_newbie"
+                            :key="i"
+                            class="u-doc"
+                            :href="item.link"
+                            target="_blank"
+                        >
+                            <i class="el-icon-collection"></i>
+                            {{ item.label }}
+                        </a>
+                    </div>
+                </el-collapse-item>
+                <el-collapse-item title="发布指南" name="senior">
+                    <div class="u-docs">
+                        <a
+                            v-for="(item, i) in jx3dat_senior"
+                            :key="i"
+                            class="u-doc"
+                            :href="item.link"
+                            target="_blank"
+                        >
+                            <i class="el-icon-collection"></i>
+                            {{ item.label }}
+                        </a>
+                    </div>
+                </el-collapse-item>
+            </el-collapse>
         </div>
         <!-- <Github_REPO REPO="fb" coder="8"></Github_REPO> -->
     </div>
@@ -30,22 +50,25 @@
 
 <script>
 import minirank from "@/components/minirank.vue";
-import { getLinks } from "@/service/helper.js";
+import { getMenuGroups } from "@/service/helper.js";
 export default {
     name: "list_side",
     props: [],
     data: function () {
         return {
-            focus: 0,
-            subnav: ["趋势榜", "7日下载榜", "30日下载榜"],
-            links: [],
+            activeDocGroup: "",
+            jx3dat_newbie: [],
+            jx3dat_senior: [],
         };
     },
     computed: {},
     methods: {},
     mounted: function () {
-        getLinks().then((res) => {
-            this.links = res.data.data.menu_group.menus;
+        getMenuGroups(["jx3dat_newbie", "jx3dat_senior"]).then((res) => {
+            let data = res.data.data.data || {};
+            for (let key in data) {
+                this[key] = data[key]["menus"];
+            }
         });
     },
     components: {

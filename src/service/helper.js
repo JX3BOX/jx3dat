@@ -14,8 +14,12 @@ function getCollection($collection_id, params = {}) {
     });
 }
 
-function getLinks() {
-    return $helper().get("api/menu_group/jx3dat-links");
+function getMenuGroups(keys) {
+    return $helper({ mute: true }).get(`/api/menu_groups`, {
+        params: {
+            names: keys,
+        },
+    });
 }
 
-export { getCollection, getLinks, getFrames };
+export { getCollection, getMenuGroups, getFrames };
