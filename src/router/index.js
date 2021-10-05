@@ -9,10 +9,10 @@ import Lanren from "../views/Lanren.vue";
 Vue.use(VueRouter);
 
 const routes = [
-    { name: "index", path: "/", component: Index },
+    { name: "index", path: "/", component: Index, meta: { belongs: "dbm" } },
     { name: "plugins", path: "/plugins/:subtype", component: Plugins },
     { name: "lanren", path: "/lanren", component: Lanren },
-    { name: "rank", path: "/rank", component: Rank },
+    { name: "rank", path: "/rank", component: Rank, meta: { belongs: "dbm" } },
 ];
 
 const router = new VueRouter({

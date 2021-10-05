@@ -43,7 +43,7 @@ export default {
     },
     computed: {
         isDBM: function () {
-            return this.$route.name == 'index'
+            return this.$route.meta.belongs == 'dbm'
         },
     },
     methods: {getAppIcon},
