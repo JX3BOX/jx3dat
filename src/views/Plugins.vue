@@ -2,8 +2,7 @@
     <div class="m-jx3dat-plugins" v-loading="loading">
         <div class="m-plugins-header">
             <h1 class="m-plugins-title">
-                <i :class="typeicon(subtype)"></i>
-                {{ typelabel(subtype) }}
+                <i :class="typeicon(subtype)"></i>{{ typelabel(subtype) }}
             </h1>
         </div>
         <listbox
@@ -106,6 +105,7 @@ import {
 import dateFormat from "../utils/moment";
 import { jx3dat_types } from "../assets/data/types.json";
 const typeicons = {
+    "1": "el-icon-box",
     "2": "el-icon-aim",
     "3": "el-icon-news",
     "4": "el-icon-brush",
@@ -253,9 +253,9 @@ export default {
         typeicon: function (subtype) {
             return typeicons[subtype];
         },
-        typelabel : function (subtype){
-            return this.typemap[subtype]
-        }
+        typelabel: function (subtype) {
+            return this.typemap[subtype];
+        },
     },
     filters: {
         authorLink: function (val) {

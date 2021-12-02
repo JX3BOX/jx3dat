@@ -2,7 +2,7 @@
     <div id="app">
         <Header></Header>
         <Breadcrumb
-            name="插件数据"
+            name="数据下载"
             slug="jx3dat"
             root="/jx3dat"
             :publishEnable="true"
