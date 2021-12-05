@@ -2,7 +2,8 @@
     <div class="m-jx3dat-plugins" v-loading="loading">
         <div class="m-plugins-header">
             <h1 class="m-plugins-title">
-                <i :class="typeicon(subtype)"></i>{{ typelabel(subtype) }}
+                <i :class="typeicon(subtype)"></i>
+                {{ typelabel(subtype) }}
             </h1>
         </div>
         <listbox
@@ -60,6 +61,20 @@
                                 >{{ mark | showMark }}</i>
                             </span>
                         </h2>
+
+                        <!-- TAG兼容 -->
+                        <template v-if="subtype == 1">
+                            <span class="u-tags" v-if="item.tags">
+                                <i class="u-tag" v-for="tag in item.tags" :key="tag">{{ tag }}</i>
+                            </span>
+                            <span class="u-tags" v-else-if="item.post_meta.tag">
+                                <i
+                                    class="u-tag"
+                                    v-for="tag in item.post_meta.tag"
+                                    :key="tag"
+                                >{{ tag }}</i>
+                            </span>
+                        </template>
 
                         <div class="u-desc">{{ item.post_content || item.post_title }}</div>
 
