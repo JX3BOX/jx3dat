@@ -1,65 +1,22 @@
 <template>
     <div class="v-rank" v-loading="loading">
         <div class="m-jx3dat-rank-full m-jx3dat-rank">
-            <el-table
-                :data="data"
-                :default-sort="{ prop: '7days', order: 'descending' }"
-                :row-class-name="highlight"
-            >
-                <el-table-column type="index" label="👑" width="48">
-                </el-table-column>
-                <el-table-column
-                    prop="name"
-                    label="订阅号"
-                    sortable
-                    width="220px"
-                >
+            <el-table :data="data" :default-sort="{ prop: '7days', order: 'descending' }" :row-class-name="highlight">
+                <el-table-column type="index" label="👑" width="48"> </el-table-column>
+                <el-table-column prop="name" label="订阅号" sortable width="220px">
                     <template slot-scope="scope">
-                        <a
-                            class="u-feed"
-                            :href="postLink(scope.row.pid)"
-                            target="_blank"
-                            >{{ scope.row.author
-                            }}{{
-                                scope.row.v == "默认版" ? "" : "#" + scope.row.v
-                            }}</a
-                        >
+                        <a class="u-feed" :href="postLink(scope.row.pid)" target="_blank">{{ scope.row.author }}{{ scope.row.v == "默认版" ? "" : "#" + scope.row.v }}</a>
                     </template>
                 </el-table-column>
-                <el-table-column prop="7days" label="7天" sortable>
-                </el-table-column>
-                <el-table-column prop="30days" label="30天" sortable>
-                </el-table-column>
-                <el-table-column prop="yesterday" label="昨日" sortable>
-                </el-table-column>
-                <el-table-column prop="before2" label="前日" sortable>
-                </el-table-column>
-                <el-table-column
-                    prop="trending"
-                    label="趋势"
-                    width="100"
-                    :formatter="trending"
-                >
+                <el-table-column prop="7days" label="7天" sortable> </el-table-column>
+                <el-table-column prop="30days" label="30天" sortable> </el-table-column>
+                <el-table-column prop="yesterday" label="昨日" sortable> </el-table-column>
+                <el-table-column prop="before2" label="前日" sortable> </el-table-column>
+                <el-table-column prop="trending" label="趋势" width="100" :formatter="trending">
                     <template slot-scope="scope">
-                        <i
-                            class="el-icon-top u-trending"
-                            v-if="trending(scope.row) > 0"
-                            >{{
-                                (trending(scope.row) * 100).toFixed(2) + "%"
-                            }}</i
-                        >
-                        <i
-                            class="el-icon-bottom u-trending"
-                            v-if="trending(scope.row) < 0"
-                            >{{
-                                (trending(scope.row) * 100).toFixed(2) + "%"
-                            }}</i
-                        >
-                        <span
-                            class="u-trending u-trending-keep"
-                            v-if="trending(scope.row) == 0"
-                            >-</span
-                        >
+                        <i class="el-icon-top u-trending" v-if="trending(scope.row) > 0">{{ (trending(scope.row) * 100).toFixed(2) + "%" }}</i>
+                        <i class="el-icon-bottom u-trending" v-if="trending(scope.row) < 0">{{ (trending(scope.row) * 100).toFixed(2) + "%" }}</i>
+                        <span class="u-trending u-trending-keep" v-if="trending(scope.row) == 0">-</span>
                     </template>
                 </el-table-column>
                 <!-- <el-table-column
@@ -89,9 +46,9 @@ export default {
         };
     },
     computed: {
-        client : function (){
-            return this.$store.state.client
-        }
+        client: function() {
+            return this.$store.state.client;
+        },
     },
     methods: {
         feed: function(row, column) {
@@ -120,7 +77,7 @@ export default {
     },
     mounted: function() {
         this.loading = true;
-        getRank(this.client,100)
+        getRank(this.client, 100)
             .then((data) => {
                 let _data = [];
                 data.forEach((item) => {

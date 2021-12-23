@@ -1,15 +1,7 @@
 <template>
     <div id="app">
         <Header></Header>
-        <Breadcrumb
-            name="数据下载"
-            slug="jx3dat"
-            root="/jx3dat"
-            :publishEnable="true"
-            :adminEnable="true"
-            :feedbackEnable="true"
-            :crumbEnable="true"
-        >
+        <Breadcrumb name="数据下载" slug="jx3dat" root="/jx3dat" :publishEnable="true" :adminEnable="true" :feedbackEnable="true" :crumbEnable="true">
             <img slot="logo" svg-inline :src="getAppIcon('jx3dat')" />
             <Info />
         </Breadcrumb>
@@ -34,19 +26,19 @@ import Info from "@/components/Info.vue";
 import Nav from "@/components/list_nav.vue";
 import Side from "@/components/list_side.vue";
 import tabs from "@/components/tabs";
-import {getAppIcon} from '@jx3box/jx3box-common/js/utils'
+import { getAppIcon } from "@jx3box/jx3box-common/js/utils";
 export default {
     name: "App",
     props: [],
-    data: function () {
+    data: function() {
         return {};
     },
     computed: {
-        isDBM: function () {
-            return this.$route.meta.belongs == 'dbm'
+        isDBM: function() {
+            return this.$route.meta.belongs == "dbm";
         },
     },
-    methods: {getAppIcon},
+    methods: { getAppIcon },
     watch: {},
     components: {
         Info,
@@ -58,11 +50,11 @@ export default {
 </script>
 
 <style lang="less">
-@import "./assets/css/layout.less";
+@import "./assets/css/app.less";
 @import "./assets/css/list.less";
 @media screen and (max-width: @phone) {
-    .c-breadcrumb{
-        .u-op{
+    .c-breadcrumb {
+        .u-op {
             .none;
         }
     }

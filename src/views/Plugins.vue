@@ -6,15 +6,7 @@
                 {{ typelabel(subtype) }}
             </h1>
         </div>
-        <listbox
-            :data="data"
-            :total="total"
-            :pages="pages"
-            :per="per"
-            :page="page"
-            @appendPage="appendPage"
-            @changePage="changePage"
-        >
+        <listbox :data="data" :total="total" :pages="pages" :per="per" :page="page" @appendPage="appendPage" @changePage="changePage">
             <!-- 搜索 -->
             <div class="m-archive-search m-jx3dat-search" slot="search-before">
                 <a :href="publish_link" class="u-publish el-button el-button--primary">+ 发布数据</a>
@@ -38,27 +30,14 @@
                     <li class="u-item" v-for="(item, i) in data" :key="i">
                         <a class="u-banner" :href="item.ID | postLink" :target="target">
                             <img v-if="item.post_banner" :src="showBanner(item.post_banner)" />
-                            <img
-                                class="u-default-banner"
-                                v-else
-                                :src="item.post_subtype | showDefaultBanner"
-                            />
+                            <img class="u-default-banner" v-else :src="item.post_subtype | showDefaultBanner" />
                         </a>
 
                         <h2 class="u-post" :class="{ isSticky: item.sticky }">
                             <img class="u-icon" svg-inline src="../assets/img/post.svg" />
-                            <a
-                                class="u-title"
-                                :style="item.color | isHighlight"
-                                :href="item.ID | postLink"
-                                :target="target"
-                            >{{ item.post_title }}</a>
+                            <a class="u-title" :style="item.color | isHighlight" :href="item.ID | postLink" :target="target">{{ item.post_title }}</a>
                             <span class="u-marks" v-if="item.mark && item.mark.length">
-                                <i
-                                    v-for="mark in item.mark"
-                                    class="u-mark"
-                                    :key="mark"
-                                >{{ mark | showMark }}</i>
+                                <i v-for="mark in item.mark" class="u-mark" :key="mark">{{ mark | showMark }}</i>
                             </span>
                         </h2>
 
@@ -68,33 +47,19 @@
                                 <i class="u-tag" v-for="tag in item.tags" :key="tag">{{ tag }}</i>
                             </span>
                             <span class="u-tags" v-else-if="item.post_meta.tag">
-                                <i
-                                    class="u-tag"
-                                    v-for="tag in item.post_meta.tag"
-                                    :key="tag"
-                                >{{ tag }}</i>
+                                <i class="u-tag" v-for="tag in item.post_meta.tag" :key="tag">{{ tag }}</i>
                             </span>
                         </template>
 
                         <div class="u-desc">{{ item.post_content || item.post_title }}</div>
 
                         <div class="u-misc">
-                            <img
-                                class="u-author-avatar"
-                                :src="item.author_info.user_avatar | showAvatar"
-                                :alt="item.author_info.display_name"
-                            />
-                            <a
-                                class="u-author-name"
-                                :href="item.post_author | authorLink"
-                                target="_blank"
-                            >{{ item.author_info.display_name }}</a>
+                            <img class="u-author-avatar" :src="item.author_info.user_avatar | showAvatar" :alt="item.author_info.display_name" />
+                            <a class="u-author-name" :href="item.post_author | authorLink" target="_blank">{{ item.author_info.display_name }}</a>
                             <span class="u-date">
                                 Updated on
-                                <time
-                                    v-if="order == 'update'"
-                                >{{item.post_modified | dateFormat}}</time>
-                                <time v-else>{{item.post_date | dateFormat}}</time>
+                                <time v-if="order == 'update'">{{ item.post_modified | dateFormat }}</time>
+                                <time v-else>{{ item.post_date | dateFormat }}</time>
                             </span>
                         </div>
                     </li>
@@ -105,19 +70,11 @@
 </template>
 
 <script>
-import listbox from "@jx3box/jx3box-page/src/cms-list.vue";
+import listbox from "@jx3box/jx3box-common-ui/src/single/cms-list.vue";
 import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
 import { getPosts } from "../service/post";
-import {
-    showAvatar,
-    authorLink,
-    getThumbnail,
-    buildTarget,
-    publishLink,
-    getAppType,
-    showBanner,
-} from "@jx3box/jx3box-common/js/utils";
-import dateFormat from "../utils/moment";
+import { showAvatar, authorLink, getThumbnail, buildTarget, publishLink, getAppType, showBanner } from "@jx3box/jx3box-common/js/utils";
+import {showDate as dateFormat} from '@jx3box/jx3box-common/js/moment'
 import { jx3dat_types } from "../assets/data/types.json";
 const typeicons = {
     "1": "el-icon-box",
@@ -131,7 +88,7 @@ import { cms as mark_map } from "@jx3box/jx3box-common/data/mark.json";
 export default {
     name: "Plugins",
     props: [],
-    data: function () {
+    data: function() {
         return {
             loading: false,
 
@@ -152,29 +109,16 @@ export default {
         };
     },
     computed: {
-        resetParams: function () {
-            return [
-                this.subtype,
-                this.search,
-                this.mark,
-                this.lang,
-                this.client,
-            ];
+        resetParams: function() {
+            return [this.subtype, this.search, this.mark, this.lang, this.client];
         },
-        params: function () {
+        params: function() {
             let params = {
                 per: this.per,
                 page: ~~this.page || 1,
                 sticky: 1,
             };
-            let optionalParams = [
-                "subtype",
-                "search",
-                "order",
-                "mark",
-                "lang",
-                "client",
-            ];
+            let optionalParams = ["subtype", "search", "order", "mark", "lang", "client"];
             optionalParams.forEach((item) => {
                 if (this[item]) {
                     params[item] = this[item];
@@ -182,42 +126,42 @@ export default {
             });
             return params;
         },
-        subtype: function () {
+        subtype: function() {
             return this.$route.params.subtype || 2;
         },
-        defaultBanner: function () {
+        defaultBanner: function() {
             return this.subtype + ".png";
         },
-        target: function () {
+        target: function() {
             return buildTarget();
         },
-        publish_link: function (val) {
+        publish_link: function(val) {
             return publishLink("jx3dat");
         },
     },
     watch: {
-        subtype: function () {
+        subtype: function() {
             this.search = "";
         },
-        resetParams: function () {
+        resetParams: function() {
             this.page = 1;
         },
         params: {
             deep: true,
             immediate: true,
-            handler: function () {
+            handler: function() {
                 this.loadPosts();
             },
         },
-        "$route.query.page": function (val) {
+        "$route.query.page": function(val) {
             this.page = ~~val;
         },
-        "$route.params.subtype": function (val) {
+        "$route.params.subtype": function(val) {
             this.$store.state.subtype = val;
         },
     },
     methods: {
-        loadPosts: function () {
+        loadPosts: function() {
             this.loading = true;
             getPosts(this.params, this)
                 .then((res) => {
@@ -234,21 +178,21 @@ export default {
                     this.loading = false;
                 });
         },
-        changePage: function (i) {
+        changePage: function(i) {
             this.appendMode = false;
             this.page = i;
             window.scrollTo(0, 0);
         },
-        appendPage: function (i) {
+        appendPage: function(i) {
             this.appendMode = true;
             this.page = i;
         },
-        filter: function (o) {
+        filter: function(o) {
             this.appendMode = false;
             this[o["type"]] = o["val"];
         },
         showBanner,
-        randomColor: function (i) {
+        randomColor: function(i) {
             const colormap = [
                 "rgb(143,179,204)",
                 "rgb(151,204,172)",
@@ -265,38 +209,38 @@ export default {
             ];
             return colormap[i];
         },
-        typeicon: function (subtype) {
+        typeicon: function(subtype) {
             return typeicons[subtype];
         },
-        typelabel: function (subtype) {
+        typelabel: function(subtype) {
             return this.typemap[subtype];
         },
     },
     filters: {
-        authorLink: function (val) {
+        authorLink: function(val) {
             return authorLink(val);
         },
-        showAvatar: function (val) {
+        showAvatar: function(val) {
             return showAvatar(val);
         },
-        dateFormat: function (val) {
+        dateFormat: function(val) {
             return dateFormat(val);
         },
-        postLink: function (val) {
+        postLink: function(val) {
             return location.origin + "/jx3dat/" + val;
         },
-        isHighlight: function (val) {
+        isHighlight: function(val) {
             return val ? `color:${val};font-weight:600;` : "";
         },
-        showMark: function (val) {
+        showMark: function(val) {
             return mark_map[val];
         },
-        showDefaultBanner: function (val) {
+        showDefaultBanner: function(val) {
             val = val || "2";
             return __imgPath + "image/banner/jx3dat" + val + ".png";
         },
     },
-    created: function () {
+    created: function() {
         this.page = ~~this.$route.query.page || 1;
     },
     components: {
