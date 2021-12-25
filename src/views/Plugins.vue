@@ -1,80 +1,90 @@
 <template>
-    <div class="m-jx3dat-plugins" v-loading="loading">
-        <div class="m-plugins-header">
-            <h1 class="m-plugins-title">
-                <i :class="typeicon(subtype)"></i>
-                {{ typelabel(subtype) }}
-            </h1>
+    <div class="m-plugins">
+        <div class="m-jx3dat">
+            <!-- <tabs v-if="isDBM" /> -->
+            <div class="m-jx3dat-plugins" v-loading="loading">
+                <div class="m-plugins-header">
+                    <h1 class="m-plugins-title">
+                        <i :class="typeicon(subtype)"></i>
+                        {{ typelabel(subtype) }}
+                    </h1>
+                </div>
+                <listbox :data="data" :total="total" :pages="pages" :per="per" :page="page" @appendPage="appendPage" @changePage="changePage">
+                    <!-- 搜索 -->
+                    <div class="m-archive-search m-jx3dat-search" slot="search-before">
+                        <a :href="publish_link" class="u-publish el-button el-button--primary">+ 发布数据</a>
+                        <el-input class="m-jx3dat-input" placeholder="请输入搜索内容" v-model="search">
+                            <template slot="prepend">关键词</template>
+                            <el-button slot="append" icon="el-icon-search"></el-button>
+                        </el-input>
+                    </div>
+                    <!-- 过滤 -->
+                    <template slot="filter">
+                        <!-- 版本过滤 -->
+                        <clientBy @filter="filter" :type="client"></clientBy>
+                        <!-- 角标过滤 -->
+                        <markBy @filter="filter"></markBy>
+                        <!-- 排序过滤 -->
+                        <orderBy @filter="filter"></orderBy>
+                    </template>
+                    <!-- 列表 -->
+                    <div class="m-archive-list m-plugins-list" v-if="data.length">
+                        <ul class="u-list">
+                            <li class="u-item" v-for="(item, i) in data" :key="i">
+                                <a class="u-banner" :href="item.ID | postLink" :target="target">
+                                    <img v-if="item.post_banner" :src="showBanner(item.post_banner)" />
+                                    <img class="u-default-banner" v-else :src="item.post_subtype | showDefaultBanner" />
+                                </a>
+
+                                <h2 class="u-post" :class="{ isSticky: item.sticky }">
+                                    <img class="u-icon" svg-inline src="../assets/img/post.svg" />
+                                    <a class="u-title" :style="item.color | isHighlight" :href="item.ID | postLink" :target="target">{{ item.post_title }}</a>
+                                    <span class="u-marks" v-if="item.mark && item.mark.length">
+                                        <i v-for="mark in item.mark" class="u-mark" :key="mark">{{ mark | showMark }}</i>
+                                    </span>
+                                </h2>
+
+                                <!-- TAG兼容 -->
+                                <template v-if="subtype == 1">
+                                    <span class="u-tags" v-if="item.tags">
+                                        <i class="u-tag" v-for="tag in item.tags" :key="tag">{{ tag }}</i>
+                                    </span>
+                                    <span class="u-tags" v-else-if="item.post_meta.tag">
+                                        <i class="u-tag" v-for="tag in item.post_meta.tag" :key="tag">{{ tag }}</i>
+                                    </span>
+                                </template>
+
+                                <div class="u-desc">{{ item.post_content || item.post_title }}</div>
+
+                                <div class="u-misc">
+                                    <img class="u-author-avatar" :src="item.author_info.user_avatar | showAvatar" :alt="item.author_info.display_name" />
+                                    <a class="u-author-name" :href="item.post_author | authorLink" target="_blank">{{ item.author_info.display_name }}</a>
+                                    <span class="u-date">
+                                        Updated on
+                                        <time v-if="order == 'update'">{{ item.post_modified | dateFormat }}</time>
+                                        <time v-else>{{ item.post_date | dateFormat }}</time>
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </listbox>
+            </div>
         </div>
-        <listbox :data="data" :total="total" :pages="pages" :per="per" :page="page" @appendPage="appendPage" @changePage="changePage">
-            <!-- 搜索 -->
-            <div class="m-archive-search m-jx3dat-search" slot="search-before">
-                <a :href="publish_link" class="u-publish el-button el-button--primary">+ 发布数据</a>
-                <el-input class="m-jx3dat-input" placeholder="请输入搜索内容" v-model="search">
-                    <template slot="prepend">关键词</template>
-                    <el-button slot="append" icon="el-icon-search"></el-button>
-                </el-input>
-            </div>
-            <!-- 过滤 -->
-            <template slot="filter">
-                <!-- 版本过滤 -->
-                <clientBy @filter="filter" :type="client"></clientBy>
-                <!-- 角标过滤 -->
-                <markBy @filter="filter"></markBy>
-                <!-- 排序过滤 -->
-                <orderBy @filter="filter"></orderBy>
-            </template>
-            <!-- 列表 -->
-            <div class="m-archive-list m-plugins-list" v-if="data.length">
-                <ul class="u-list">
-                    <li class="u-item" v-for="(item, i) in data" :key="i">
-                        <a class="u-banner" :href="item.ID | postLink" :target="target">
-                            <img v-if="item.post_banner" :src="showBanner(item.post_banner)" />
-                            <img class="u-default-banner" v-else :src="item.post_subtype | showDefaultBanner" />
-                        </a>
-
-                        <h2 class="u-post" :class="{ isSticky: item.sticky }">
-                            <img class="u-icon" svg-inline src="../assets/img/post.svg" />
-                            <a class="u-title" :style="item.color | isHighlight" :href="item.ID | postLink" :target="target">{{ item.post_title }}</a>
-                            <span class="u-marks" v-if="item.mark && item.mark.length">
-                                <i v-for="mark in item.mark" class="u-mark" :key="mark">{{ mark | showMark }}</i>
-                            </span>
-                        </h2>
-
-                        <!-- TAG兼容 -->
-                        <template v-if="subtype == 1">
-                            <span class="u-tags" v-if="item.tags">
-                                <i class="u-tag" v-for="tag in item.tags" :key="tag">{{ tag }}</i>
-                            </span>
-                            <span class="u-tags" v-else-if="item.post_meta.tag">
-                                <i class="u-tag" v-for="tag in item.post_meta.tag" :key="tag">{{ tag }}</i>
-                            </span>
-                        </template>
-
-                        <div class="u-desc">{{ item.post_content || item.post_title }}</div>
-
-                        <div class="u-misc">
-                            <img class="u-author-avatar" :src="item.author_info.user_avatar | showAvatar" :alt="item.author_info.display_name" />
-                            <a class="u-author-name" :href="item.post_author | authorLink" target="_blank">{{ item.author_info.display_name }}</a>
-                            <span class="u-date">
-                                Updated on
-                                <time v-if="order == 'update'">{{ item.post_modified | dateFormat }}</time>
-                                <time v-else>{{ item.post_date | dateFormat }}</time>
-                            </span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </listbox>
+        <RightSidebar>
+            <Side class="m-extend" />
+        </RightSidebar>
     </div>
 </template>
 
 <script>
 import listbox from "@jx3box/jx3box-common-ui/src/single/cms-list.vue";
+import Side from "@/components/list/list_side.vue";
+import tabs from "@/components/list/list_tabs.vue";
 import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
 import { getPosts } from "../service/post";
 import { showAvatar, authorLink, getThumbnail, buildTarget, publishLink, getAppType, showBanner } from "@jx3box/jx3box-common/js/utils";
-import {showDate as dateFormat} from '@jx3box/jx3box-common/js/moment'
+import { showDate as dateFormat } from "@jx3box/jx3box-common/js/moment";
 import { jx3dat_types } from "../assets/data/types.json";
 const typeicons = {
     "1": "el-icon-box",

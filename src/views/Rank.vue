@@ -35,7 +35,6 @@
 
 <script>
 import { getRank } from "../service/rank";
-import tabs from "@/components/tabs.vue";
 import { postLink } from "@jx3box/jx3box-common/js/utils";
 export default {
     name: "Rank",

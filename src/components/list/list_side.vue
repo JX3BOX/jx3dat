@@ -10,7 +10,7 @@
         <!-- 其他链接 -->
         <div class="m-jx3dat-links m-side-links">
             <h3 class="c-sidebar-right-title" style="border-bottom:none;">
-                <img class="u-icon" svg-inline src="../assets/img/puzzle.svg" />
+                <img class="u-icon" svg-inline src="../../assets/img/puzzle.svg" />
                 帮助文档
             </h3>
             <el-collapse class="u-groups" v-model="activeDocGroup">
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import minirank from "@/components/minirank.vue";
+import minirank from "./minirank.vue";
 import { getMenuGroups } from "@/service/helper.js";
 export default {
     name: "list_side",
@@ -78,5 +78,55 @@ export default {
 </script>
 
 <style lang="less">
-@import "../assets/css/list_side.less";
+.m-side-links {
+    padding: 15px;
+
+    .u-icon {
+        .size(18px);
+        .y(-3px);
+        margin-left: 4px;
+        margin-right: 5px;
+    }
+
+}
+
+.m-side-links {
+    .u-groups{
+        padding:0 5px;
+    }
+    .u-doc {
+        .db;
+        .fz(12px, 34px);
+        border-bottom: 1px solid #eee;
+        i {
+            .fz(16px);
+            .y(-2px);
+            color:#666;
+        }
+        &:last-child {
+            border-bottom: none;
+        }
+        &:hover{
+            .bold;
+        }
+    }
+}
+
+@media screen and (max-width:@phone){
+    .m-jx3dat-links{
+        .none;
+    }
+}
+
+.c-sidebar-right-list{
+    .u-item{
+        i{
+            .mr(5px);
+        }
+    }
+}
+
+.c-sidebar-right-title{
+    font-weight: bold;
+}
 </style>

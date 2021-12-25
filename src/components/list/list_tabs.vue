@@ -48,5 +48,63 @@ export default {
 </script>
 
 <style lang="less">
-@import "../assets/css/tabs.less";
+.m-jx3dat-tabs{
+    position: sticky;
+    top: 112px;
+    background-color:#fff;
+    .z(100);
+    b{
+        // font-weight: normal;
+        color:@color;
+    }
+
+    i{
+        .mr(2px);
+    }
+
+    .el-tabs__item.is-active{
+        b,i{
+            color:@primary;
+        }
+    }
+
+    .el-tabs__item:hover{
+        b,i{
+            color:@primary;
+        }
+    }
+
+    em{
+        .fz(12px);
+        .pr;top:-5px;.ml(3px);
+        padding:0 4px;
+        .r(2px);
+        font-style:normal;
+    }
+    .u-secret{
+        background-color:#c00;
+        // color:#f00 !important;
+        color:#fff;
+    }
+    .u-new{
+        background-color:#49c10f;
+        color:#fff;
+    }
+    .u-pending{
+        background-color:#aaa;
+        color:#fff;
+    }
+    .u-ready{
+        background-color:#fba524;
+        color:#fff;
+    }
+    user-select: none;
+
+}
+
+@media screen and (max-width:@phone){
+    .m-jx3dat-tabs{
+        .none;
+    }
+}
 </style>

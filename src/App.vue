@@ -1,21 +1,15 @@
 <template>
     <div id="app">
         <Header></Header>
-        <Breadcrumb name="数据下载" slug="jx3dat" root="/jx3dat" :publishEnable="true" :adminEnable="true" :feedbackEnable="true" :crumbEnable="true">
+        <Breadcrumb name="数据下载" slug="jx3dat" root="/jx3dat" :publishEnable="true" :adminEnable="false" :feedbackEnable="true" :crumbEnable="true">
             <img slot="logo" svg-inline :src="getAppIcon('jx3dat')" />
             <Info />
         </Breadcrumb>
         <LeftSidebar>
             <Nav class="m-nav" />
         </LeftSidebar>
-        <Main :withoutRight="false">
-            <div class="m-jx3dat">
-                <tabs v-if="isDBM" />
-                <router-view />
-            </div>
-            <RightSidebar>
-                <Side class="m-extend" />
-            </RightSidebar>
+        <Main :withoutRight="hideSide">
+            <router-view />
             <Footer></Footer>
         </Main>
     </div>
@@ -23,9 +17,7 @@
 
 <script>
 import Info from "@/components/Info.vue";
-import Nav from "@/components/list_nav.vue";
-import Side from "@/components/list_side.vue";
-import tabs from "@/components/tabs";
+import Nav from "@/components/list/list_nav.vue";
 import { getAppIcon } from "@jx3box/jx3box-common/js/utils";
 export default {
     name: "App",
@@ -34,8 +26,8 @@ export default {
         return {};
     },
     computed: {
-        isDBM: function() {
-            return this.$route.meta.belongs == "dbm";
+        hideSide: function() {
+            return !this.$route.meta.side || false;
         },
     },
     methods: { getAppIcon },
@@ -43,8 +35,6 @@ export default {
     components: {
         Info,
         Nav,
-        Side,
-        tabs,
     },
 };
 </script>
@@ -52,11 +42,4 @@ export default {
 <style lang="less">
 @import "./assets/css/app.less";
 @import "./assets/css/list.less";
-@media screen and (max-width: @phone) {
-    .c-breadcrumb {
-        .u-op {
-            .none;
-        }
-    }
-}
 </style>

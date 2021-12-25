@@ -1,7 +1,7 @@
 <template>
     <div class="m-jx3dat-rank-mini m-jx3dat-rank">
         <h3 class="c-sidebar-right-title">
-            <img class="u-icon" svg-inline src="../assets/img/rank.svg" />排行榜
+            <img class="u-icon" svg-inline src="../../assets/img/rank.svg" />排行榜
             <span class="u-more" @click="viewRank">查看更多 &raquo;</span>
         </h3>
         <ul class="u-list">
@@ -9,12 +9,11 @@
                 <a class="u-link" :href="item.pid | postLink">
                     <span class="u-order" :class="highlight(j)">{{ j + 1 }}</span>
                     <span class="u-name">
-                        {{ item.author
-                        }}
+                        {{ item.author }}
                         <span v-if="item.v != '默认版'">#{{ item.v }}</span>
                     </span>
                     <span class="u-per">
-                        <em class="u-count">+ {{item["7days"]}}</em>
+                        <em class="u-count">+ {{ item["7days"] }}</em>
                         <!-- <i
                         class="el-icon-top u-trending"
                         v-if="trending(item) > 0"
@@ -38,31 +37,31 @@
 </template>
 
 <script>
-import { getRank } from "../service/rank";
+import { getRank } from "../../service/rank";
 import { postLink } from "@jx3box/jx3box-common/js/utils";
 export default {
     name: "rank",
-    data: function () {
+    data: function() {
         return {
             data: [],
         };
     },
     computed: {
-        client: function () {
+        client: function() {
             return this.$store.state.client;
         },
     },
     methods: {
-        trending: function (item) {
+        trending: function(item) {
             let trending_1 = (item.before3 - item.before2) / item.before2;
             let trending_2 = (item.before2 - item.yesterday) / item.yesterday;
             let average = (trending_1 + trending_2) / 2;
             return isNaN(average) ? "N/A" : average.toFixed(4);
         },
-        viewRank: function () {
+        viewRank: function() {
             this.$router.push({ name: "rank" });
         },
-        highlight: function (i) {
+        highlight: function(i) {
             if (i == 0) {
                 return "t1";
             } else if (i == 1) {
@@ -73,11 +72,11 @@ export default {
         },
     },
     filters: {
-        postLink: function (pid) {
+        postLink: function(pid) {
             return postLink("jx3dat", pid);
         },
     },
-    mounted: function () {
+    mounted: function() {
         getRank(this.client, 10).then((data) => {
             let _data = [];
             for (let [i, item] of data.entries()) {
@@ -98,5 +97,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "../assets/css/rank.less";
+@import "../../assets/css/rank.less";
 </style>

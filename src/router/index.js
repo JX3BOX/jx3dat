@@ -9,9 +9,9 @@ Vue.use(VueRouter);
 
 const routes = [
     { name: "index", path: "/", redirect: "/plugins/1" },
-    { name: "userdata", path: "/userdata", component: Userdata },
-    { name: "plugins", path: "/plugins/:subtype", component: Plugins },
-    { name: "rank", path: "/rank", component: Rank, meta: { belongs: "dbm" } },
+    { name: "userdata", path: "/userdata", component: Userdata, meta: { side: false } },
+    { name: "plugins", path: "/plugins/:subtype", component: Plugins, meta: { side: true } },
+    { name: "rank", path: "/rank", component: Rank, meta: { belongs: "dbm", side: false } },
 ];
 
 const router = new VueRouter({
