@@ -41,7 +41,15 @@ export default {
             return require(`../../assets/img/nav/${subtype}.svg`);
         },
         isActive : function (key){
-            return this.$route.name == 'plugins' && (key == this.$route.query.subtype || !this.$route.query.subtype)
+            if(this.$route.name == 'plugins'){
+                if(this.$route.query.subtype){
+                    return key == this.$route.query.subtype
+                }else{
+                    return key == 1
+                }
+                
+            }
+            return false
         }
     },
 };
