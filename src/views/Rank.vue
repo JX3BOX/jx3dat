@@ -1,5 +1,8 @@
 <template>
     <div class="v-rank" v-loading="loading">
+        <div class="m-plugins-header">
+            <h1 class="m-plugins-title"><i class="el-icon-box"></i>团队监控数据</h1>
+        </div>
         <div class="m-jx3dat-rank-full m-jx3dat-rank">
             <el-table :data="data" :default-sort="{ prop: '7days', order: 'descending' }" :row-class-name="highlight">
                 <el-table-column type="index" label="👑" width="48"> </el-table-column>

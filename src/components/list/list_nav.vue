@@ -10,21 +10,9 @@
 
         <h5 class="u-title">插件数据</h5>
         <div class="m-nav-group">
-            <router-link to="/plugins/1">
-                <img src="../../assets/img/nav/1.svg" />
-                <span>团队监控数据</span>
-            </router-link>
-            <router-link to="/plugins/2">
-                <img src="../../assets/img/nav/2.png" />
-                <span>目标监控数据</span>
-            </router-link>
-            <router-link to="/plugins/3">
-                <img src="../../assets/img/nav/3.svg" />
-                <span>团队面板数据</span>
-            </router-link>
-            <router-link to="/plugins/5">
-                <img src="../../assets/img/nav/more.png" />
-                <span>其它插件数据</span>
+            <router-link v-for="(label, key) in jx3dat_types" :key="label" :to="{ name: 'plugins', query: { subtype: key } }" :class="{ on: isActive(key) }">
+                <img :src="getIcon(key)" />
+                <span>{{ label }}</span>
             </router-link>
         </div>
 
@@ -37,11 +25,24 @@
 </template>
 
 <script>
+import { jx3dat_types } from "@/assets/data/types.json";
 export default {
     name: "list_nav",
     props: [],
-    data: function () {
-        return {};
+    data: function() {
+        return {
+            jx3dat_types,
+        };
+    },
+    computed: {
+    },
+    methods: {
+        getIcon: function(subtype) {
+            return require(`../../assets/img/nav/${subtype}.svg`);
+        },
+        isActive : function (key){
+            return this.$route.name == 'plugins' && (key == this.$route.query.subtype || !this.$route.query.subtype)
+        }
     },
 };
 </script>

@@ -1,264 +1,225 @@
 <template>
-    <div class="m-plugins">
-        <div class="m-jx3dat">
-            <!-- <tabs v-if="isDBM" /> -->
-            <div class="m-jx3dat-plugins" v-loading="loading">
-                <div class="m-plugins-header">
-                    <h1 class="m-plugins-title">
-                        <i :class="typeicon(subtype)"></i>
-                        {{ typelabel(subtype) }}
-                    </h1>
-                </div>
-                <listbox :data="data" :total="total" :pages="pages" :per="per" :page="page" @appendPage="appendPage" @changePage="changePage">
-                    <!-- 搜索 -->
-                    <div class="m-archive-search m-jx3dat-search" slot="search-before">
-                        <a :href="publish_link" class="u-publish el-button el-button--primary">+ 发布数据</a>
-                        <el-input class="m-jx3dat-input" placeholder="请输入搜索内容" v-model="search">
-                            <template slot="prepend">关键词</template>
-                            <el-button slot="append" icon="el-icon-search"></el-button>
-                        </el-input>
-                    </div>
-                    <!-- 过滤 -->
-                    <template slot="filter">
-                        <!-- 版本过滤 -->
-                        <clientBy @filter="filter" :type="client"></clientBy>
-                        <!-- 角标过滤 -->
-                        <markBy @filter="filter"></markBy>
-                        <!-- 排序过滤 -->
-                        <orderBy @filter="filter"></orderBy>
-                    </template>
-                    <!-- 列表 -->
-                    <div class="m-archive-list m-plugins-list" v-if="data.length">
-                        <ul class="u-list">
-                            <li class="u-item" v-for="(item, i) in data" :key="i">
-                                <a class="u-banner" :href="item.ID | postLink" :target="target">
-                                    <img v-if="item.post_banner" :src="showBanner(item.post_banner)" />
-                                    <img class="u-default-banner" v-else :src="item.post_subtype | showDefaultBanner" />
-                                </a>
-
-                                <h2 class="u-post" :class="{ isSticky: item.sticky }">
-                                    <img class="u-icon" svg-inline src="../assets/img/post.svg" />
-                                    <a class="u-title" :style="item.color | isHighlight" :href="item.ID | postLink" :target="target">{{ item.post_title }}</a>
-                                    <span class="u-marks" v-if="item.mark && item.mark.length">
-                                        <i v-for="mark in item.mark" class="u-mark" :key="mark">{{ mark | showMark }}</i>
-                                    </span>
-                                </h2>
-
-                                <!-- TAG兼容 -->
-                                <template v-if="subtype == 1">
-                                    <span class="u-tags" v-if="item.tags">
-                                        <i class="u-tag" v-for="tag in item.tags" :key="tag">{{ tag }}</i>
-                                    </span>
-                                    <span class="u-tags" v-else-if="item.post_meta.tag">
-                                        <i class="u-tag" v-for="tag in item.post_meta.tag" :key="tag">{{ tag }}</i>
-                                    </span>
-                                </template>
-
-                                <div class="u-desc">{{ item.post_content || item.post_title }}</div>
-
-                                <div class="u-misc">
-                                    <img class="u-author-avatar" :src="item.author_info.user_avatar | showAvatar" :alt="item.author_info.display_name" />
-                                    <a class="u-author-name" :href="item.post_author | authorLink" target="_blank">{{ item.author_info.display_name }}</a>
-                                    <span class="u-date">
-                                        Updated on
-                                        <time v-if="order == 'update'">{{ item.post_modified | dateFormat }}</time>
-                                        <time v-else>{{ item.post_date | dateFormat }}</time>
-                                    </span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </listbox>
-            </div>
+    <div class="m-archive-box" v-loading="loading">
+        <div class="m-plugins-header">
+            <h1 class="m-plugins-title">
+                <i :class="subtype | showIcon"></i>{{ subtype | showLabel }}
+            </h1>
         </div>
-        <RightSidebar>
-            <Side class="m-extend" />
-        </RightSidebar>
+
+        <!-- 搜索 -->
+        <div class="m-archive-search" slot="search-before">
+            <a :href="publish_link" class="u-publish el-button el-button--primary">+ 发布作品</a>
+            <el-input placeholder="请输入搜索内容" v-model="search">
+                <span slot="prepend">关键词</span>
+                <el-button slot="append" icon="el-icon-search"></el-button>
+            </el-input>
+        </div>
+
+        <!-- 筛选 -->
+        <div class="m-archive-filter">
+            <!-- 版本过滤 -->
+            <clientBy @filter="filterMeta" :type="client"></clientBy>
+            <!-- 角标过滤 -->
+            <markBy @filter="filterMeta"></markBy>
+            <!-- 排序过滤 -->
+            <orderBy @filter="filterMeta"></orderBy>
+        </div>
+
+        <!-- 列表 -->
+        <div class="m-archive-list" v-if="data && data.length">
+            <ul class="u-list">
+                <list-item v-for="(item, i) in data" :key="i + item" :item="item" :order="order" />
+            </ul>
+        </div>
+
+        <!-- 空 -->
+        <el-alert v-else class="m-archive-null" title="没有找到相关条目" type="info" center show-icon></el-alert>
+
+        <!-- 下一页 -->
+        <el-button class="m-archive-more" v-show="hasNextPage" type="primary" @click="appendPage" :loading="loading" icon="el-icon-arrow-down">加载更多</el-button>
+
+        <!-- 分页 -->
+        <el-pagination
+            class="m-archive-pages"
+            background
+            layout="total, prev, pager, next, jumper"
+            :hide-on-single-page="true"
+            :page-size="per"
+            :total="total"
+            :current-page.sync="page"
+            @current-change="changePage"
+        ></el-pagination>
     </div>
 </template>
-
 <script>
-import listbox from "@jx3box/jx3box-common-ui/src/single/cms-list.vue";
-import Side from "@/components/list/list_side.vue";
-import tabs from "@/components/list/list_tabs.vue";
-import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
-import { getPosts } from "../service/post";
-import { showAvatar, authorLink, getThumbnail, buildTarget, publishLink, getAppType, showBanner } from "@jx3box/jx3box-common/js/utils";
-import { showDate as dateFormat } from "@jx3box/jx3box-common/js/moment";
-import { jx3dat_types } from "../assets/data/types.json";
-const typeicons = {
-    "1": "el-icon-box",
-    "2": "el-icon-aim",
-    "3": "el-icon-news",
-    "4": "el-icon-brush",
-    "5": "el-icon-magic-stick",
-};
-import { cms as mark_map } from "@jx3box/jx3box-common/data/mark.json";
-
+import { appKey } from "@/../setting.json";
+import listItem from "@/components/list/list_item.vue";
+import { publishLink } from "@jx3box/jx3box-common/js/utils";
+import { getPosts } from "@/service/post";
+import { jx3dat_types,jx3dat_icons } from "@/assets/data/types.json";
 export default {
-    name: "Plugins",
+    name: "Index",
     props: [],
     data: function() {
         return {
-            loading: false,
-
+            loading: false, //加载状态
             data: [], //数据列表
+
             page: 1, //当前页数
+            per: 10, //每页条目
             total: 1, //总条目数
             pages: 1, //总页数
-            per: 10, //每页条目
-            appendMode: false, //追加模式
+            number_queries: ["per", "page"],
 
-            search: "",
-
-            order: "update", //排序
-            mark: "", //角标
+            subtype: "1", //子类别
+            order: "update", //排序模式
+            mark: "", //筛选模式
             client: this.$store.state.client, //版本选择
-
-            typemap: jx3dat_types,
+            search: "", //搜索字串
         };
     },
     computed: {
-        resetParams: function() {
-            return [this.subtype, this.search, this.mark, this.lang, this.client];
+        // 发布按钮链接
+        publish_link: function() {
+            return publishLink(appKey);
         },
-        params: function() {
-            let params = {
+        // 是否显示加载更多
+        hasNextPage: function() {
+            return this.pages > 1 && this.page < this.total;
+        },
+        // 请求关联参数
+        query: function() {
+            return {
+                page: this.page,
                 per: this.per,
-                page: ~~this.page || 1,
-                sticky: 1,
+
+                subtype: this.subtype,
+                order: this.order,
+                mark: this.mark,
+                client: this.client,
+                search: this.search,
             };
-            let optionalParams = ["subtype", "search", "order", "mark", "lang", "client"];
-            optionalParams.forEach((item) => {
-                if (this[item]) {
-                    params[item] = this[item];
-                }
-            });
-            return params;
         },
-        subtype: function() {
-            return this.$route.params.subtype || 2;
-        },
-        defaultBanner: function() {
-            return this.subtype + ".png";
-        },
-        target: function() {
-            return buildTarget();
-        },
-        publish_link: function(val) {
-            return publishLink("jx3dat");
-        },
-    },
-    watch: {
-        subtype: function() {
-            this.search = "";
-        },
-        resetParams: function() {
-            this.page = 1;
-        },
-        params: {
-            deep: true,
-            immediate: true,
-            handler: function() {
-                this.loadPosts();
-            },
-        },
-        "$route.query.page": function(val) {
-            this.page = ~~val;
-        },
-        "$route.params.subtype": function(val) {
-            this.$store.state.subtype = val;
+        // 重置页码参数
+        reset_queries: function() {
+            return [this.subtype, this.search];
         },
     },
     methods: {
-        loadPosts: function() {
-            this.loading = true;
-            getPosts(this.params, this)
-                .then((res) => {
-                    if (this.appendMode) {
-                        this.data = this.data.concat(res.data.data.list);
+        // 构建最终请求参数
+        buildQuery: function(appendMode) {
+            let _query = {
+                page: this.page,
+            };
+            for (let key in this.query) {
+                if (this.query[key] !== undefined && this.query[key] !== "" && this.query[key] !== null) {
+                    if (key == "search") {
+                        _query.search = this.query.search.trim();
                     } else {
-                        this.data = res.data.data.list;
+                        _query[key] = this.query[key];
                     }
-                    this.total = res.data.data.total;
-                    this.pages = res.data.data.pages;
+                }
+            }
+            if (appendMode) {
+                _query.page += 1;
+            }
+            return _query;
+        },
+        // 加载数据
+        loadData: function(appendMode = false) {
+            let query = this.buildQuery(appendMode);
+            console.log("[cms-list]", "<loading data>", query);
+
+            this.loading = true;
+            return getPosts(query)
+                .then((res) => {
+                    if (appendMode) {
+                        this.data = this.data.concat(res.data?.data?.list);
+                    } else {
+                        this.data = res.data?.data?.list;
+                    }
+                    this.total = res.data?.data?.total;
+                    this.pages = res.data?.data?.pages;
                 })
                 .finally(() => {
-                    this.appendMode = false;
                     this.loading = false;
                 });
         },
+        // 路由绑定
+        replaceRoute: function(extend) {
+            return this.$router
+                .push({ name: this.$route.name, query: Object.assign({}, this.$route.query, extend) })
+                .then(() => {
+                    window.scrollTo(0, 0);
+                })
+                .catch((err) => {});
+        },
+        // 条件过滤
+        filterMeta: function(o) {
+            this.replaceRoute({ [o["type"]]: o["val"], page: 1 });
+        },
+        // 翻页加载
         changePage: function(i) {
-            this.appendMode = false;
-            this.page = i;
-            window.scrollTo(0, 0);
+            this.replaceRoute({ page: i });
         },
-        appendPage: function(i) {
-            this.appendMode = true;
-            this.page = i;
-        },
-        filter: function(o) {
-            this.appendMode = false;
-            this[o["type"]] = o["val"];
-        },
-        showBanner,
-        randomColor: function(i) {
-            const colormap = [
-                "rgb(143,179,204)",
-                "rgb(151,204,172)",
-                "rgb(151,204,172)",
-                "rgb(204,167,151)",
-                "rgb(204,167,151)",
-                "rgb(155,151,204)",
-                "#b7b3e4",
-                "#a3c9e0",
-                "#b4e5c9",
-                "#dfe0ac",
-                "#e1bfae",
-                "#e8bce9",
-            ];
-            return colormap[i];
-        },
-        typeicon: function(subtype) {
-            return typeicons[subtype];
-        },
-        typelabel: function(subtype) {
-            return this.typemap[subtype];
+        // 追加加载
+        appendPage: function() {
+            this.loadData(true);
         },
     },
-    filters: {
-        authorLink: function(val) {
-            return authorLink(val);
+    watch: {
+        // 加载路由参数
+        "$route.query": {
+            deep: true,
+            immediate: true,
+            handler: function(query) {
+                if (Object.keys(query).length) {
+                    console.log("[cms-list]", "<route query change>", query);
+                    for (let key in query) {
+                        // for:element分页组件兼容性问题
+                        if (this.number_queries.includes(key)) {
+                            this[key] = ~~query[key];
+                        } else {
+                            this[key] = query[key];
+                        }
+                    }
+                }
+            },
         },
-        showAvatar: function(val) {
-            return showAvatar(val);
+        // 重置分页参数
+        reset_queries: {
+            deep: true,
+            handler: function() {
+                console.log("[cms-list]", "<reset page>");
+                this.page = 1;
+            },
         },
-        dateFormat: function(val) {
-            return dateFormat(val);
-        },
-        postLink: function(val) {
-            return location.origin + "/jx3dat/" + val;
-        },
-        isHighlight: function(val) {
-            return val ? `color:${val};font-weight:600;` : "";
-        },
-        showMark: function(val) {
-            return mark_map[val];
-        },
-        showDefaultBanner: function(val) {
-            val = val || "2";
-            return __imgPath + "image/banner/jx3dat" + val + ".png";
+        // 监听请求参数
+        query: {
+            deep: true,
+            immediate: true,
+            handler: function(query) {
+                console.log("[cms-list]", "<request query change>", query);
+                this.loadData();
+            },
         },
     },
-    created: function() {
-        this.page = ~~this.$route.query.page || 1;
+    filters :{
+        showIcon: function(subtype) {
+            return jx3dat_icons[subtype];
+        },
+        showLabel: function(subtype) {
+            return jx3dat_types[subtype];
+        },
     },
+    mounted: function() {},
     components: {
-        listbox,
+        listItem,
     },
 };
 </script>
 
 <style lang="less">
-@import "../assets/css/plugins.less";
+@import "~@/assets/css/list.less";
+@import "~@/assets/css/plugins.less";
 </style>

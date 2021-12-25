@@ -9,7 +9,10 @@
             <Nav class="m-nav" />
         </LeftSidebar>
         <Main :withoutRight="hideSide">
-            <router-view />
+            <router-view class="m-main" />
+            <RightSidebar v-if="!hideSide">
+                <Side class="m-extend" />
+            </RightSidebar>
             <Footer></Footer>
         </Main>
     </div>
@@ -18,6 +21,7 @@
 <script>
 import Info from "@/components/Info.vue";
 import Nav from "@/components/list/list_nav.vue";
+import Side from "@/components/list/list_side.vue";
 import { getAppIcon } from "@jx3box/jx3box-common/js/utils";
 export default {
     name: "App",
@@ -35,11 +39,11 @@ export default {
     components: {
         Info,
         Nav,
+        Side
     },
 };
 </script>
 
 <style lang="less">
 @import "./assets/css/app.less";
-@import "./assets/css/list.less";
 </style>
