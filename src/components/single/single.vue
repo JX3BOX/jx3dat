@@ -1,5 +1,5 @@
 <template>
-    <singlebox :post="post" :stat="stat" v-loading="loading" @extendUpdate="updateExtend">
+    <singlebox :post="post" :stat="stat" v-loading="loading" @extendUpdate="updateExtend" :postType="appKey">
         <div class="u-meta u-sub-block" slot="single-header">
             <em class="u-label">类型</em>
             <span class="u-value">{{ post_subtype }}</span>
