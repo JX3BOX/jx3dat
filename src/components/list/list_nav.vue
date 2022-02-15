@@ -45,7 +45,7 @@ export default {
                 if(this.$route.query.subtype){
                     return key == this.$route.query.subtype
                 }else{
-                    return key == 1
+                    return key == (this.$store.state.client == 'std' ? 1 : 5)
                 }
                 
             }

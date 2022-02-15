@@ -71,7 +71,7 @@ export default {
             pages: 1, //总页数
             number_queries: ["per", "page"],
 
-            subtype: "1", //子类别
+            subtype: this.$store.state.client == 'std' ? '1' : '5', //子类别
             order: "update", //排序模式
             mark: "", //筛选模式
             client: this.$store.state.client, //版本选择
