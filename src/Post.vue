@@ -2,7 +2,6 @@
     <div id="app">
         <Header></Header>
         <Breadcrumb name="插件数据" slug="jx3dat" root="/jx3dat" :publishEnable="true" :adminEnable="true" :feedbackEnable="true" :crumbEnable="true">
-            <img slot="logo" svg-inline :src="getAppIcon('jx3dat')" />
         </Breadcrumb>
         <LeftSidebar>
             <Nav :id="id" class="m-nav" />
