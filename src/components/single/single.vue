@@ -15,7 +15,7 @@
                         </div>
                         <a
                             class="u-sync"
-                            v-if="isAuthor || isAdmin"
+                            v-if="isAuthor || isEditor"
                             :href="'https://pull.j3cx.com/api/dbm/feed?key=' + post.author + '&_no_cache'"
                             target="_blank"
                             title="默认存在1分钟缓存，如需要即时生效请点击此按钮"
@@ -42,7 +42,7 @@
                         </div>
                         <a
                             class="u-sync"
-                            v-if="isAuthor || isAdmin"
+                            v-if="isAuthor || isEditor"
                             :href="'https://pull.j3cx.com/api/dbm/feed?key=' + post.author + '-' + feed.name + '&_no_cache'"
                             target="_blank"
                             title="默认存在1分钟缓存，如需要即时生效请点击此按钮"
@@ -69,7 +69,7 @@
                         </div>
                         <a
                             class="u-sync"
-                            v-if="isAuthor || isAdmin"
+                            v-if="isAuthor || isEditor"
                             :href="'https://pull.j3cx.com/api/dbm/feed?key=' + post.author + '-' + feed.name + '&_no_cache'"
                             target="_blank"
                             title="默认存在1分钟缓存，如需要即时生效请点击此按钮"
@@ -135,17 +135,19 @@ export default {
             loading: false,
             post: {},
             stat: {},
-            
+
             meta: {},
             data : [],
+
+            appKey,
         };
     },
     computed: {
         isAuthor: function() {
-            return User.getInfo().uid === this.post?.post_author;
+            return User.getInfo().uid == this.post?.post_author;
         },
-        isAdmin : function (){
-            return User.isAdmin()
+        isEditor : function (){
+            return User.isEditor()
         },
         subtype: function() {
             return this.post?.post_subtype;
