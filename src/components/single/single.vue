@@ -7,7 +7,7 @@
 
         <!-- 数据字段 -->
         <div class="m-single-meta" v-if="visible">
-            <div class="u-subtype-1" v-if="subtype == 1 && data.length">
+            <div class="u-subtype-1" v-if="subtype == 1 && data && data.length">
                 <div v-for="(feed, i) in data" :key="feed + i">
                     <div class="u-data" v-if="i == 0">
                         <div class="u-feed">
@@ -153,7 +153,7 @@ export default {
             return this.post?.post_subtype;
         },
         post_subtype: function() {
-            return jx3dat_types[this.subtype] || "-";
+            return jx3dat_types?.[this.subtype] || "-";
         },
         visible: function () {
             return this.post?._check;
