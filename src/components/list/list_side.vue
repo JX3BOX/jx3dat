@@ -56,7 +56,7 @@ export default {
     props: [],
     data: function () {
         return {
-            activeDocGroup: "",
+            activeDocGroup: ["newbie", "senior"],
             jx3dat_newbie: [],
             jx3dat_senior: [],
         };
