@@ -3,7 +3,7 @@
         <Header></Header>
         <Breadcrumb name="插件数据" slug="jx3dat" root="/jx3dat" :publishEnable="true" :adminEnable="true" :feedbackEnable="true" :crumbEnable="true">
         </Breadcrumb>
-        <LeftSidebar>
+        <LeftSidebar :uid="user_id">
             <Nav :id="id" class="m-nav" />
         </LeftSidebar>
         <Main :withoutRight="false">
@@ -28,6 +28,11 @@ export default {
         return {
             id: getAppID(),
         };
+    },
+    computed: {
+        user_id: function () {
+            return this.$store.state.user_id;
+        },
     },
     methods: { getAppIcon },
     components: {
